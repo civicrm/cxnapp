@@ -4,10 +4,10 @@ namespace Civi\Cxn\AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class DefaultController extends Controller
-{
-    public function indexAction($name)
-    {
-        return $this->render('CiviCxnAppBundle:Default:index.html.twig', array('name' => $name));
-    }
+class DefaultController extends Controller {
+
+  public function indexAction($name) {
+    return $this->render('CiviCxnAppBundle:Default:index.html.twig', array('name' => $name));
+  }
+
 }
