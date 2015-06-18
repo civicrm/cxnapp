@@ -1,4 +1,43 @@
+parameters:
+  civi_cxn_app.data_dir: '%kernel.root_dir%/cxn'
+
 services:
-#    civi_cxn_app.example:
-#        class: Civi\Cxn\AppBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+
+  civi_cxn_app.app_store:
+    class: Civi\Cxn\AppBundle\FileAppStore
+    arguments: ['%civi_cxn_app.data_dir%']
+
+  civi_cxn_app.cxn_store:
+    class: Civi\Cxn\AppBundle\DoctrineCxnStore
+    arguments: ['@doctrine.orm.entity_manager']
+
+
+  civi_cxn_app.command.app_get_command:
+    class: Civi\Cxn\AppBundle\Command\AppGetCommand
+    arguments: ["@civi_cxn_app.app_store"]
+    tags:
+      -  { name: console.command }
+
+  civi_cxn_app.command.app_init_command:
+    class: Civi\Cxn\AppBundle\Command\AppInitCommand
+    arguments: ["@civi_cxn_app.app_store"]
+    tags:
+      -  { name: console.command }
+
+  civi_cxn_app.command.cxn_get_command:
+    class: Civi\Cxn\AppBundle\Command\CxnGetCommand
+    arguments: ["@civi_cxn_app.cxn_store"]
+    tags:
+      -  { name: console.command }
+
+  civi_cxn_app.command.cxn_call_command:
+    class: Civi\Cxn\AppBundle\Command\CxnCallCommand
+    arguments: ["@logger"]
+    tags:
+      -  { name: console.command }
+
+  civi_cxn_app.command.cxn_cron_command:
+    class: Civi\Cxn\AppBundle\Command\CxnCronCommand
+    arguments: ["@logger"]
+    tags:
+      -  { name: console.command }
