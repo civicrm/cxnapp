@@ -4,7 +4,6 @@ namespace Civi\Cxn\AppBundle\Command;
 use Civi\Cxn\AppBundle\FileAppStore;
 use Civi\Cxn\Rpc\AppMeta;
 use Civi\Cxn\Rpc\CA;
-use Civi\Cxn\Rpc\CxnStore\JsonFileCxnStore;
 use Civi\Cxn\Rpc\KeyPair;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -31,7 +30,7 @@ class AppInitCommand extends Command {
     $this
       ->setName('cxnapp:init')
       ->setDescription('Initialize the configuration files')
-      ->setHelp('Example: cxnapp init "http://myapp.localhost"')
+      ->setHelp("Example: cxnapp init \"http://myapp.localhost\"\n\nIf any files (such as metadata.json or keys.json) already exist, they will be preserved.")
       ->addArgument('appId', InputArgument::REQUIRED, 'The applications guid. (Ex: "app:org.civicrm.myapp")')
       ->addArgument('url', InputArgument::REQUIRED, 'The registration URL where the app will be published')
       ->addArgument('basedn', InputArgument::OPTIONAL, 'The DN in the application certificate', 'O=DemoApp');
@@ -58,9 +57,10 @@ class AppInitCommand extends Command {
     $demoCaCert = $this->initDemoCaCert($output, $input->getArgument('basedn') . ", CN=DemoCA", $appDir . '/democa.crt', $appKeyPair);
     $appCsr = $this->initCsrFile($output, $appDir . '/app.req', $appKeyPair, $appDn);
     $this->initCertFile($output, $appDir . '/app.crt', $appKeyPair, $demoCaCert, $appCsr);
-    $appMeta = $this->initMetadata($output, $appDir . '/metadata.json', $appId, $input->getArgument('url') . '/cxn/register');
+    $this->initMetadata($output, $appDir . '/metadata.json', $appId);
+    $this->initMetadataUrl($output, $appDir . '/url.txt', $input->getArgument('url'));
 
-    print_r($appMeta[$appId]);
+    print_r($this->appStore->getAppMeta($appId));
   }
 
   /**
@@ -76,7 +76,7 @@ class AppInitCommand extends Command {
       return $appKeyPair;
     }
     else {
-      $output->writeln("<info>Found key file ({$keyFile})</info>");
+      $output->writeln("<info>Load existing key file ({$keyFile})</info>");
       $appKeyPair = KeyPair::load($keyFile);
       return $appKeyPair;
     }
@@ -97,7 +97,7 @@ class AppInitCommand extends Command {
       return $demoCaCert;
     }
     else {
-      $output->writeln("<info>Found demo CA file ({$demoCaFile})</info>");
+      $output->writeln("<info>Load existing demo CA file ({$demoCaFile})</info>");
       $demoCaCert = CA::load($demoCaFile);
       return $demoCaCert;
     }
@@ -118,7 +118,7 @@ class AppInitCommand extends Command {
       return $appCsr;
     }
     else {
-      $output->writeln("<info>Found certificate request ({$csrFile})</info>");
+      $output->writeln("<info>Load existing certificate request ({$csrFile})</info>");
       $appCsr = file_get_contents($csrFile);
       return $appCsr;
     }
@@ -138,19 +138,19 @@ class AppInitCommand extends Command {
       file_put_contents($certFile, $appCert);
     }
     else {
-      $output->writeln("<info>Found certificate ({$certFile})</info>");
+      $output->writeln("<info>Load existing certificate ({$certFile})</info>");
       $appCert = file_get_contents($certFile);
     }
   }
 
   /**
    * @param OutputInterface $output
-   * @param $metadataFile
-   * @param $appId
-   * @param $appUrl
-   * @return array|mixed
+   * @param string $metadataFile
+   * @param string $appId
+   * @return array
+   *   AppMeta.
    */
-  protected function initMetadata(OutputInterface $output, $metadataFile, $appId, $appUrl) {
+  protected function initMetadata(OutputInterface $output, $metadataFile, $appId) {
     if (!file_exists($metadataFile)) {
       $output->writeln("<info>Create metadata file ({$metadataFile})</info>");
       $appMeta = array(
@@ -159,7 +159,7 @@ class AppInitCommand extends Command {
           'desc' => 'This is the adhoc connection app. Once connected, the app-provider can make API calls to your site.',
           'appId' => $appId,
           'appCert' => '*PLACEHOLDER*',
-          'appUrl' => $appUrl,
+          'appUrl' => '*PLACEHOLDER*',
           'perm' => array(
             'desc' => 'Description/rationale for permissions',
             'api' => array(
@@ -173,9 +173,19 @@ class AppInitCommand extends Command {
       return $appMeta;
     }
     else {
-      $output->writeln("<info>Found metadata file ({$metadataFile})</info>");
+      $output->writeln("<info>Load existing metadata file ({$metadataFile})</info>");
       $appMeta = json_decode(file_get_contents($metadataFile), TRUE);
       return $appMeta;
+    }
+  }
+
+  protected function initMetadataUrl(OutputInterface $output, $urlFile, $appUrl) {
+    if (!file_exists($urlFile)) {
+      $output->writeln("<info>Create URL file ({$urlFile})</info>");
+      file_put_contents($urlFile, $appUrl);
+    }
+    else {
+      $output->writeln("<info>Load existing URL file ({$urlFile})</info>");
     }
   }
 

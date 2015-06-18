@@ -66,6 +66,7 @@ class FileAppStore implements AppStoreInterface {
     if (!isset($this->appMetas[$appId])) {
       $metadataFile = $this->getAppDir($appId) . '/metadata.json';
       $certFile = $this->getAppDir($appId) . '/app.crt';
+      $urlFile = $this->getAppDir($appId) . '/url.txt';
 
       if (!file_exists($metadataFile)) {
         throw new \RuntimeException("Missing metadata file.");
@@ -78,9 +79,15 @@ class FileAppStore implements AppStoreInterface {
       }
 
       if (!file_exists($certFile)) {
-        throw new \RuntimeException("Certificate file missing ($certFile)");
+        throw new \RuntimeException("Missing certificate file ($certFile)");
       }
       $this->appMetas[$appId][$appId]['appCert'] = file_get_contents($certFile);
+
+
+      if (!file_exists($urlFile)) {
+        throw new \RuntimeException("Missing URL file ($urlFile)");
+      }
+      $this->appMetas[$appId][$appId]['appUrl'] = trim(file_get_contents($urlFile)) . '/cxn/register';
     }
     return $this->appMetas[$appId][$appId];
   }

@@ -38,12 +38,12 @@ class CxnGetCommand extends Command {
     else {
       $rows = array();
       foreach ($this->cxnStore->getAll() as $cxn) {
-        $rows[] = array($cxn['cxnId'], $cxn['siteUrl']);
+        $rows[] = array($cxn['appId'], $cxn['cxnId'], $cxn['siteUrl']);
       }
 
       $table = $this->getApplication()->getHelperSet()->get('table');
       $table
-        ->setHeaders(array('Link ID', 'Site URL'))
+        ->setHeaders(array('App ID', 'Cxn ID', 'Site URL'))
         ->setRows($rows);
       $table->render($output);
     }
