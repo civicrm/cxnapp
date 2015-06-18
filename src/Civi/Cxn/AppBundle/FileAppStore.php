@@ -69,7 +69,7 @@ class FileAppStore implements AppStoreInterface {
       $urlFile = $this->getAppDir($appId) . '/url.txt';
 
       if (!file_exists($metadataFile)) {
-        throw new \RuntimeException("Missing metadata file.");
+        throw new \RuntimeException("Missing metadata file ($metadataFile).");
       }
 
       $this->appMetas[$appId] = json_decode(file_get_contents($metadataFile), TRUE);
@@ -124,7 +124,7 @@ class FileAppStore implements AppStoreInterface {
     if (!$this->keyPairs[$appId]) {
       $keyFile = $this->getAppDir($appId) . '/keys.json';
       if (!file_exists($keyFile)) {
-        throw new \RuntimeException("Missing key file.");
+        throw new \RuntimeException("Missing key file ($keyFile).");
       }
 
       $this->keyPairs[$appId] = KeyPair::load($keyFile);

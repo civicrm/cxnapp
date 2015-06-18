@@ -32,12 +32,12 @@ services:
 
   civi_cxn_app.command.cxn_call_command:
     class: Civi\Cxn\AppBundle\Command\CxnCallCommand
-    arguments: ["@logger"]
+    arguments: ["@civi_cxn_app.app_store", "@civi_cxn_app.cxn_store", "@logger"]
     tags:
       -  { name: console.command }
 
   civi_cxn_app.command.cxn_cron_command:
     class: Civi\Cxn\AppBundle\Command\CxnCronCommand
-    arguments: ["@logger"]
+    arguments: ["@civi_cxn_app.app_store", "@civi_cxn_app.cxn_store", "@logger"]
     tags:
       -  { name: console.command }
