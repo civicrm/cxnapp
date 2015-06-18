@@ -2,6 +2,10 @@
 /app/cache/*
 !app/cache/.gitkeep
 /app/config/parameters.yml
+/app/cxn/*/app.crt
+/app/cxn/*/app.req
+/app/cxn/*/democa.crt
+/app/cxn/*/keys.json
 /app/logs/*
 !app/logs/.gitkeep
 /app/phpunit.xml
