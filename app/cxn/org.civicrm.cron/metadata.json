@@ -1,0 +1,50 @@
+{
+    "app:org.civicrm.cron": {
+        "title": "Cron",
+        "desc": "Cron periodically executes the CiviCRM job scheduler to ensure that background tasks execute.",
+        "appId": "app:org.civicrm.cron",
+        "appCert": "*PLACEHOLDER*",
+        "appUrl": "*PLACEHOLDER*",
+        "perm": {
+            "desc": "The cron service needs permission to:<ul><li>Execute and manage cron jobs</li><li>Read cron logs</li><li>Read basic system info -- such as domain name, URL, language, and current CiviCRM version</li></ul>The cron service does not have access to contacts' personal information.",
+            "api": [
+                {
+                    "version": 3,
+                    "entity": "Job",
+                    "actions": "*",
+                    "required": {},
+                    "fields": "*"
+                },
+                {
+                    "version": 3,
+                    "entity": "JobLog",
+                    "actions": "get",
+                    "required": {},
+                    "fields": "*"
+                },
+                {
+                    "version": 3,
+                    "entity": "Domain",
+                    "actions": ["get"],
+                    "required": {},
+                    "fields": ["id","name","description","domain_email","from_email","from_name"]
+                },
+                {
+                    "version": 3,
+                    "entity": "Setting",
+                    "actions": ["get"],
+                    "required": {},
+                    "fields": ["id","defaultContactCountry","lcMessages","userFrameworkBaseURL","userFrameworkResourceURL"]
+                },
+                {
+                    "version": 3,
+                    "entity": "System",
+                    "actions": ["get"],
+                    "required": {},
+                    "fields": "*"
+                }
+            ],
+            "grant": "*"
+        }
+    }
+}
