@@ -1,17 +1,19 @@
-cxnapp-symfony
-==============
+# CiviConnect Demo (cxnapp)
 
-This is a simple demonstration app that accepts registrations using Civi's
-"cxn" protocol.  Sites may register with thisdemo app, and then the app
-administrator may issue adhoc API commands.
+This is a demonstration app that accepts registrations using the CiviConnect
+protocol.  Sites may register with the demo app, and then the app
+administrator may issue adhoc commands via Civi's APIv3.
+
+The app is built with Symfony 2 and the civicrm-cxn-rpc library. It may be
+used as a base for developing more substantial applications.
 
 ## Tutorial
 
 #### Get the code
 
 ```
-git clone https://github.com/totten/cxnapp-symfony
-cd cxnapp-symfony
+git clone https://github.com/civicrm/cxnapp
+cd cxnapp
 composer install
 ```
 
