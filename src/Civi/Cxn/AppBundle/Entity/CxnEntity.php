@@ -24,14 +24,9 @@ class CxnEntity {
    * @return CxnEntity
    */
   public static function create($cxn) {
-    $e = new CxnEntity();
-    $e->setAppId(isset($cxn['appId']) ? $cxn['appId'] : NULL);
-    $e->setAppUrl(isset($cxn['appUrl']) ? $cxn['appUrl'] : NULL);
-    $e->setCxnId(isset($cxn['cxnId']) ? $cxn['cxnId'] : NULL);
-    $e->setPerm(isset($cxn['perm']) ? $cxn['perm'] : NULL);
-    $e->setSecret(isset($cxn['secret']) ? $cxn['secret'] : NULL);
-    $e->setSiteUrl(isset($cxn['siteUrl']) ? $cxn['siteUrl'] : NULL);
-    return $e;
+    $thisl = new CxnEntity();
+    $thisl->mergeArray($cxn);
+    return $thisl;
   }
 
   /**
@@ -228,6 +223,35 @@ class CxnEntity {
    * @see Cxn::validate
    */
   public function toArray() {
-    return (array) $this;
+    return array(
+      'appId' => $this->getAppId(),
+      'appUrl' => $this->getAppUrl(),
+      'cxnId' => $this->getCxnId(),
+      'perm' => $this->getPerm(),
+      'secret' => $this->getSecret(),
+      'siteUrl' => $this->getSiteUrl(),
+    );;
   }
+
+  public function mergeArray($cxn) {
+    if (isset($cxn['appId'])) {
+      $this->setAppId($cxn['appId']);
+    }
+    if (isset($cxn['appUrl'])) {
+      $this->setAppUrl($cxn['appUrl']);
+    }
+    if (isset($cxn['cxnId'])) {
+      $this->setCxnId($cxn['cxnId']);
+    }
+    if (isset($cxn['perm'])) {
+      $this->setPerm($cxn['perm']);
+    }
+    if (isset($cxn['secret'])) {
+      $this->setSecret($cxn['secret']);
+    }
+    if (isset($cxn['siteUrl'])) {
+      $this->setSiteUrl($cxn['siteUrl']);
+    }
+  }
+
 }

@@ -52,8 +52,20 @@ class DoctrineCxnStore implements CxnStoreInterface {
    * {@inheritDoc}
    */
   public function add($cxn) {
-    $cxnEntity = CxnEntity::create($cxn);
-    $this->em->persist($cxnEntity);
+    /** @var CxnEntity $cxnEntity */
+    $cxnEntity = $this->em->getRepository('Civi\Cxn\AppBundle\Entity\CxnEntity')->findOneBy(array(
+      'cxnId' => $cxn['cxnId'],
+    ));
+    if ($cxnEntity) {
+      $cxnEntity->mergeArray($cxn);
+    }
+    else {
+      $cxnEntity = new CxnEntity();
+      $cxnEntity->mergeArray($cxn);
+      $this->em->persist($cxnEntity);
+    }
+
+    $this->em->flush($cxnEntity);
   }
 
   /**
@@ -65,6 +77,7 @@ class DoctrineCxnStore implements CxnStoreInterface {
     ));
     if ($cxnEntity) {
       $this->em->remove($cxnEntity);
+      $this->em->flush($cxnEntity);
     }
   }
 
