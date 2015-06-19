@@ -11,30 +11,29 @@ services:
     class: Civi\Cxn\AppBundle\DoctrineCxnStore
     arguments: ['@doctrine.orm.entity_manager']
 
-
   civi_cxn_app.command.app_get_command:
     class: Civi\Cxn\AppBundle\Command\AppGetCommand
     arguments: ["@civi_cxn_app.app_store"]
     tags:
-      -  { name: console.command }
+      - { name: console.command }
 
   civi_cxn_app.command.app_init_command:
     class: Civi\Cxn\AppBundle\Command\AppInitCommand
     arguments: ["@civi_cxn_app.app_store"]
     tags:
-      -  { name: console.command }
+      - { name: console.command }
 
   civi_cxn_app.command.cxn_get_command:
     class: Civi\Cxn\AppBundle\Command\CxnGetCommand
     arguments: ["@civi_cxn_app.cxn_store"]
     tags:
-      -  { name: console.command }
+      - { name: console.command }
 
   civi_cxn_app.command.cxn_call_command:
     class: Civi\Cxn\AppBundle\Command\CxnCallCommand
     arguments: ["@civi_cxn_app.app_store", "@civi_cxn_app.cxn_store", "@logger"]
     tags:
-      -  { name: console.command }
+      - { name: console.command }
 
   civi_cxn_app.command.cxn_cron_command:
     class: Civi\Cxn\AppBundle\Command\CxnCronCommand
@@ -49,3 +48,5 @@ services:
   civi_cxn_app.cxn_app_controller:
     class: Civi\Cxn\AppBundle\Controller\CxnAppController
     arguments: ['@service_container', "@civi_cxn_app.app_store", "@civi_cxn_app.cxn_store", "@logger"]
+    tags:
+      - { name: monolog.logger, channel: 'register' }
