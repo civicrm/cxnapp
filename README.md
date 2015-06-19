@@ -65,7 +65,7 @@ you can register on the command-line:
 
 ```
 ## Register via URL
-drush cvapi cxn.register app_meta_url=http://example.localhost/cxn/metadata.json debug=1
+drush cvapi cxn.register app_meta_url=http://example.localhost/app:org.example.myapp/cxn/metadata.json debug=1
 
 ## Register via app ID
 drush cvapi cxn.register app_guid=app:abcd1234abcd1234 debug=1
@@ -137,18 +137,18 @@ Here are a few deployment recipes:
    * Deploy your app on localhost (e.g. "http://example.localhost").
    * Don't bother with certificates.
    * In civicrm.settings.php, set ```define('CIVICRM_CXN_CA', 'none');```
-   * To connect, run ```drush cvapi cxn.register app_meta_url=http://example.localhost/cxn/metadata.json debug=1```
+   * To connect, run ```drush cvapi cxn.register app_meta_url=http://example.localhost/app:org.example.myapp/cxn/metadata.json debug=1```
  * Staging or private beta, unsigned / self-managed / insecure
    * Deploy your app on a public web server (e.g. "http://app.example.net").
    * In civicrm.settings.php, set ```define('CIVICRM_CXN_CA', 'none');```
-   * To connect, run ```drush cvapi cxn.register app_meta_url=http://app.example.net/cxn/metadata.json debug=1```
+   * To connect, run ```drush cvapi cxn.register app_meta_url=http://app.example.net/app:org.example.myapp/cxn/metadata.json debug=1```
  * Staging or private beta, signed by civicrm.org
    * Deploy your app on a public web server (e.g. "http://app.example.net").
    * Send "app/local/*.req" and the URL for metadata.json to your point-of-contact at civicrm.org.
    * Receive an updated "app/local/*.crt" and metadata.json with a certificate signed by CiviTestRootCA.
    * Deploy the updated "app/local/*.crt" and metadata.json. (This is not strictly necessary but is good for consistency.)
    * In civicrm.settings.php, set ```define('CIVICRM_CXN_CA', 'CiviTestRootCA');```
-   * To connect, run ```drush cvapi cxn.register app_meta_url=http://app.example.net/cxn/metadata.json debug=1```
+   * To connect, run ```drush cvapi cxn.register app_meta_url=http://app.example.net/app:org.example.myapp/cxn/metadata.json debug=1```
  * Production, signed by civicrm.org
    * Deploy your app on a public web server (e.g. "http://app.example.net").
    * Send "app/local/*.req" and the URL for metadata.json to your point-of-contact at civicrm.org.
