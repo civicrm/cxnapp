@@ -153,27 +153,27 @@ you progress, the certification requirements become more stringent.
 Here are a few deployment recipes:
 
  * Local development
-   * Deploy your app on localhost (e.g. "http://127.0.0.1:8000").
+   * Deploy your app on localhost (e.g. `http://127.0.0.1:8000`).
    * Don't bother with certificates.
-   * In civicrm.settings.php, set ```define('CIVICRM_CXN_CA', 'none');```
-   * To connect, run ```drush cvapi cxn.register app_meta_url=http://127.0.0.1:8000/app:org.example.myapp/cxn/metadata.json debug=1```
+   * In civicrm.settings.php, set `define('CIVICRM_CXN_CA', 'none');`
+   * To connect, run `drush cvapi cxn.register app_meta_url=http://127.0.0.1:8000/app:org.example.myapp/cxn/metadata.json debug=1`
  * Staging or private beta, unsigned / self-managed / insecure
-   * Deploy your app on a public web server (e.g. "http://app.example.net").
-   * In civicrm.settings.php, set ```define('CIVICRM_CXN_CA', 'none');```
-   * To connect, run ```drush cvapi cxn.register app_meta_url=http://app.example.net/app:org.example.myapp/cxn/metadata.json debug=1```
+   * Deploy your app on a public web server (e.g. `http://app.example.net`).
+   * In civicrm.settings.php, set `define('CIVICRM_CXN_CA', 'none');`
+   * To connect, run `drush cvapi cxn.register app_meta_url=http://app.example.net/app:org.example.myapp/cxn/metadata.json debug=1`
  * Staging or private beta, signed by civicrm.org
-   * Deploy your app on a public web server (e.g. "http://app.example.net").
-   * Send "app/local/*.req" and the URL for metadata.json to your point-of-contact at civicrm.org.
-   * Receive an updated "app/local/*.crt" and metadata.json with a certificate signed by CiviTestRootCA.
-   * Deploy the updated "app/local/*.crt" and metadata.json. (This is not strictly necessary but is good for consistency.)
-   * In civicrm.settings.php, set ```define('CIVICRM_CXN_CA', 'CiviTestRootCA');```
-   * To connect, run ```drush cvapi cxn.register app_meta_url=http://app.example.net/app:org.example.myapp/cxn/metadata.json debug=1```
+   * Deploy your app on a public web server (e.g. `http://app.example.net`).
+   * Send `app/cxn/org.example.myapp/app.req` and the URL for `metadata.json` to your point-of-contact at civicrm.org.
+   * Receive an updated `app/cxn/org.example.myapp/app.crt` with a certificate signed by `CiviTestRootCA`.
+   * Deploy the updated `app/cxn/org.example.myapp/app.crt`. (This is not strictly necessary but is good for consistency.)
+   * In `civicrm.settings.php`, set `define('CIVICRM_CXN_CA', 'CiviTestRootCA');`
+   * To connect, run `drush cvapi cxn.register app_meta_url=http://app.example.net/app:org.example.myapp/cxn/metadata.json debug=1`
  * Production, signed by civicrm.org
-   * Deploy your app on a public web server (e.g. "http://app.example.net").
-   * Send "app/local/*.req" and the URL for metadata.json to your point-of-contact at civicrm.org.
-   * Receive an updated "app/local/*.crt" and metadata.json with a certificate signed by CiviRootCA.
-   * Deploy the updated "app/local/*.crt" and metadata.json. (This is not strictly necessary but is good for consistency.)
-   * In civicrm.settings.php, let CIVICRM_CXN_CA use the default value (CiviRootCA).
+   * Deploy your app on a public web server (e.g. `http://app.example.net`).
+   * Send `app/cxn/org.example.myapp/app.req` and the URL for `metadata.json` to your point-of-contact at civicrm.org.
+   * Receive an updated `app/cxn/org.example.myapp/app.crt` with a certificate signed by `CiviRootCA`.
+   * Deploy the updated `app/cxn/org.example.myapp/app.crt`. (This is not strictly necessary but is good for consistency.)
+   * In civicrm.settings.php, let CIVICRM_CXN_CA use the default value (`CiviRootCA`).
    * To connect, use the UI.
 
 (Aside: The processes for staging or private beta are a little more onerous
