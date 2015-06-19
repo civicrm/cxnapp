@@ -17,10 +17,39 @@ cd cxnapp
 composer install
 ```
 
-#### Generate an identity for the application:
+#### Setup HTTPD, MySQL, Symfony
+
+The quickest way to get started is to launch PHP's built-in
+web server and run Symfony's configuration GUI.
+
+To launch the webserver:
 
 ```
-app/console cxnapp:init org.example.myapp 'O=MyOrg'
+$ ./app/console server:run
+Server running on http://127.0.0.1:8000
+
+Quit the server with CONTROL-C.
+```
+
+Then, in a web browser, navigate to ```http://127.0.0.1:8000/config.php```.
+The screens will prompt you to enter credentials for managing a MySQL
+database.
+
+#### Load database schema
+
+```
+$ ./app/console doctrine:schema:create
+```
+
+#### Generate an identity for the application
+
+```
+$ ./app/console cxnapp:init org.example.myapp 'O=MyOrg'
+Create key file (app/cxn/org.example.myapp/keys.json)
+Create demo CA file (app/cxn/org.example.myapp/democa.crt)
+Create certificate request (app/cxn/org.example.myapp/app.req)
+Create certificate self-signed (app/cxn/org.example.myapp/app.crt)
+Create metadata file (app/cxn/org.example.myapp/metadata.json)
 ```
 
 The arguments are:
@@ -28,24 +57,9 @@ The arguments are:
  * The globally unique ID for the app (`org.example.myapp`)
  * The distinguished name ("DN", as in X.509 or LDAP) for your organization.
 
-After running the initialization, you should find several configuration
-files `app/cxn/org.example.myapp`, such as `metadata.json` and `keys.json`.
-
 (**Tip**: If you run separate installations for staging/development/production, then you may copy
-`metadata.json` file from one system to another.  To initialize the second system, simply run
+`metadata.json` from one system to another.  To initialize the second system, simply run
 `cxnapp:init` again.  The command will preserve `metadata.json` and add any missing files.)
-
-#### Setup a virtual host for the 'web' folder
-
-e.g. in Debian/Ubuntu with civicrm-buildkit:
-
-```
-cd web
-amp create --url http://example.localhost
-apache2ctl restart
-curl http://example.localhost/
-## Note: This should output the application description.
-```
 
 #### Connect a test instance of CiviCRM
 
@@ -54,7 +68,7 @@ and set:
 
 ```
 define('CIVICRM_CXN_CA', 'none');
-define('CIVICRM_CXN_APPS_URL', 'http://example.localhost/cxn/apps');
+define('CIVICRM_CXN_APPS_URL', 'http://127.0.0.1:8000/cxn/apps');
 ```
 
 (Note: The above configuration is vulnerable to man-in-the-middle attacks.
@@ -67,7 +81,7 @@ you can register on the command-line:
 
 ```
 ## Register via URL
-drush cvapi cxn.register app_meta_url=http://example.localhost/app:org.example.myapp/cxn/metadata.json debug=1
+drush cvapi cxn.register app_meta_url=http://127.0.0.1:8000/app:org.example.myapp/cxn/metadata.json debug=1
 
 ## Register via app ID
 drush cvapi cxn.register app_guid=app:abcd1234abcd1234 debug=1
@@ -136,10 +150,10 @@ you progress, the certification requirements become more stringent.
 Here are a few deployment recipes:
 
  * Local development
-   * Deploy your app on localhost (e.g. "http://example.localhost").
+   * Deploy your app on localhost (e.g. "http://127.0.0.1:8000").
    * Don't bother with certificates.
    * In civicrm.settings.php, set ```define('CIVICRM_CXN_CA', 'none');```
-   * To connect, run ```drush cvapi cxn.register app_meta_url=http://example.localhost/app:org.example.myapp/cxn/metadata.json debug=1```
+   * To connect, run ```drush cvapi cxn.register app_meta_url=http://127.0.0.1:8000/app:org.example.myapp/cxn/metadata.json debug=1```
  * Staging or private beta, unsigned / self-managed / insecure
    * Deploy your app on a public web server (e.g. "http://app.example.net").
    * In civicrm.settings.php, set ```define('CIVICRM_CXN_CA', 'none');```
