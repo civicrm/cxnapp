@@ -11,7 +11,7 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "~2.7@beta",
-        "civicrm/civicrm-cxn-rpc": "dev-master#7d9e54c16f8467b89a1e4d9e61bc25fda5dbfef3",
+        "civicrm/civicrm-cxn-rpc": "dev-master#e2c88a8e586a5e65a6b79225d51f70c7f6248fac",
         "doctrine/orm": "~2.2,>=2.2.3,<2.5",
         "doctrine/dbal": "<2.5",
         "doctrine/doctrine-bundle": "~1.4",
