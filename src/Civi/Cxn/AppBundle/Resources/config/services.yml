@@ -41,3 +41,7 @@ services:
     arguments: ["@civi_cxn_app.app_store", "@civi_cxn_app.cxn_store", "@logger"]
     tags:
       -  { name: console.command }
+
+  civi_cxn_app.default_controller:
+    class: Civi\Cxn\AppBundle\Controller\DefaultController
+    arguments: ['@service_container', "@civi_cxn_app.app_store"]

@@ -1,1 +1,6 @@
-Hello {{ name }}!
+{% for appMeta in appMetas %}
+    <h1>{{ appMeta.title }} ({{ appMeta.appId }})</h1>
+    <div>
+        {{ appMeta.desc }}
+    </div>
+{% endfor %}
