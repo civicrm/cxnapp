@@ -61,6 +61,15 @@ The arguments are:
 `metadata.json` from one system to another.  To initialize the second system, simply run
 `cxnapp:init` again.  The command will preserve `metadata.json` and add any missing files.)
 
+To ensure that the identity has been generated, view the homepage:
+
+```
+$ curl http://127.0.0.1:8000
+== Example App (app:org.example.myapp) ==
+
+This is the adhoc connection app. Once connected, the app-provider can make API calls to your site.
+```
+
 #### Connect a test instance of CiviCRM
 
 In your local CiviCRM installation, edit civicrm.settings.php
