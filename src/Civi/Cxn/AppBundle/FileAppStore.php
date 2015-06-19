@@ -87,7 +87,7 @@ class FileAppStore implements AppStoreInterface {
       if (!file_exists($urlFile)) {
         throw new \RuntimeException("Missing URL file ($urlFile)");
       }
-      $this->appMetas[$appId][$appId]['appUrl'] = trim(file_get_contents($urlFile)) . '/cxn/register';
+      $this->appMetas[$appId][$appId]['appUrl'] = trim(file_get_contents($urlFile)) . '/' . urlencode($appId) . '/cxn/register';
     }
     return $this->appMetas[$appId][$appId];
   }
@@ -115,13 +115,15 @@ class FileAppStore implements AppStoreInterface {
   }
 
   /**
+   * @param string $appId
+   *   The application's globally unique ID.
    * @return array
    *   Array with elements:
    *     - publickey: string, pem.
    *     - privatekey: string, pem
    */
   public function getKeyPair($appId) {
-    if (!$this->keyPairs[$appId]) {
+    if (!isset($this->keyPairs[$appId])) {
       $keyFile = $this->getAppDir($appId) . '/keys.json';
       if (!file_exists($keyFile)) {
         throw new \RuntimeException("Missing key file ($keyFile).");

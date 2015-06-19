@@ -44,4 +44,8 @@ services:
 
   civi_cxn_app.default_controller:
     class: Civi\Cxn\AppBundle\Controller\DefaultController
-    arguments: ['@service_container', "@civi_cxn_app.app_store"]
+    arguments: ['@service_container', "@civi_cxn_app.app_store", "@civi_cxn_app.cxn_store"]
+
+  civi_cxn_app.cxn_app_controller:
+    class: Civi\Cxn\AppBundle\Controller\CxnAppController
+    arguments: ['@service_container', "@civi_cxn_app.app_store", "@civi_cxn_app.cxn_store", "@logger"]
