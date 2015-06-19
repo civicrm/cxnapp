@@ -88,15 +88,17 @@ It's acceptable for local development but should not be used in production
 sites.  Consequently, there is no API for reading or writing these
 settings.)
 
-You can now connect using the CiviCRM UI (/civicrm/a/#/cxn). Alternatively,
+You can now connect using the CiviCRM UI (`/civicrm/a/#/cxn`). Alternatively,
 you can register on the command-line:
 
 ```
 ## Register via URL
-drush cvapi cxn.register app_meta_url=http://127.0.0.1:8000/app:org.example.myapp/cxn/metadata.json debug=1
+$ cd /var/www/example.org
+$ drush cvapi cxn.register app_meta_url=http://127.0.0.1:8000/app:org.example.myapp/cxn/metadata.json debug=1
 
 ## Register via app ID
-drush cvapi cxn.register app_guid=app:abcd1234abcd1234 debug=1
+$ cd /var/www/example.org
+$ drush cvapi cxn.register app_guid=app:abcd1234abcd1234 debug=1
 ```
 
 #### Ping the test instance of CiviCRM
@@ -105,14 +107,14 @@ The cxnapp will now be able to send requests to the registered instance of Civi.
 we can use the System.get API to determine the active version of Civi:
 
 ```
-$ app/console cxn:get
+$ ./app/console cxn:get
 +-----------------------+--------------------------------------+-------------------------------------------------------+
 | App ID                | Cxn ID                               | Site URL                                              |
 +-----------------------+--------------------------------------+-------------------------------------------------------+
 | app:org.example.myapp | cxn:6bf52a5773fc8bbba8cc5befc85b7589 | http://d46.l/sites/all/modules/civicrm/extern/cxn.php |
 +-----------------------+--------------------------------------+-------------------------------------------------------+
 
-$ app/console cxn:call cxn:6bf52a5773fc8bbba8cc5befc85b7589 system.get
+$ ./app/console cxn:call cxn:6bf52a5773fc8bbba8cc5befc85b7589 system.get
 CxnID: cxn:6bf52a5773fc8bbba8cc5befc85b7589
 Site URL: http://d46.l/sites/all/modules/civicrm/extern/cxn.php
 Entity: system
@@ -140,17 +142,6 @@ Result: Array
 
 )
 ```
-
-## Development
-
-To customize the registration process, extend RegistrationServer and
-override the functions, onCxnRegister() and onCxnUnregister().
-
-The default configuration stores shared secrets in a JSON file. This
-is not safe for production environments.  You should:
-
- * Provide a different implementation of CxnStoreInterface.
- * Edit AdhocConfig.php to use the new CxnStore class.
 
 ## From development to production
 
