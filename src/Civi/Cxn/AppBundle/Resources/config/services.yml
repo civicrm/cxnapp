@@ -5,7 +5,7 @@ services:
 
   civi_cxn_app.app_store:
     class: Civi\Cxn\AppBundle\FileAppStore
-    arguments: ['%civi_cxn_app.data_dir%']
+    arguments: ['%civi_cxn_app.data_dir%', '@router']
 
   civi_cxn_app.cxn_store:
     class: Civi\Cxn\AppBundle\DoctrineCxnStore

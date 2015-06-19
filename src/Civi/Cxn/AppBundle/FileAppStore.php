@@ -3,6 +3,8 @@ namespace Civi\Cxn\AppBundle;
 
 use Civi\Cxn\Rpc\AppStore\AppStoreInterface;
 use Civi\Cxn\Rpc\KeyPair;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Router;
 
 /**
  * Class FileAppStore
@@ -31,8 +33,11 @@ class FileAppStore implements AppStoreInterface {
 
   protected $appMetas = array();
 
-  function __construct($baseDir) {
+  protected $router;
+
+  function __construct($baseDir, Router $router) {
     $this->baseDir = $baseDir;
+    $this->router = $router;
   }
 
   /**
@@ -83,11 +88,11 @@ class FileAppStore implements AppStoreInterface {
       }
       $this->appMetas[$appId][$appId]['appCert'] = file_get_contents($certFile);
 
-
-      if (!file_exists($urlFile)) {
-        throw new \RuntimeException("Missing URL file ($urlFile)");
-      }
-      $this->appMetas[$appId][$appId]['appUrl'] = trim(file_get_contents($urlFile)) . '/' . urlencode($appId) . '/cxn/register';
+      $this->appMetas[$appId][$appId]['appUrl'] = $this->router->generate(
+        'civi_cxn_app_register',
+        array('appId' => $appId),
+        UrlGeneratorInterface::ABSOLUTE_URL
+      );
     }
     return $this->appMetas[$appId][$appId];
   }

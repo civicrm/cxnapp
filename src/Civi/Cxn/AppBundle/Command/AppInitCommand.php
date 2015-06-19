@@ -32,7 +32,6 @@ class AppInitCommand extends Command {
       ->setDescription('Initialize the configuration files')
       ->setHelp("Example: cxnapp init \"http://myapp.localhost\"\n\nIf any files (such as metadata.json or keys.json) already exist, they will be preserved.")
       ->addArgument('appId', InputArgument::REQUIRED, 'The applications guid. (Ex: "app:org.civicrm.myapp")')
-      ->addArgument('url', InputArgument::REQUIRED, 'The registration URL where the app will be published')
       ->addArgument('basedn', InputArgument::OPTIONAL, 'The DN in the application certificate', 'O=DemoApp');
   }
 
@@ -58,7 +57,6 @@ class AppInitCommand extends Command {
     $appCsr = $this->initCsrFile($output, $appDir . '/app.req', $appKeyPair, $appDn);
     $this->initCertFile($output, $appDir . '/app.crt', $appKeyPair, $demoCaCert, $appCsr);
     $this->initMetadata($output, $appDir . '/metadata.json', $appId);
-    $this->initMetadataUrl($output, $appDir . '/url.txt', $input->getArgument('url'));
 
     print_r($this->appStore->getAppMeta($appId));
   }
@@ -176,16 +174,6 @@ class AppInitCommand extends Command {
       $output->writeln("<info>Load existing metadata file ({$metadataFile})</info>");
       $appMeta = json_decode(file_get_contents($metadataFile), TRUE);
       return $appMeta;
-    }
-  }
-
-  protected function initMetadataUrl(OutputInterface $output, $urlFile, $appUrl) {
-    if (!file_exists($urlFile)) {
-      $output->writeln("<info>Create URL file ({$urlFile})</info>");
-      file_put_contents($urlFile, $appUrl);
-    }
-    else {
-      $output->writeln("<info>Load existing URL file ({$urlFile})</info>");
     }
   }
 

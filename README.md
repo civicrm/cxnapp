@@ -18,13 +18,12 @@ composer install
 #### Generate an identity for the application:
 
 ```
-app/console cxnapp:init org.example.myapp http://example.localhost 'O=MyOrg'
+app/console cxnapp:init org.example.myapp 'O=MyOrg'
 ```
 
-The three arguments are:
+The arguments are:
 
  * The globally unique ID for the app (`org.example.myapp`)
- * The URL where the app will be accessible (eg for handling registrations; ` http://example.localhost`).
  * The distinguished name ("DN", as in X.509 or LDAP) for your organization.
 
 After running the initialization, you should find several configuration
@@ -160,3 +159,21 @@ Here are a few deployment recipes:
 
 (Aside: The processes for staging or private beta are a little more onerous
 that I'd like.  It would take a day's work to improve this.)
+
+## Tip: Console tools and URLs
+
+The cxnapp involves console tools which communicate over the network.
+Several messages involved with "cxn" require passing an absolute URL.
+[Console tools may have difficulty composing a correct
+URL](http://symfony.com/doc/current/cookbook/console/sending_emails.html).
+To address this, edit `app/config/parameters.yml`:
+
+```
+parameters:
+    router.request_context.host: example.org
+    router.request_context.scheme: https
+    router.request_context.base_url: my/path
+```
+
+(At time of writing, this isn't issue, but it could become an issue as
+the tool evolves.)
