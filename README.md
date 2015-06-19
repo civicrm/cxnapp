@@ -57,11 +57,7 @@ The arguments are:
  * The globally unique ID for the app (`org.example.myapp`)
  * The distinguished name ("DN", as in X.509 or LDAP) for your organization.
 
-(**Tip**: If you run separate installations for staging/development/production, then you may copy
-`metadata.json` from one system to another.  To initialize the second system, simply run
-`cxnapp:init` again.  The command will preserve `metadata.json` and add any missing files.)
-
-To ensure that the identity has been generated, view the homepage:
+To ensure that the identity was generated, view the homepage:
 
 ```
 $ curl http://127.0.0.1:8000
@@ -69,6 +65,13 @@ $ curl http://127.0.0.1:8000
 
 This is the adhoc connection app. Once connected, the app-provider can make API calls to your site.
 ```
+
+The title, description, and other details come from `metadata.json`. You may customize the file
+as desired.
+
+(**Tip**:  If you need to setup a second server for testing/staging/production, then copy the file
+`metadata.json` and run `cxnapp:init` on the new server.  The command will preserve `metadata.json`
+and create the other files as needed.)
 
 #### Connect a test instance of CiviCRM
 
