@@ -26,3 +26,8 @@ services:
     arguments: ["@civi_cxn_dirsvc.agg_app_store"]
     tags:
       - { name: console.command }
+
+  civi_cxn_dirsvc.command.preview_command:
+    class: Civi\Cxn\DirBundle\Command\PreviewCommand
+    tags:
+      - { name: console.command }
