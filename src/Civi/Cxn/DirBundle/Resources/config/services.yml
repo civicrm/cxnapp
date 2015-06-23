@@ -20,3 +20,9 @@ services:
   civi_cxn_dirsvc.dirsvc_controller:
     class: Civi\Cxn\DirBundle\Controller\DirSvcController
     arguments: ['@service_container', "@civi_cxn_dirsvc.agg_app_store", "@event_dispatcher"]
+
+  civi_cxn_dirsvc.command.get_command:
+    class: Civi\Cxn\DirBundle\Command\GetCommand
+    arguments: ["@civi_cxn_dirsvc.agg_app_store"]
+    tags:
+      - { name: console.command }
