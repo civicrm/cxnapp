@@ -50,14 +50,20 @@ Create demo CA file (app/cxn/org.example.myapp/democa.crt)
 Create certificate request (app/cxn/org.example.myapp/app.req)
 Create certificate self-signed (app/cxn/org.example.myapp/app.crt)
 Create metadata file (app/cxn/org.example.myapp/metadata.json)
+
+$ ./app/console dirsvc:init 'O=MyOrg'
+Create key file (/Users/totten/src/cxnapp-symfony/app/dirsvc/keys.json)
+Create certificate request (app/dirsvc/cxndir.csr)
+Create certificate (app/dirsvc/cxndir.crt)
+Create apps file (app/dirsvc/apps.json)
 ```
 
 The arguments are:
 
- * The globally unique ID for the app (`org.example.myapp`)
- * The distinguished name ("DN", as in X.509 or LDAP) for your organization.
+ * `org.example.myapp` - The globally unique ID for the app.
+ * `O=MyOrg` - The distinguished name ("DN", as in X.509 or LDAP) for your organization.
 
-To ensure that the identity was generated, view the homepage:
+To ensure that the identities were generated, view the homepage:
 
 ```
 $ curl http://127.0.0.1:8000
@@ -72,6 +78,10 @@ as desired.
 (**Tip**:  If you need to setup a second server for testing/staging/production, then copy the file
 `metadata.json` and run `cxnapp:init` on the new server.  The command will preserve `metadata.json`
 and create the other files as needed.)
+
+(**Tip**: In a production environment, one only needs `cxnapp:init` -- not `dirsvc:init`.  However,
+in a dev/test environment, you can produce a more realistic simulation by creating a local
+directory service.)
 
 #### Connect a test instance of CiviCRM
 

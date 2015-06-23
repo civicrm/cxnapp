@@ -3,6 +3,7 @@
 namespace Civi\Cxn\DirBundle\Controller;
 
 use Civi\Cxn\Rpc\AppStore\AppStoreInterface;
+use Civi\Cxn\Rpc\KeyPair;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -20,10 +21,16 @@ class DirSvcController extends Controller {
    */
   private $eventDispatcher;
 
-  public function __construct(ContainerInterface $container, AppStoreInterface $appStore, EventDispatcherInterface $eventDispatcher) {
+  private $keyFile;
+
+  private $certFile;
+
+  public function __construct(ContainerInterface $container, AppStoreInterface $appStore, EventDispatcherInterface $eventDispatcher, $keyFile, $certFile) {
     $this->setContainer($container);
     $this->appStore = $appStore;
     $this->eventDispatcher = $eventDispatcher;
+    $this->keyFile = $keyFile;
+    $this->certFile = $certFile;
   }
 
   public function indexAction() {
@@ -47,17 +54,9 @@ class DirSvcController extends Controller {
   public function appsAction() {
     $appMetas = $this->convertAppStoreToArray($this->appStore);
 
-    // Some keypair has to sign the response. We'll arbitrarily pick the first app's keypair.
-    // FIXME: Use the dirsvc's keypair.
-    $firstApp = NULL;
-    foreach ($appMetas as $appMeta) {
-      $firstApp = $appMeta;
-      break;
-    }
-
     $message = new \Civi\Cxn\Rpc\Message\AppMetasMessage(
-      $firstApp['appCert'],
-      $this->appStore->getKeyPair($firstApp['appId']),
+      file_get_contents($this->certFile),
+      KeyPair::load($this->keyFile),
       $appMetas
     );
     return $message->toSymfonyResponse();
