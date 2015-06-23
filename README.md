@@ -165,14 +165,14 @@ Here are a few deployment recipes:
    * Deploy your app on a public web server (e.g. `http://app.example.net`).
    * Send `app/cxn/org.example.myapp/app.req` and the URL for `metadata.json` to your point-of-contact at civicrm.org.
    * Receive an updated `app/cxn/org.example.myapp/app.crt` with a certificate signed by `CiviTestRootCA`.
-   * Deploy the updated `app/cxn/org.example.myapp/app.crt`. (This is not strictly necessary but is good for consistency.)
+   * Deploy the updated `app/cxn/org.example.myapp/app.crt`.
    * In `civicrm.settings.php`, set `define('CIVICRM_CXN_CA', 'CiviTestRootCA');`
    * To connect, run `drush cvapi cxn.register app_meta_url=http://app.example.net/app:org.example.myapp/cxn/metadata.json debug=1`
  * Production, signed by civicrm.org
    * Deploy your app on a public web server (e.g. `http://app.example.net`).
    * Send `app/cxn/org.example.myapp/app.req` and the URL for `metadata.json` to your point-of-contact at civicrm.org.
    * Receive an updated `app/cxn/org.example.myapp/app.crt` with a certificate signed by `CiviRootCA`.
-   * Deploy the updated `app/cxn/org.example.myapp/app.crt`. (This is not strictly necessary but is good for consistency.)
+   * Deploy the updated `app/cxn/org.example.myapp/app.crt`.
    * In civicrm.settings.php, let CIVICRM_CXN_CA use the default value (`CiviRootCA`).
    * To connect, use the UI.
 
@@ -196,3 +196,16 @@ parameters:
 
 (At time of writing, this isn't issue, but it could become an issue as
 the tool evolves.)
+
+## Source layout
+
+The source generally follows Symfony conventions (with `app/`, `src/`,
+`web/`, `vendor/`). Within the `src` tree, there are a few different
+bundles:
+
+ * `Civi\Cxn\AppBundle` - General framework for registering and
+    unregistering with CiviConnect applications.  It tracks application IDs
+    and connection IDs, provides some CLI utilities for that data, and
+    provides a web endpoints to receive registrations.
+ * `Civi\Cxn\DirBundle` - A directory service which maintains a list of
+    available applications.
