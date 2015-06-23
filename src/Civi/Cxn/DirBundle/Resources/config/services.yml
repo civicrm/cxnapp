@@ -31,6 +31,12 @@ services:
     tags:
       - { name: console.command }
 
+  civi_cxn_dirsvc.command.import_command:
+    class: Civi\Cxn\DirBundle\Command\ImportCommand
+    arguments: ["%civi_cxn_dirsvc.apps%"]
+    tags:
+      - { name: console.command }
+
   civi_cxn_dirsvc.command.init_command:
     class: Civi\Cxn\DirBundle\Command\InitCommand
     arguments: ["%civi_cxn_dirsvc.keys%", "%civi_cxn_dirsvc.csr%", "%civi_cxn_dirsvc.cert%", "%civi_cxn_dirsvc.apps%"]
