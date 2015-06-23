@@ -1,3 +1,7 @@
+civi_cxn_dir:
+    resource: "@CiviCxnDirBundle/Resources/config/routing.yml"
+    prefix:   /
+
 civi_cxn_app:
     resource: "@CiviCxnAppBundle/Resources/config/routing.yml"
     prefix:   /

@@ -1,0 +1,3 @@
+civi_cxn_dir_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: CiviCxnDirBundle:Default:index }
