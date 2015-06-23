@@ -1,3 +1,7 @@
-civi_cxn_dir_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: CiviCxnDirBundle:Default:index }
+civi_cxn_dirsvc_homepage:
+    path:     /
+    defaults: { _controller: civi_cxn_dirsvc.dirsvc_controller:indexAction }
+
+civi_cxn_dirsvc_all_apps:
+    path:     /cxn/apps
+    defaults: { _controller: civi_cxn_dirsvc.dirsvc_controller:appsAction }

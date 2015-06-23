@@ -1,11 +1,3 @@
-civi_cxn_app_homepage:
-    path:     /
-    defaults: { _controller: civi_cxn_app.default_controller:indexAction }
-
-civi_cxn_app_all_apps:
-    path:     /cxn/apps
-    defaults: { _controller: civi_cxn_app.default_controller:appsAction }
-
 civi_cxn_app_apps:
     path:     /{appId}/cxn/apps
     defaults: { _controller: civi_cxn_app.cxn_app_controller:appsAction }

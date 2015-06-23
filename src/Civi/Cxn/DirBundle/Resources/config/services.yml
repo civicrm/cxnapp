@@ -1,4 +1,22 @@
+parameters:
+  civi_cxn_dirsvc.appfile: '%kernel.root_dir%/dirsvc.json'
+
 services:
-#    civi_cxn_dir.example:
-#        class: Civi\Cxn\DirBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+
+  ## Maintain a list of externally hosted apps (as a JSON file).
+  civi_cxn_dirsvc.remote_app_store:
+    class: Civi\Cxn\DirBundle\AppStore\JsonAppStore
+    arguments: ['%civi_cxn_dirsvc.appfile%']
+
+  ## Maintain an aggregated list of internal and external apps.
+  ## In production deployments, one would only have the internal
+  ## XOR external list, but for testing/development it's handy to
+  ## mix them.
+  civi_cxn_dirsvc.agg_app_store:
+    class: Civi\Cxn\DirBundle\AppStore\ChainedAppStore
+    arguments:
+      - [ '@civi_cxn_app.app_store', '@civi_cxn_dirsvc.remote_app_store' ]
+
+  civi_cxn_dirsvc.dirsvc_controller:
+    class: Civi\Cxn\DirBundle\Controller\DirSvcController
+    arguments: ['@service_container', "@civi_cxn_dirsvc.agg_app_store", "@event_dispatcher"]
