@@ -7,6 +7,7 @@
 /app/cxn/*/democa.crt
 /app/cxn/*/keys.json
 /app/cxn/*/url.txt
+/app/dirsvc
 /app/logs/*
 !app/logs/.gitkeep
 /app/phpunit.xml

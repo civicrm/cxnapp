@@ -1,12 +1,16 @@
 parameters:
-  civi_cxn_dirsvc.appfile: '%kernel.root_dir%/dirsvc.json'
+  civi_cxn_dirsvc.path: '%kernel.root_dir%/dirsvc'
+  civi_cxn_dirsvc.apps: '%civi_cxn_dirsvc.path%/apps.json'
+  civi_cxn_dirsvc.keys: '%civi_cxn_dirsvc.path%/keys.json'
+  civi_cxn_dirsvc.csr: '%civi_cxn_dirsvc.path%/cxndir.csr'
+  civi_cxn_dirsvc.cert: '%civi_cxn_dirsvc.path%/cxndir.crt'
 
 services:
 
   ## Maintain a list of externally hosted apps (as a JSON file).
   civi_cxn_dirsvc.remote_app_store:
     class: Civi\Cxn\DirBundle\AppStore\JsonAppStore
-    arguments: ['%civi_cxn_dirsvc.appfile%']
+    arguments: ['%civi_cxn_dirsvc.apps%']
 
   ## Maintain an aggregated list of internal and external apps.
   ## In production deployments, one would only have the internal
@@ -24,6 +28,12 @@ services:
   civi_cxn_dirsvc.command.get_command:
     class: Civi\Cxn\DirBundle\Command\GetCommand
     arguments: ["@civi_cxn_dirsvc.agg_app_store"]
+    tags:
+      - { name: console.command }
+
+  civi_cxn_dirsvc.command.init_command:
+    class: Civi\Cxn\DirBundle\Command\InitCommand
+    arguments: ["%civi_cxn_dirsvc.keys%", "%civi_cxn_dirsvc.csr%", "%civi_cxn_dirsvc.cert%", "%civi_cxn_dirsvc.apps%"]
     tags:
       - { name: console.command }
 
