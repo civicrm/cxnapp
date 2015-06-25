@@ -85,7 +85,7 @@ directory service.)
 
 #### Connect a test instance of CiviCRM
 
-In your local CiviCRM installation, edit civicrm.settings.php
+In your local CiviCRM installation, edit `civicrm.settings.php`
 and set:
 
 ```
@@ -106,9 +106,9 @@ you can register on the command-line:
 $ cd /var/www/example.org
 $ drush cvapi cxn.register app_meta_url=http://127.0.0.1:8000/app:org.example.myapp/cxn/metadata.json debug=1
 
-## Register via app ID
+## Or register via app ID
 $ cd /var/www/example.org
-$ drush cvapi cxn.register app_guid=app:abcd1234abcd1234 debug=1
+$ drush cvapi cxn.register app_guid=app:org.example.myapp debug=1
 ```
 
 #### Ping the test instance of CiviCRM
