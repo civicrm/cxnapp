@@ -1,4 +1,4 @@
-# CiviConnect Demo (cxnapp): Getting Started
+# cxnapp: Getting Started
 
 ### Get the code
 

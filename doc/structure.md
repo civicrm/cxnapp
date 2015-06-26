@@ -1,4 +1,4 @@
-# CiviConnect Demo (cxnapp): Code structure
+# cxnapp: Code structure
 
 The source generally follows Symfony conventions (with `app/`, `src/`, `web/`, `vendor/`).
 

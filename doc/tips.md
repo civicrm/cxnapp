@@ -1,4 +1,4 @@
-# CiviConnect Demo (cxnapp): Tips
+# cxnapp: Tips
 
 ## Console tools and URLs
 
