@@ -37,7 +37,12 @@ services:
 
   civi_cxn_app.cxn_app_controller:
     class: Civi\Cxn\AppBundle\Controller\CxnAppController
-    arguments: ['@service_container', "@civi_cxn_app.app_store", "@civi_cxn_app.cxn_store", "@logger"]
+    arguments:
+      - "@service_container"
+      - "@civi_cxn_app.app_store"
+      - "@civi_cxn_app.cxn_store"
+      - "@logger"
+      - "@router"
     tags:
       - { name: monolog.logger, channel: 'register' }
 
