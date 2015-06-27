@@ -1,5 +1,5 @@
 <?php
-namespace Civi\Cxn\AppBundle\Command;
+namespace Civi\Cxn\CronBundle\Command;
 
 use Civi\Cxn\Rpc\ApiClient;
 use Civi\Cxn\Rpc\AppStore\AppStoreInterface;
@@ -19,9 +19,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package Civi\Cxn\AppBundle\Command
  */
-class CxnCronCommand extends Command {
+class CronCommand extends Command {
 
   const DEFAULT_VERSION = 3;
+
+  /**
+   * @var string
+   */
+  protected $appId = 'app:org.civicrm.cron';
 
   /**
    * @var AppStoreInterface
@@ -47,22 +52,17 @@ class CxnCronCommand extends Command {
 
   protected function configure() {
     $this
-      ->setName('cxn:cron')
-      ->setDescription('Fire cron job for all connections')
-      ->addArgument('appId', InputArgument::REQUIRED, 'The application which should fire the cron jobs');
+      ->setName('cron:run')
+      ->setDescription('Fire cron jobs for all connections (for ' . $this->appId . ')');
   }
 
   protected function execute(InputInterface $input, OutputInterface $output) {
-    $appId = $input->getArgument('appId');
-    if (!preg_match('/^app:/', $appId)) {
-      $appId = 'app:' . $appId;
-    }
-    $appMeta = $this->appStore->getAppMeta($appId);
+    $appMeta = $this->appStore->getAppMeta($this->appId);
 
     $errors = array();
 
     foreach ($this->cxnStore->getAll() as $cxnId => $cxn) {
-      if ($cxn['appId'] !== $appId) {
+      if ($cxn['appId'] !== $this->appId) {
         continue;
       }
 

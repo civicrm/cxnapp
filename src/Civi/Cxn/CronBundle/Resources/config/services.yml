@@ -1,0 +1,7 @@
+services:
+
+  civi_cxn_cron.command.run_command:
+    class: Civi\Cxn\CronBundle\Command\CronCommand
+    arguments: ["@civi_cxn_app.app_store", "@civi_cxn_app.cxn_store", "@logger"]
+    tags:
+      -  { name: console.command }
