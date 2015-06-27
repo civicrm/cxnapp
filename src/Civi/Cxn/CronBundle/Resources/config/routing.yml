@@ -1,0 +1,3 @@
+civi_cxn_cron_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: CiviCxnCronBundle:Default:index }
