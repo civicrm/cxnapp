@@ -42,4 +42,5 @@ class DirSvcControllerTest extends WebTestCase {
       $this->assertEmpty(AppMeta::getValidationMessages($appMeta));
     }
   }
+
 }

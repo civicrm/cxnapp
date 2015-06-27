@@ -15,7 +15,7 @@ class GetCommand extends Command {
    */
   protected $appStore;
 
-  function __construct(AppStoreInterface $appStore) {
+  public function __construct(AppStoreInterface $appStore) {
     parent::__construct();
     $this->appStore = $appStore;
   }

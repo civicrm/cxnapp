@@ -106,4 +106,5 @@ class CxnLinks {
     $this->em->createQuery('DELETE FROM Civi\Cxn\AppBundle\Entity\CxnToken ct WHERE ct.expires < CURRENT_TIMESTAMP()')
       ->execute();
   }
+
 }

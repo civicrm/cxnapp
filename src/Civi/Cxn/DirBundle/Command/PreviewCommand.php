@@ -22,4 +22,5 @@ class PreviewCommand extends Command {
     AppMeta::validate($appMeta);
     print_r($appMeta);
   }
+
 }

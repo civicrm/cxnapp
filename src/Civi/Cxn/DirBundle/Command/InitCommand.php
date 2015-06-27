@@ -16,7 +16,7 @@ class InitCommand extends Command {
    */
   protected $keyFile, $csrFile, $crtFile, $appsFile;
 
-  function __construct($keyFile, $csrFile, $crtFile, $appsFile) {
+  public function __construct($keyFile, $csrFile, $crtFile, $appsFile) {
     parent::__construct();
     $this->keyFile = $keyFile;
     $this->csrFile = $csrFile;

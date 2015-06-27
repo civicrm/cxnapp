@@ -81,10 +81,10 @@ class AppInitCommand extends Command {
   }
 
   /**
-   * @param InputInterface $input
    * @param OutputInterface $output
-   * @param $demoCaFile
-   * @param $appKeyPair
+   * @param string $demoCaDn
+   * @param string $demoCaFile
+   * @param array $appKeyPair
    * @return array|string
    */
   protected function initDemoCaCert(OutputInterface $output, $demoCaDn, $demoCaFile, $appKeyPair) {

@@ -4,14 +4,14 @@ namespace Civi\Cxn\CronBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DefaultControllerTest extends WebTestCase
-{
-    public function testIndex()
-    {
-        $client = static::createClient();
+class DefaultControllerTest extends WebTestCase {
 
-        $crawler = $client->request('GET', '/hello/Fabien');
+  public function testIndex() {
+    $client = static::createClient();
 
-        $this->assertTrue($crawler->filter('html:contains("Hello Fabien")')->count() > 0);
-    }
+    $crawler = $client->request('GET', '/hello/Fabien');
+
+    $this->assertTrue($crawler->filter('html:contains("Hello Fabien")')->count() > 0);
+  }
+
 }

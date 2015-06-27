@@ -35,7 +35,7 @@ class FileAppStore implements AppStoreInterface {
 
   protected $router;
 
-  function __construct($baseDir, Router $router) {
+  public function __construct($baseDir, Router $router) {
     $this->baseDir = $baseDir;
     $this->router = $router;
   }

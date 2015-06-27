@@ -27,7 +27,7 @@ class CxnTokenListener {
    */
   protected $em;
 
-  function __construct(CxnStoreInterface $cxnStore, EntityManager $em) {
+  public function __construct(CxnStoreInterface $cxnStore, EntityManager $em) {
     $this->cxnStore = $cxnStore;
     $this->em = $em;
   }
