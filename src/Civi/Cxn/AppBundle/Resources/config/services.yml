@@ -11,6 +11,12 @@ services:
     class: Civi\Cxn\AppBundle\DoctrineCxnStore
     arguments: ['@doctrine.orm.entity_manager']
 
+  civi_cxn_app.command.app_cleanup_command:
+    class: Civi\Cxn\AppBundle\Command\AppCleanupCommand
+    arguments: ["@civi_cxn_app.links"]
+    tags:
+      - { name: console.command }
+
   civi_cxn_app.command.app_get_command:
     class: Civi\Cxn\AppBundle\Command\AppGetCommand
     arguments: ["@civi_cxn_app.app_store"]
@@ -35,6 +41,12 @@ services:
     tags:
       - { name: console.command }
 
+  civi_cxn_app.command.cxn_link_command:
+    class: Civi\Cxn\AppBundle\Command\CxnLinkCommand
+    arguments: ["@civi_cxn_app.links", "@civi_cxn_app.cxn_store", "@logger"]
+    tags:
+      - { name: console.command }
+
   civi_cxn_app.cxn_app_controller:
     class: Civi\Cxn\AppBundle\Controller\CxnAppController
     arguments:
@@ -42,11 +54,24 @@ services:
       - "@civi_cxn_app.app_store"
       - "@civi_cxn_app.cxn_store"
       - "@logger"
+      - "@civi_cxn_app.links"
+    tags:
+      - { name: monolog.logger, channel: 'register' }
+
+  civi_cxn_app.links:
+    class: Civi\Cxn\AppBundle\CxnLinks
+    arguments:
       - "@router"
+      - "@logger"
+      - "@doctrine.orm.entity_manager"
     tags:
       - { name: monolog.logger, channel: 'register' }
 
   kernel.listener.your_listener_name:
     class: Civi\Cxn\AppBundle\EventListener\CxnTokenListener
+    arguments:
+      - "@civi_cxn_app.cxn_store"
+      - "@doctrine.orm.entity_manager"
+
     tags:
         - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

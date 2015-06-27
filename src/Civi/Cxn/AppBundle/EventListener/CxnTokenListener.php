@@ -1,6 +1,9 @@
 <?php
 namespace Civi\Cxn\AppBundle\EventListener;
 
+use Civi\Cxn\AppBundle\Entity\CxnEntity;
+use Civi\Cxn\Rpc\CxnStore\CxnStoreInterface;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
@@ -14,22 +17,44 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  */
 class CxnTokenListener {
 
+  /**
+   * @var CxnStoreInterface
+   */
+  protected $cxnStore;
+
+  /**
+   * @var EntityManager
+   */
+  protected $em;
+
+  function __construct(CxnStoreInterface $cxnStore, EntityManager $em) {
+    $this->cxnStore = $cxnStore;
+    $this->em = $em;
+  }
+
   public function onKernelRequest(GetResponseEvent $event) {
     if ($event->getRequest()->attributes->has('cxnToken')) {
       $cxnToken = $event->getRequest()->attributes->get('cxnToken');
-      if ($cxnToken /* is valid */) {
-        $event->getRequest()->attributes->set('cxn', array(
-          'cxnId' => 'FIXME.' . $cxnToken,
-          'appId' => 'FIXME.' . $cxnToken,
-          'perm' => array(),
-        ));
-      }
-      else {
+
+      $cxns = $this->em->createQuery('
+        SELECT ce
+        FROM Civi\Cxn\AppBundle\Entity\CxnToken ct, Civi\Cxn\AppBundle\Entity\CxnEntity ce
+        WHERE ct.cxnToken = :cxnToken
+        AND ct.expires > CURRENT_TIMESTAMP()
+        AND ct.cxnId = ce.cxnId
+      ')
+        ->setParameter('cxnToken', $cxnToken)
+        ->getResult();
+
+      if (count($cxns) != 1 || !($cxns[0] instanceof CxnEntity)) {
         $event->setResponse(new Response(
           'Invalid or expired connection token.',
           403, array()
         ));
+        return;
       }
+
+      $event->getRequest()->attributes->set('cxn', $cxns[0]->toArray());
     }
   }
 

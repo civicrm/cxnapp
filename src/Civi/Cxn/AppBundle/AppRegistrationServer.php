@@ -11,9 +11,9 @@ class AppRegistrationServer extends RegistrationServer {
   // for the benefit of other bundles.
 
   /**
-   * @var Router
+   * @var CxnLinks
    */
-  protected $router;
+  protected $cxnLinks;
 
   /**
    * Compose a secure link to a settings page.
@@ -29,45 +29,28 @@ class AppRegistrationServer extends RegistrationServer {
       return $this->createError('"cxnId" or "secret" is invalid.');
     }
 
-    if (empty($params['page']) || !preg_match('/^[a-zA-Z0-9_]$/', $params['page'])) {
-      return $this->createError('"page" is malformed.');
+    if (!$this->getCxnLinks()->validate($params)) {
+      return $this->createError('Unable to generate link.');
     }
-
-    $cxnToken = 'FIXME'; // TODO: createCxnToken
-    $routeName = 'org_civicrm_cron_settings'; // TODO: route(munge($appId) _ page)
-
-    $this->log->notice('Getlink cxnId="{cxnId}" siteUrl={siteUrl} route={routeName}: OK', array(
-      'cxnId' => $cxn['cxnId'],
-      'siteUrl' => $cxn['siteUrl'],
-      'routeName' => $routeName,
-    ));
 
     return $this->createSuccess(array(
       'cxn_id' => $cxn['cxnId'],
-      'url' => $this->router->generate(
-        $routeName,
-        array(
-          'appId' => $storedCxn['appId'],
-          'cxnToken' => $cxnToken,
-        ),
-        UrlGeneratorInterface::ABSOLUTE_URL
-      ),
+      'url' => $this->getCxnLinks()->generate($storedCxn, $params),
     ));
   }
 
   /**
-   * @return Router
+   * @return CxnLinks
    */
-  public function getRouter() {
-    return $this->router;
+  public function getCxnLinks() {
+    return $this->cxnLinks;
   }
 
   /**
-   * @param Router $router
+   * @param CxnLinks $cxnLinks
    */
-  public function setRouter($router) {
-    $this->router = $router;
+  public function setCxnLinks($cxnLinks) {
+    $this->cxnLinks = $cxnLinks;
   }
-
 
 }
