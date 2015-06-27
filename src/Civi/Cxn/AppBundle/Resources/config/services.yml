@@ -40,3 +40,8 @@ services:
     arguments: ['@service_container', "@civi_cxn_app.app_store", "@civi_cxn_app.cxn_store", "@logger"]
     tags:
       - { name: monolog.logger, channel: 'register' }
+
+  kernel.listener.your_listener_name:
+    class: Civi\Cxn\AppBundle\EventListener\CxnTokenListener
+    tags:
+        - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
