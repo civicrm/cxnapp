@@ -19,7 +19,11 @@ This URL is a pretty dynamic, so let's break down the variables that influence i
    this to help keep our routes and code organized.
  * `{cxnId}` (eg `cxn:abcd1234abcd1234`) identifies the particular connection for which
    we want to manage settings.
- * `{pageName}` (eg `settings`, `issues`, `docs`) is the symbolic name of a page.
+ * `{pageName}` is the symbolic name of a page. The following names are recognized:
+   * `docs`
+   * `logs`
+   * `settings`
+   * `support`
  * `{cxnToken}` is a hashed authorization code granting access to the particular cxnId.
 
 To setup this route, we need to do a few things.
