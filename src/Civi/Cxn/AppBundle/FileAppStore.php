@@ -71,7 +71,6 @@ class FileAppStore implements AppStoreInterface {
     if (!isset($this->appMetas[$appId])) {
       $metadataFile = $this->getAppDir($appId) . '/metadata.json';
       $certFile = $this->getAppDir($appId) . '/app.crt';
-      $urlFile = $this->getAppDir($appId) . '/url.txt';
 
       if (!file_exists($metadataFile)) {
         throw new \RuntimeException("Missing metadata file ($metadataFile).");
