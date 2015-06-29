@@ -12,4 +12,4 @@ used as a base for developing more substantial applications.
  * [Getting Started](doc/tutorial.md)
  * [Code Structure](doc/structure.md)
  * [Tips](doc/tips.md)
- * [How To: Add a settings page](doc/settings-page.md)
+ * [Administration Screens](doc/admin-screen.md)
