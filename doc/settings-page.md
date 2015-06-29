@@ -88,5 +88,10 @@ $ ./app/console cxn:get
 +----------------------+----------------------+-------------------------------------------------------+
 
 $ ./app/console cxn:link cxn:abcd1234abcd1234 settings
-http://localhost/app:org.civicrm.cron/cxn:abcd1234abcd1234/settings?cxnToken=asdf4321asdf432
+Array
+(
+    [cxn_id] => cxn:abcd1234abcd1234
+    [url] => http://localhost/app:org.civicrm.cron/cxn:abcd1234abcd1234/settings?cxnToken=asdf432asdf4321
+    [mode] => iframe
+)
 ```

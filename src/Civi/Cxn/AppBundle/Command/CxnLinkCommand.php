@@ -63,11 +63,7 @@ class CxnLinkCommand extends Command {
       return 1;
     }
 
-    if (!$this->cxnLinks->validate($params)) {
-      $output->writeln("<error>Invalid params</error>: " . print_r($params, TRUE));
-      return;
-    }
-    $output->writeln($this->cxnLinks->generate($cxn, $params));
+    $output->writeln(print_r($this->cxnLinks->generate($cxn, $params), TRUE));
   }
 
 }
