@@ -11,6 +11,7 @@ parameters:
 framework:
     #esi:             ~
     #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: [en] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -40,7 +41,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ ]
+    bundles:        [ CiviCxnCronBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -86,3 +87,8 @@ monolog:
       level:        info
       path:         "%kernel.logs_dir%/%kernel.environment%.register.log"
       channels:     [register]
+    settings:
+      type:         stream
+      level:        info
+      path:         "%kernel.logs_dir%/%kernel.environment%.settings.log"
+      channels:     [settings]

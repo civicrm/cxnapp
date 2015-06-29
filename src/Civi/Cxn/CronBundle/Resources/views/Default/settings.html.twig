@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cron Settings{% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/civicxncron/cron.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="cxn-welcome">
+        {% trans %}The <em>Cron</em> service automatically executes scheduled jobs on your CiviCRM installation. If something goes wrong, it will send a notification to the <em>Administrative Email Address</em>.{% endtrans %}
+    </div>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

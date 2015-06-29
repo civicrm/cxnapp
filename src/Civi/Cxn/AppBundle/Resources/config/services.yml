@@ -65,7 +65,7 @@ services:
       - "@logger"
       - "@doctrine.orm.entity_manager"
     tags:
-      - { name: monolog.logger, channel: 'register' }
+      - { name: monolog.logger, channel: 'settings' }
 
   kernel.listener.your_listener_name:
     class: Civi\Cxn\AppBundle\EventListener\CxnTokenListener
