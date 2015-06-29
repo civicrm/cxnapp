@@ -72,7 +72,7 @@ services:
     tags:
       - { name: monolog.logger, channel: 'settings' }
 
-  kernel.listener.your_listener_name:
+  civi_cxn_app.listener.cxn_token:
     class: Civi\Cxn\AppBundle\EventListener\CxnTokenListener
     arguments:
       - "@civi_cxn_app.cxn_store"
