@@ -29,14 +29,12 @@ class AppRegistrationServer extends RegistrationServer {
       return $this->createError('"cxnId" or "secret" is invalid.');
     }
 
-    if (!$this->getCxnLinks()->validate($params)) {
-      return $this->createError('Unable to generate link.');
+    try {
+      return $this->createSuccess($this->getCxnLinks()->generate($storedCxn, $params));
     }
-
-    return $this->createSuccess(array(
-      'cxn_id' => $cxn['cxnId'],
-      'url' => $this->getCxnLinks()->generate($storedCxn, $params),
-    ));
+    catch (\InvalidArgumentException $e) {
+      return $this->createError($e->getMessage());
+    }
   }
 
   /**

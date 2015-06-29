@@ -10,6 +10,12 @@ use Symfony\Component\Routing\Router;
 class CxnLinks {
 
   /**
+   * @var string
+   *   Ex: 'iframe', 'popup', 'redirect'
+   */
+  protected $defaultMode;
+
+  /**
    * @var Router
    */
   protected $router;
@@ -29,13 +35,15 @@ class CxnLinks {
    */
   protected $secret;
 
-  const TTL = '+2 hours';
+  protected $ttl;
 
-  public function __construct(Router $router, LoggerInterface $logger, EntityManager $em, $secret) {
+  public function __construct(Router $router, LoggerInterface $logger, EntityManager $em, $secret, $ttl, $defaultMode) {
     $this->router = $router;
     $this->log = $logger;
     $this->em = $em;
     $this->secret = $secret;
+    $this->ttl = $ttl;
+    $this->defaultMode = $defaultMode;
   }
 
   /**
@@ -52,9 +60,16 @@ class CxnLinks {
    * @param array $cxn
    * @param array $params
    *   Array(page => string).
-   * @return string
+   * @return array
+   *   Array with keys:
+   *     - mode: string
+   *     - url: string
    */
   public function generate($cxn, $params) {
+    if (!$this->validate($params)) {
+      throw new \InvalidArgumentException("Failed to validate link request" . print_r($params,1));
+    }
+
     $cxnToken = $this->createToken($cxn, $params);
     $routeName = $this->mungeRoute($cxn['appId'], $params['page']);
 
@@ -73,7 +88,16 @@ class CxnLinks {
       ),
       UrlGeneratorInterface::ABSOLUTE_URL
     );
-    return $url;
+
+    // TODO: Dispatch an event so that other bundles can manage links.
+
+    return array(
+      'cxn_id' => $cxn['cxnId'],
+      'url' => $url,
+      'mode' => $this->defaultMode,
+      // 'width' => '40%',
+      // 'height' => 'auto',
+    );
   }
 
   /**
@@ -97,7 +121,7 @@ class CxnLinks {
    */
   protected function createToken($cxn, $params) {
     Cxn::validate($cxn);
-    $expires = strtotime(self::TTL);
+    $expires = strtotime($this->ttl);
     $hash = hash_hmac('sha256', $expires . ';;;' . $cxn['cxnId'], $this->secret);
     return $hash . ';;;' . $expires;
   }

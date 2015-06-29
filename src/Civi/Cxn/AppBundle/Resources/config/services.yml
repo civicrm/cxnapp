@@ -1,6 +1,14 @@
 parameters:
   civi_cxn_app.data_dir: '%kernel.root_dir%/cxn'
 
+  ## The duration of time for which a settings/doc/support link is valid.
+  ## See: strtotime()
+  civi_cxn_app.link_ttl: '+2 hours'
+
+  ## The default way to render a settings/doc/support link.
+  ## Options: iframe, popup, redirect
+  civi_cxn_app.link_mode: 'iframe'
+
 services:
 
   civi_cxn_app.app_store:
@@ -59,6 +67,8 @@ services:
       - "@logger"
       - "@doctrine.orm.entity_manager"
       - "%secret%"
+      - "%civi_cxn_app.link_ttl%"
+      - "%civi_cxn_app.link_mode%"
     tags:
       - { name: monolog.logger, channel: 'settings' }
 

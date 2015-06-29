@@ -89,6 +89,7 @@ class CxnAppController extends Controller {
     $appMeta = $this->appStore->getAppMeta($appId);
     $server = new AppRegistrationServer($appMeta, $this->appStore->getKeyPair($appId), $this->cxnStore);
     $server->setLog($this->log);
+    $server->setCxnLinks($this->cxnLinks);
     return $server->handle(file_get_contents('php://input'))->toSymfonyResponse();
   }
 
