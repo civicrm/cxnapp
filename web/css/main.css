@@ -1,0 +1,16 @@
+label {
+  padding-right: 1em;
+}
+div.alert, div.cxn-welcome {
+  padding: 1em;
+  border: 1px solid black;
+  margin: 0.5em auto;
+  width: 80%;
+  text-align: center;
+}
+div.alert-success {
+  background: #9d9;
+}
+div.cxn-welcome {
+  background: #8bf;
+}
