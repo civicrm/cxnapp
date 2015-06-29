@@ -11,12 +11,6 @@ services:
     class: Civi\Cxn\AppBundle\DoctrineCxnStore
     arguments: ['@doctrine.orm.entity_manager']
 
-  civi_cxn_app.command.app_cleanup_command:
-    class: Civi\Cxn\AppBundle\Command\AppCleanupCommand
-    arguments: ["@civi_cxn_app.links"]
-    tags:
-      - { name: console.command }
-
   civi_cxn_app.command.app_get_command:
     class: Civi\Cxn\AppBundle\Command\AppGetCommand
     arguments: ["@civi_cxn_app.app_store"]
@@ -64,6 +58,7 @@ services:
       - "@router"
       - "@logger"
       - "@doctrine.orm.entity_manager"
+      - "%secret%"
     tags:
       - { name: monolog.logger, channel: 'settings' }
 
@@ -72,6 +67,7 @@ services:
     arguments:
       - "@civi_cxn_app.cxn_store"
       - "@doctrine.orm.entity_manager"
+      - "@civi_cxn_app.links"
 
     tags:
         - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

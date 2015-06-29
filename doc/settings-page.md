@@ -7,8 +7,8 @@ When the CiviCRM admin views the list of available connections, he sees a link c
 and clicks.  With `cxnapp`, this ultimately opens a a URL like:
 
 ```
-FORMULA: {baseUrl}/{appId}/{cxnToken}/{pageName}
-EXAMPLE: http://localhost:8000/app:org.civicrm.cron/abcd1234abcd1234/settings
+FORMULA: {baseUrl}/{appId}/{cxnId}/{pageName}?{cxnToken}
+EXAMPLE: http://localhost:8000/app:org.civicrm.cron/cxn:abcd1234abcd1234/settings?cxnToken=efgh567
 ```
 
 This URL is a pretty dynamic, so let's break down the variables that influence it:
@@ -17,11 +17,10 @@ This URL is a pretty dynamic, so let's break down the variables that influence i
  * `{appId}` (eg `app:org.civicrm.cron`) is the the GUID for the app.
    `cxnapp` can host multiple apps on one installation, and we include
    this to help keep our routes and code organized.
- * `{cxnToken}` (eg `abcd1234abcd1234`) is a unique session ID. Any person who knows the `cxnToken`
-   can manage settings on behalf of a particular `cxnId`.  In a less secure system, `cxnToken`
-   might just be the `cxnId`, but that would be vulnerable to hijacking.  The `cxnToken` is a
-   random and expires after a couple hours.
+ * `{cxnId}` (eg `cxn:abcd1234abcd1234`) identifies the particular connection for which
+   we want to manage settings.
  * `{pageName}` (eg `settings`, `issues`, `docs`) is the symbolic name of a page.
+ * `{cxnToken}` is a hashed authorization code granting access to the particular cxnId.
 
 To setup this route, we need to do a few things.
 
@@ -49,7 +48,7 @@ define a route for the `settings` page. For example:
 
 ```yaml
 org_civicrm_cron_settings:
-    path:     /{cxnToken}/settings
+    path:     /{cxnId}/settings
     defaults: { _controller: CiviCxnCronBundle:Default:settings }
 ```
 
@@ -68,8 +67,10 @@ class DefaultController extends Controller {
 }
 ```
 
-(*Note*: The request attribute `cxn` is automatically populated based on `cxnToken`. If the `cxnToken`
-is invalid or expired, then the page will return HTTP 403.)
+(*Note*: The request attribute `cxn` is automatically populated based on `cxnId` and `cxnToken`.
+If a `cxnToken` is submitted, subsequent requests for the same `cxnId` will be authorized.
+However, the `cxnToken` includes an expiration time.  If the `cxnToken` is invalid or expired, then
+the page will return HTTP 403.)
 
 Finally, to view this page, you'll need an active connection. You can either use the
 CiviCRM administration GUI to open a link -- or generate a link via CLI:
@@ -79,9 +80,9 @@ $ ./app/console cxn:get
 +----------------------+----------------------+-------------------------------------------------------+
 | App ID               | Cxn ID               | Site URL                                              |
 +----------------------+----------------------+-------------------------------------------------------+
-| app:org.civicrm.cron | cxn:asdf4321asdf4321 | http://d46.l/sites/all/modules/civicrm/extern/cxn.php |
+| app:org.civicrm.cron | cxn:abcd1234abcd1234 | http://d46.l/sites/all/modules/civicrm/extern/cxn.php |
 +----------------------+----------------------+-------------------------------------------------------+
 
-$ ./app/console cxn:link cxn:asdf4321asdf4321 settings
-http://localhost/app:org.civicrm.cron/abcd1234abcd1234/settings
+$ ./app/console cxn:link cxn:abcd1234abcd1234 settings
+http://localhost/app:org.civicrm.cron/cxn:abcd1234abcd1234/settings?cxnToken=asdf4321asdf432
 ```

@@ -1,7 +1,7 @@
 <?php
 namespace Civi\Cxn\AppBundle;
 
-use Civi\Cxn\AppBundle\Entity\CxnToken;
+use Civi\Cxn\Rpc\Cxn;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -24,12 +24,18 @@ class CxnLinks {
    */
   protected $em;
 
+  /**
+   * @var string
+   */
+  protected $secret;
+
   const TTL = '+2 hours';
 
-  public function __construct(Router $router, LoggerInterface $logger, EntityManager $em) {
+  public function __construct(Router $router, LoggerInterface $logger, EntityManager $em, $secret) {
     $this->router = $router;
     $this->log = $logger;
     $this->em = $em;
+    $this->secret = $secret;
   }
 
   /**
@@ -62,6 +68,7 @@ class CxnLinks {
       $routeName,
       array(
         'appId' => $cxn['appId'],
+        'cxnId' => $cxn['cxnId'],
         'cxnToken' => $cxnToken,
       ),
       UrlGeneratorInterface::ABSOLUTE_URL
@@ -89,22 +96,59 @@ class CxnLinks {
    * @return string
    */
   protected function createToken($cxn, $params) {
-    $cxnToken = rtrim(strtr(base64_encode(crypt_random_string(32)), '+/', '-_'), '=');
-
-    $cxnTokenEntity = new CxnToken();
-    $cxnTokenEntity->setCxnId($cxn['cxnId']);
-    $cxnTokenEntity->setCxnToken($cxnToken);
-    $cxnTokenEntity->setExpires(new \DateTime(self::TTL));
-    $cxnTokenEntity->setPage($params['page']);
-    $this->em->persist($cxnTokenEntity);
-    $this->em->flush($cxnTokenEntity);
-
-    return $cxnToken;
+    Cxn::validate($cxn);
+    $expires = strtotime(self::TTL);
+    $hash = hash_hmac('sha256', $expires . ';;;' . $cxn['cxnId'], $this->secret);
+    return $hash . ';;;' . $expires;
   }
 
-  public function cleanup() {
-    $this->em->createQuery('DELETE FROM Civi\Cxn\AppBundle\Entity\CxnToken ct WHERE ct.expires < CURRENT_TIMESTAMP()')
-      ->execute();
+  /**
+   * @param string $cxnId
+   * @param string $cxnToken
+   * @return FALSE|int
+   *   FALSE if invalid. Otherwise, the timestamp at which it becomes invalid.
+   */
+  public function checkToken($cxnId, $cxnToken) {
+    if (empty($cxnToken) || strpos($cxnToken, ';;;') === FALSE) {
+      return FALSE;
+    }
+
+    list ($hash, $expires) = explode(';;;', $cxnToken);
+    if (!self::isPositiveInt($expires)) {
+      return FALSE;
+    }
+
+    $realHash = hash_hmac('sha256', $expires . ';;;' . $cxnId, $this->secret);
+    if (!self::hash_compare($hash, $realHash)) {
+      return FALSE;
+    }
+
+    return (int) $expires;
+  }
+
+  private static function hash_compare($a, $b) {
+    if (!is_string($a) || !is_string($b)) {
+      return FALSE;
+    }
+
+    $len = strlen($a);
+    if ($len !== strlen($b)) {
+      return FALSE;
+    }
+
+    $status = 0;
+    for ($i = 0; $i < $len; $i++) {
+      $status |= ord($a[$i]) ^ ord($b[$i]);
+    }
+    return $status === 0;
+  }
+
+  /**
+   * @param $expires
+   * @return bool
+   */
+  protected static function isPositiveInt($expires) {
+    return is_numeric($expires) && $expires > 0 && strpos($expires, '.') === FALSE;
   }
 
 }
