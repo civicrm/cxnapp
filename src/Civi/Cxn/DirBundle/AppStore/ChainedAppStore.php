@@ -25,7 +25,7 @@ class ChainedAppStore implements AppStoreInterface {
    */
   protected $idMap;
 
-  function __construct($appStores) {
+  public function __construct($appStores) {
     $this->appStores = $appStores;
   }
 

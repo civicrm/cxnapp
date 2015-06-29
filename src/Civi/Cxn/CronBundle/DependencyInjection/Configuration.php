@@ -1,6 +1,6 @@
 <?php
 
-namespace Civi\Cxn\DirBundle\DependencyInjection;
+namespace Civi\Cxn\CronBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -17,7 +17,7 @@ class Configuration implements ConfigurationInterface {
    */
   public function getConfigTreeBuilder() {
     $treeBuilder = new TreeBuilder();
-    $rootNode = $treeBuilder->root('civi_cxn_dir');
+    $rootNode = $treeBuilder->root('civi_cxn_cron');
 
     // Here you should define the parameters that are allowed to
     // configure your bundle. See the documentation linked above for

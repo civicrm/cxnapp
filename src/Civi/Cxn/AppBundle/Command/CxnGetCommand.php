@@ -16,7 +16,7 @@ class CxnGetCommand extends Command {
   protected $cxnStore;
 
   /**
-   * @param CxnStoreInterface $appStore
+   * @param CxnStoreInterface $cxnStore
    */
   public function __construct(CxnStoreInterface $cxnStore) {
     parent::__construct();

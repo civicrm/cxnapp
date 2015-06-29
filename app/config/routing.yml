@@ -1,7 +1,16 @@
+## The directory provides some cross-app pages, like the main listing ("/")
 civi_cxn_dir:
     resource: "@CiviCxnDirBundle/Resources/config/routing.yml"
     prefix:   /
 
+## For every application, define standard routes for registration and metadata.
 civi_cxn_app:
     resource: "@CiviCxnAppBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /{appId}
+
+## For the cron application, define some custom screens.
+civi_cxn_cron:
+    resource: "@CiviCxnCronBundle/Resources/config/routing.yml"
+    prefix:   /app:org.civicrm.cron
+    defaults:
+      appId:  app:org.civicrm.cron

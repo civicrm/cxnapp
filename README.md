@@ -12,3 +12,4 @@ used as a base for developing more substantial applications.
  * [Getting Started](doc/tutorial.md)
  * [Code Structure](doc/structure.md)
  * [Tips](doc/tips.md)
+ * [Administration Screens](doc/admin-screen.md)

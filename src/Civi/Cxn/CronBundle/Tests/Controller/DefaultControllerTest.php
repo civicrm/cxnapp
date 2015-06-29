@@ -1,6 +1,6 @@
 <?php
 
-namespace Civi\Cxn\AppBundle\Tests\Controller;
+namespace Civi\Cxn\CronBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

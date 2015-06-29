@@ -2,6 +2,8 @@
 
 namespace Civi\Cxn\AppBundle\Controller;
 
+use Civi\Cxn\AppBundle\AppRegistrationServer;
+use Civi\Cxn\AppBundle\CxnLinks;
 use Civi\Cxn\Rpc\AppStore\AppStoreInterface;
 use Civi\Cxn\Rpc\CxnStore\CxnStoreInterface;
 use Psr\Log\LoggerInterface;
@@ -33,11 +35,17 @@ class CxnAppController extends Controller {
    */
   protected $log;
 
-  public function __construct(ContainerInterface $container, AppStoreInterface $appStore, CxnStoreInterface $cxnStore, LoggerInterface $log) {
+  /**
+   * @var CxnLinks
+   */
+  private $cxnLinks;
+
+  public function __construct(ContainerInterface $container, AppStoreInterface $appStore, CxnStoreInterface $cxnStore, LoggerInterface $log, CxnLinks $cxnLinks) {
     $this->setContainer($container);
     $this->appStore = $appStore;
     $this->cxnStore = $cxnStore;
     $this->log = $log;
+    $this->cxnLinks = $cxnLinks;
   }
 
   /**
@@ -79,8 +87,9 @@ class CxnAppController extends Controller {
    */
   public function registerAction($appId) {
     $appMeta = $this->appStore->getAppMeta($appId);
-    $server = new \Civi\Cxn\Rpc\RegistrationServer($appMeta, $this->appStore->getKeyPair($appId), $this->cxnStore);
+    $server = new AppRegistrationServer($appMeta, $this->appStore->getKeyPair($appId), $this->cxnStore);
     $server->setLog($this->log);
+    $server->setCxnLinks($this->cxnLinks);
     return $server->handle(file_get_contents('php://input'))->toSymfonyResponse();
   }
 

@@ -1,6 +1,14 @@
 parameters:
   civi_cxn_app.data_dir: '%kernel.root_dir%/cxn'
 
+  ## The duration of time for which a settings/doc/support link is valid.
+  ## See: strtotime()
+  civi_cxn_app.link_ttl: '+2 hours'
+
+  ## The default way to render a settings/doc/support link.
+  ## Options: iframe, popup, redirect
+  civi_cxn_app.link_mode: 'iframe'
+
 services:
 
   civi_cxn_app.app_store:
@@ -35,14 +43,41 @@ services:
     tags:
       - { name: console.command }
 
-  civi_cxn_app.command.cxn_cron_command:
-    class: Civi\Cxn\AppBundle\Command\CxnCronCommand
-    arguments: ["@civi_cxn_app.app_store", "@civi_cxn_app.cxn_store", "@logger"]
+  civi_cxn_app.command.cxn_link_command:
+    class: Civi\Cxn\AppBundle\Command\CxnLinkCommand
+    arguments: ["@civi_cxn_app.links", "@civi_cxn_app.cxn_store", "@logger"]
     tags:
-      -  { name: console.command }
+      - { name: console.command }
 
   civi_cxn_app.cxn_app_controller:
     class: Civi\Cxn\AppBundle\Controller\CxnAppController
-    arguments: ['@service_container', "@civi_cxn_app.app_store", "@civi_cxn_app.cxn_store", "@logger"]
+    arguments:
+      - "@service_container"
+      - "@civi_cxn_app.app_store"
+      - "@civi_cxn_app.cxn_store"
+      - "@logger"
+      - "@civi_cxn_app.links"
     tags:
       - { name: monolog.logger, channel: 'register' }
+
+  civi_cxn_app.links:
+    class: Civi\Cxn\AppBundle\CxnLinks
+    arguments:
+      - "@router"
+      - "@logger"
+      - "@doctrine.orm.entity_manager"
+      - "%secret%"
+      - "%civi_cxn_app.link_ttl%"
+      - "%civi_cxn_app.link_mode%"
+    tags:
+      - { name: monolog.logger, channel: 'settings' }
+
+  civi_cxn_app.listener.cxn_token:
+    class: Civi\Cxn\AppBundle\EventListener\CxnTokenListener
+    arguments:
+      - "@civi_cxn_app.cxn_store"
+      - "@doctrine.orm.entity_manager"
+      - "@civi_cxn_app.links"
+
+    tags:
+        - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

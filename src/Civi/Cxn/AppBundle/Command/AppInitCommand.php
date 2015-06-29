@@ -30,7 +30,7 @@ class AppInitCommand extends Command {
     $this
       ->setName('cxnapp:init')
       ->setDescription('Initialize the configuration files')
-      ->setHelp("Example: cxnapp init \"http://myapp.localhost\"\n\nIf any files (such as metadata.json or keys.json) already exist, they will be preserved.")
+      ->setHelp("Example: cxnapp init \"org.example.myapp\"\n\nIf any files (such as metadata.json or keys.json) already exist, they will be preserved.")
       ->addArgument('appId', InputArgument::REQUIRED, 'The applications guid. (Ex: "app:org.civicrm.myapp")')
       ->addArgument('basedn', InputArgument::OPTIONAL, 'The DN in the application certificate', 'O=DemoApp');
   }
@@ -81,10 +81,10 @@ class AppInitCommand extends Command {
   }
 
   /**
-   * @param InputInterface $input
    * @param OutputInterface $output
-   * @param $demoCaFile
-   * @param $appKeyPair
+   * @param string $demoCaDn
+   * @param string $demoCaFile
+   * @param array $appKeyPair
    * @return array|string
    */
   protected function initDemoCaCert(OutputInterface $output, $demoCaDn, $demoCaFile, $appKeyPair) {
@@ -158,6 +158,12 @@ class AppInitCommand extends Command {
           'appId' => $appId,
           'appCert' => '*PLACEHOLDER*',
           'appUrl' => '*PLACEHOLDER*',
+          'links' => array(
+            'docs' => FALSE,
+            'logs' => FALSE,
+            'settings' => FALSE,
+            'support' => FALSE,
+          ),
           'perm' => array(
             'desc' => 'Description/rationale for permissions',
             'api' => array(
