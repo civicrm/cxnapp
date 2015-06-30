@@ -98,20 +98,23 @@ A few things to note:
 ## Implementation: Example
 
 `cxnapp` includes an implementation of `app:org.civicrm.cron` in the `CiviCxnCronBundle`. This
-application has a `settings` page To trace through the example, look at these files:
+application has a `settings` page. To trace through the example, look at these files:
 
  * [app/config/routing.yml](../app/config/routing.yml)
-   * Note how it imports CiviCxnCronBundle
+   * Note how it imports the routes from `CiviCxnCronBundle/Resources/config/routing.yml`.
  * [src/Civi/Cxn/CronBundle/Resources/config/routing.yml](../src/Civi/Cxn/CronBundle/Resources/config/routing.yml)
-   * Note how it declares the route `org_civicrm_cron_settings`. This maps to a particular service and function.
+   * Note how it declares the route `org_civicrm_cron_settings`. This maps to a particular service
+     (`civi_cxn_cron.default_controller`) and function (`settingsAction`).
  * [src/Civi/Cxn/CronBundle/Resources/config/services.yml](../src/Civi/Cxn/CronBundle/Resources/config/services.yml)
-   * Defines the service.
+   * Defines the service (`civi_cxn_cron.default_controller`).
  * [src/Civi/Cxn/CronBundle/Controller/DefaultController.php](../src/Civi/Cxn/CronBundle/Controller/DefaultController.php)
-   * Defines the `settingsAction()`. Note how it consumes `$request->attributes->get('cxn')` and ultimately saves `CronSettings`.
+   * Defines the function `settingsAction`. Note how it consumes `$request->attributes->get('cxn')` and ultimately saves `CronSettings`.
  * [src/Civi/Cxn/CronBundle/Entity/CronSettings.php](../src/Civi/Cxn/CronBundle/Entity/CronSettings.php)
    * Defines the data model. Any per-site settings are stored here.
    * Note that the the `cxnId` is flagged as the primary key (`@ORM\Id`). This is because there can be
      at most one `CronSettings` for each connection.
+ * [src/Civi/Cxn/CronBundle/Resources/views/Default/settings.html.twig](../src/Civi/Cxn/CronBundle/Resources/views/Default/settings.html.twig)
+   * Defines the markup.
 
 ## Usage: CLI
 
