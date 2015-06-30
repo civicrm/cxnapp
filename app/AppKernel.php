@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Civi\Cxn\AppBundle\CiviCxnAppBundle(),
             new Civi\Cxn\DirBundle\CiviCxnDirBundle(),
             new Civi\Cxn\CronBundle\CiviCxnCronBundle(),
+            new Civi\Cxn\CrlBundle\CiviCxnCrlBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

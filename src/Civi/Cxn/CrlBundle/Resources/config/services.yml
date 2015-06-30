@@ -1,0 +1,19 @@
+parameters:
+  civi_cxn_crl.path:  '%kernel.root_dir%/crl'
+
+services:
+  civi_cxn_crl.crl_controller:
+    class: Civi\Cxn\CrlBundle\Controller\CrlController
+    arguments: ['@service_container', '%civi_cxn_crl.path%']
+
+  civi_cxn_crl.command.init_command:
+    class: Civi\Cxn\CrlBundle\Command\InitCommand
+    arguments: ["%civi_cxn_crl.path%"]
+    tags:
+      - { name: console.command }
+
+  civi_cxn_crl.command.validate_command:
+    class: Civi\Cxn\CrlBundle\Command\ValidateCommand
+    arguments: ["@kernel"]
+    tags:
+      - { name: console.command }

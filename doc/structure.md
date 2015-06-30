@@ -7,11 +7,13 @@ the `src` tree:
 
  * `Civi\Cxn\AppBundle` - General framework for registering and unregistering with CiviConnect
     applications.  It tracks application IDs and connection IDs, provides some CLI utilities for
-    that data, and provides a web endpoints to receive registrations.
+    that data, and provides a web endpoint to receive registrations.
  * `Civi\Cxn\CronBundle` - A service (`app:org.civicrm.cron`) which periodically executes cron jobs
    on subscribed sites.  This requires a few functions beyond `AppBundle`, such as a CLI
    command for running all crons (`./app/console cron:run`), a settings table (`CronSettings`),
    and a settings UI (`/app:org.civicrm.cron/{cxnToken}/settings`).
+ * `Civi\Cxn\CrlBundle` - A service which publishes the *certificate revocation list* consumed
+   by CiviCRM sites.
  * `Civi\Cxn\DirBundle` - A directory service which publishes a list of available applications.
 
 To implement a new CiviConnect application (such as an "address cleanup" service), one should
