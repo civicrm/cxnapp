@@ -1,4 +1,7 @@
+parameters:
+  civi_cxn_crl.path:  '%kernel.root_dir%/crl'
+
 services:
-#    civi_cxn_crl.example:
-#        class: Civi\Cxn\CrlBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+  civi_cxn_crl.crl_controller:
+    class: Civi\Cxn\CrlBundle\Controller\CrlController
+    arguments: ['@service_container', '%civi_cxn_crl.path%']

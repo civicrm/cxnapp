@@ -4,7 +4,7 @@ namespace Civi\Cxn\CrlBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DefaultControllerTest extends WebTestCase
+class CrlControllerTest extends WebTestCase
 {
     public function testIndex()
     {

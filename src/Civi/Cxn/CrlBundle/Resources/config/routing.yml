@@ -1,3 +1,17 @@
-civi_cxn_crl_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: CiviCxnCrlBundle:Default:index }
+## Note: The following routes match the routes coded into ValidateCommand.
+## Update them in tandem.
+
+civi_cxn_crl_getcrl:
+  path:     /{caName}.crl
+  defaults:
+    _controller: civi_cxn_crl.crl_controller:revocationListAction
+
+civi_cxn_crl_getdist:
+  path:     /{caName}/dist.crt
+  defaults:
+    _controller: civi_cxn_crl.crl_controller:certificateAction
+
+civi_cxn_crl_getca:
+  path:     /{caName}/ca.crt
+  defaults:
+    _controller: civi_cxn_crl.crl_controller:caAction
