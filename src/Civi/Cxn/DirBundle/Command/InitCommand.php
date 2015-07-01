@@ -1,20 +1,20 @@
 <?php
 namespace Civi\Cxn\DirBundle\Command;
 
+use Civi\Cxn\AppBundle\Command\AbstractInitCommand;
 use Civi\Cxn\Rpc\CA;
 use Civi\Cxn\Rpc\Constants;
 use Civi\Cxn\Rpc\KeyPair;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InitCommand extends Command {
+class InitCommand extends AbstractInitCommand {
 
   /**
    * @var string
    */
-  protected $keyFile, $csrFile, $crtFile, $appsFile;
+  protected $keyFile, $csrFile, $crtFile, $appsFile, $caFile;
 
   public function __construct($keyFile, $csrFile, $crtFile, $appsFile) {
     parent::__construct();
@@ -22,6 +22,7 @@ class InitCommand extends Command {
     $this->csrFile = $csrFile;
     $this->crtFile = $crtFile;
     $this->appsFile = $appsFile;
+    $this->demoCaFile = dirname($this->crtFile) . '/democa.crt';
   }
 
 
@@ -53,9 +54,11 @@ class InitCommand extends Command {
       $appKeyPair = KeyPair::load($this->keyFile);
     }
 
+    $demoCaCert = $this->initDemoCaCert($output, $input->getArgument('basedn') . ", CN=DemoCA", $this->demoCaFile, $appKeyPair);
+
     if (!file_exists($this->csrFile)) {
       $output->writeln("<info>Create certificate request ({$this->csrFile})</info>");
-      $appCsr = CA::createCSR($appKeyPair, $appDn);
+      $appCsr = CA::createDirSvcCSR($appKeyPair, $appDn);
       file_put_contents($this->csrFile, $appCsr);
     }
     else {
@@ -65,7 +68,7 @@ class InitCommand extends Command {
 
     if (!file_exists($this->crtFile)) {
       $output->writeln("<info>Create certificate ({$this->crtFile})</info>");
-      $appCert = CA::createSelfSignedCert($appKeyPair, $appDn);
+      $appCert = CA::signCSR($appKeyPair, $demoCaCert, CA::createDirSvcCSR($appKeyPair, $appDn));
       file_put_contents($this->crtFile, $appCert);
     }
     else {

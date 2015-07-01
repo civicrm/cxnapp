@@ -57,7 +57,7 @@ abstract class AbstractInitCommand extends Command {
   protected function initCsrFile(OutputInterface $output, $csrFile, $appKeyPair, $appDn) {
     if (!file_exists($csrFile)) {
       $output->writeln("<info>Create certificate request ({$csrFile})</info>");
-      $appCsr = CA::createCSR($appKeyPair, $appDn);
+      $appCsr = CA::createAppCSR($appKeyPair, $appDn);
       file_put_contents($csrFile, $appCsr);
       return $appCsr;
     }
