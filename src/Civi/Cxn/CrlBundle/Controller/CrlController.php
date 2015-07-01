@@ -2,6 +2,7 @@
 
 namespace Civi\Cxn\CrlBundle\Controller;
 
+use Civi\Cxn\Rpc\Constants;
 use Civi\Cxn\Rpc\KeyPair;
 use Civi\Cxn\Rpc\X509Util;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -125,7 +126,7 @@ class CrlController extends Controller {
     $crlObj = new \File_X509();
     $crlObj->setSerialNumber($revocations['serialNumber'], 10);
     $crlObj->setEndDate('+2 days');
-    $crlPem = $crlObj->saveCRL($crlObj->signCRL($crlDistCertObj, $crlObj));
+    $crlPem = $crlObj->saveCRL($crlObj->signCRL($crlDistCertObj, $crlObj, Constants::CERT_SIGNATURE_ALGORITHM));
     $crlObj->loadCRL($crlPem);
 
     // revoke certs
