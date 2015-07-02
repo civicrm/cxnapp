@@ -3,6 +3,7 @@
 !app/cache/.gitkeep
 /app/config/parameters.yml
 /app/crl
+/app/cxn/*/app.csr
 /app/cxn/*/app.crt
 /app/cxn/*/app.req
 /app/cxn/*/democa.crt

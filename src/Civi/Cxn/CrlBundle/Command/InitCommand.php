@@ -41,7 +41,7 @@ class InitCommand extends AbstractInitCommand {
 
     $appKeyPair = $this->initKeyFile($output, $this->baseDir . "/$caName/keys.json");
     $demoCaCert = $this->initDemoCaCert($output, $appDn, $this->baseDir . "/$caName/ca.crt", $appKeyPair);
-    $appCsr = $this->initCrlDistCsrFile($output, $this->baseDir . "/$caName/crldist.req", $appKeyPair, $appDn);
+    $appCsr = $this->initCrlDistCsrFile($output, $this->baseDir . "/$caName/crldist.csr", $appKeyPair, $appDn);
     $this->initCertFile($output, $this->baseDir . "/$caName/crldist.crt", $appKeyPair, $demoCaCert, $appCsr);
     $this->initRevocations($output, $this->baseDir . "/$caName/revocations.yml");
   }

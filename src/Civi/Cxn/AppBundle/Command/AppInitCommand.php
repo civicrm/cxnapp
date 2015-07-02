@@ -54,7 +54,7 @@ class AppInitCommand extends AbstractInitCommand {
 
     $appKeyPair = $this->initKeyFile($output, $appDir . '/keys.json');
     $demoCaCert = $this->initDemoCaCert($output, $input->getArgument('basedn') . ", CN=DemoCA", $appDir . '/democa.crt', $appKeyPair);
-    $appCsr = $this->initCsrFile($output, $appDir . '/app.req', $appKeyPair, $appDn);
+    $appCsr = $this->initCsrFile($output, $appDir . '/app.csr', $appKeyPair, $appDn);
     $this->initCertFile($output, $appDir . '/app.crt', $appKeyPair, $demoCaCert, $appCsr);
     $this->initMetadata($output, $appDir . '/metadata.json', $appId);
 

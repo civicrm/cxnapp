@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Router;
  * app/cxn/org.civicrm.myapp/metadata.json
  * app/cxn/org.civicrm.myapp/cert/keys.json
  * app/cxn/org.civicrm.myapp/cert/app.crt
- * app/cxn/org.civicrm.myapp/cert/app.req
+ * app/cxn/org.civicrm.myapp/cert/app.csr
  * app/cxn/org.civicrm.myapp/cert/democa.crt
  * @endcode
  */
