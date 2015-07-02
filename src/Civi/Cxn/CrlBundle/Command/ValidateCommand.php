@@ -2,6 +2,7 @@
 namespace Civi\Cxn\CrlBundle\Command;
 
 use Civi\Cxn\Rpc\CA;
+use Civi\Cxn\Rpc\DefaultCertificateValidator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -57,7 +58,8 @@ class ValidateCommand extends Command {
       'caName' => $caName,
     ));
 
-    CA::validate($distCertPem, $caCertPem, $crlRaw, $distCertPem);
+    $validator = new DefaultCertificateValidator($caCertPem, $distCertPem, $crlRaw, NULL);
+    $validator->validateCert($distCertPem);
 
     $output->writeln("OK");
   }
