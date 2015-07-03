@@ -67,7 +67,7 @@ certs:
 The `cxnapp` returns three files. If the app is deployed at `http://localhost:8000` and if the
 CA is named `MyRootCA`, then these URLs will be available:
 
- * `http://localhost:8000/MyRootCA.crl` - The current revocation list.
- * `http://localhost:8000/MyRootCA/dist.crt` - The certificate which signs the CRL.
- * `http://localhost:8000/MyRootCA/ca.crt` - The certificate authority for whom certificates are signed.
+ * `http://localhost:8000/ca/MyRootCA.crl` - The current revocation list.
+ * `http://localhost:8000/ca/MyRootCA/dist.crt` - The certificate which signs the CRL.
+ * `http://localhost:8000/ca/MyRootCA/ca.crt` - The certificate authority for whom certificates are signed.
 
