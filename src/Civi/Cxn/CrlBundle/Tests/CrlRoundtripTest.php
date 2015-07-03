@@ -11,7 +11,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class CrlControllerTest extends WebTestCase {
 
-  protected $files = array('keys.json', 'crldist.crt', 'crldist.req', 'revocations.yml', 'ca.crt');
+  protected $files = array('keys.json', 'crldist.crt', 'crldist.csr', 'revocations.yml', 'ca.crt');
 
   /**
    * Initialize a CRL distribution point (with dummy certs), fetch the CRL, and ensure that
@@ -24,7 +24,6 @@ class CrlControllerTest extends WebTestCase {
   }
 
   /**
-   * @param string $baseDir
    * @param string $caName
    * @return mixed
    */

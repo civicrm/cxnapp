@@ -38,7 +38,7 @@ $ ./app/console doctrine:schema:create
 $ ./app/console cxnapp:init org.example.myapp 'O=MyOrg'
 Create key file (app/cxn/org.example.myapp/keys.json)
 Create demo CA file (app/cxn/org.example.myapp/democa.crt)
-Create certificate request (app/cxn/org.example.myapp/app.req)
+Create certificate request (app/cxn/org.example.myapp/app.csr)
 Create certificate self-signed (app/cxn/org.example.myapp/app.crt)
 Create metadata file (app/cxn/org.example.myapp/metadata.json)
 

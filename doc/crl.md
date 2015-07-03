@@ -20,7 +20,7 @@ To setup a skeletal system, run the `crl:init` command, e.g.
 $ ./app/console crl:init MyRootCA 'C=US, ST=California, O=My Org, CN=My Root CA'
 Create key file (app/crl/MyRootCA/keys.json)
 Create demo CA file (app/crl/MyRootCA/ca.crt)
-Create certificate request (app/crl/MyRootCA/crldist.req)
+Create certificate request (app/crl/MyRootCA/crldist.csr)
 Create certificate self-signed (app/crl/MyRootCA/crldist.crt)
 Create revocations file (app/crl/MyRootCA/revocations.yml)
 ```
@@ -28,7 +28,7 @@ Create revocations file (app/crl/MyRootCA/revocations.yml)
 The certificates in the skeletal system are internally consistent, but they will not be
 trusted by the outside world.  To go into production:
 
- * Transmit `crldist.req` to the true certificate authority
+ * Transmit `crldist.csr` to the true certificate authority
  * Sign it
  * Verify that the new certificate is well-formed:
    * The usage extension `CRL Sign` is enabled.
@@ -39,17 +39,27 @@ trusted by the outside world.  To go into production:
 
 ## Usage: Revoke a Certificate
 
-To revoke a certificate, edit `revocations.yml` and:
-
- * In `serialNumber`, increment the value. (Note: Use decimal -- not hexadecimal.)
- * In `certs`, add the id of the revoked certificate. (Note: Use decimal -- not hexadecimal.)
+To revoke a certificate, edit `revocations.yml` and add a clause under `certs`
+with the
+   * Certificate serial number
+     * All cert numbers are interpreted as decimal by default. To use hexadecimal, include at least one colon delimiter.
+   * Revocation reason
+     * unused
+     * keyCompromise
+     * cACompromise
+     * affiliationChanged
+     * superseded
+     * cessationOfOperation
+     * certificateHold
+     * privilegeWithdrawn
+     * aACompromise
 
 Example:
 
 ```yaml
-serialNumber: 2
 certs:
- - 15
+  '1234': 'revoked'
+  'a1:b2:c3:d4:e5:f6:78': 'privilegeWithdrawn'
 ```
 
 ## Usage: Download a CRL
