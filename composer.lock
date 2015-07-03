@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0ba3f4da9f55060662bc19ee6b757759",
+    "hash": "f1491a3ee7304ac60bc87d5f803f2e62",
     "packages": [
         {
             "name": "civicrm/civicrm-cxn-rpc",
@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/totten/civicrm-cxn-rpc",
-                "reference": "694c99f70ad5a152a84d13cf007397a4ea528d8d"
+                "reference": "859520dceff848fcb522d73732e2f34e785c9043"
             },
             "require": {
                 "phpseclib/phpseclib": "0.3.*",
@@ -37,7 +37,7 @@
                 }
             ],
             "description": "RPC library for CiviCRM QuickConnect",
-            "time": "2015-07-03 02:38:14"
+            "time": "2015-07-03 23:45:32"
         },
         {
             "name": "doctrine/annotations",
