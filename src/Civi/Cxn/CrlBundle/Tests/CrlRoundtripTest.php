@@ -24,7 +24,6 @@ class CrlControllerTest extends WebTestCase {
   }
 
   /**
-   * @param string $baseDir
    * @param string $caName
    * @return mixed
    */

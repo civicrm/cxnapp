@@ -108,5 +108,4 @@ abstract class AbstractInitCommand extends Command {
     }
   }
 
-
 }

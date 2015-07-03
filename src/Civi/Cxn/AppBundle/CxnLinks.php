@@ -67,7 +67,7 @@ class CxnLinks {
    */
   public function generate($cxn, $params) {
     if (!$this->validate($params)) {
-      throw new \InvalidArgumentException("Failed to validate link request" . print_r($params,1));
+      throw new \InvalidArgumentException("Failed to validate link request");
     }
 
     $cxnToken = $this->createToken($cxn, $params);
