@@ -54,7 +54,7 @@ class InitCommand extends AbstractInitCommand {
     if (!file_exists($revFile)) {
       $output->writeln("<info>Create revocations file ({$revFile})</info>");
       $defaults = array(
-        'serialNumber' => 1,
+        'serialNumberNonce' => rand(1, 100000),
         'certs' => array(),
       );
       file_put_contents($revFile, Yaml::dump($defaults));

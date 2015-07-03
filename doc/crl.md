@@ -39,17 +39,27 @@ trusted by the outside world.  To go into production:
 
 ## Usage: Revoke a Certificate
 
-To revoke a certificate, edit `revocations.yml` and:
-
- * In `serialNumber`, increment the value. (Note: Use decimal -- not hexadecimal.)
- * In `certs`, add the id of the revoked certificate. (Note: Use decimal -- not hexadecimal.)
+To revoke a certificate, edit `revocations.yml` and add a clause under `certs`
+with the
+   * Certificate serial number
+     * All cert numbers are interpreted as decimal by default. To use hexadecimal, include at least one colon delimiter.
+   * Revocation reason
+     * unused
+     * keyCompromise
+     * cACompromise
+     * affiliationChanged
+     * superseded
+     * cessationOfOperation
+     * certificateHold
+     * privilegeWithdrawn
+     * aACompromise
 
 Example:
 
 ```yaml
-serialNumber: 2
 certs:
- - 15
+  '1234': 'revoked'
+  'a1:b2:c3:d4:e5:f6:78': 'privilegeWithdrawn'
 ```
 
 ## Usage: Download a CRL

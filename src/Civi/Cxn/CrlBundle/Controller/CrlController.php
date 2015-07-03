@@ -2,6 +2,7 @@
 
 namespace Civi\Cxn\CrlBundle\Controller;
 
+use Civi\Cxn\CrlBundle\CrlGenerator;
 use Civi\Cxn\Rpc\Constants;
 use Civi\Cxn\Rpc\KeyPair;
 use Civi\Cxn\Rpc\X509Util;
@@ -40,10 +41,13 @@ class CrlController extends Controller {
     }
 
     $dirName = $this->baseDir . '/' . $caName;
-    $crl = $this->createCrl(
+    $crlGen = new CrlGenerator(
       file_get_contents("$dirName/crldist.crt"),
       KeyPair::load("$dirName/keys.json"),
       file_get_contents("$dirName/ca.crt"),
+      '+7 days'
+    );
+    $crl = $crlGen->generate(
       Yaml::parse(file_get_contents("$dirName/revocations.yml"))
     );
 
@@ -112,28 +116,4 @@ class CrlController extends Controller {
     return NULL;
   }
 
-  /**
-   * @param string $crlDistCertPem
-   * @param array $crlDistKeyPairPems
-   * @param string $caCertPem
-   * @param array $revocations
-   * @return string
-   *   Encoded CRL.
-   */
-  protected function createCrl($crlDistCertPem, $crlDistKeyPairPems, $caCertPem, $revocations) {
-    $crlDistCertObj = X509Util::loadCert($crlDistCertPem, $crlDistKeyPairPems, $caCertPem);
-
-    $crlObj = new \File_X509();
-    $crlObj->setSerialNumber($revocations['serialNumber'], 10);
-    $crlObj->setEndDate('+2 days');
-    $crlPem = $crlObj->saveCRL($crlObj->signCRL($crlDistCertObj, $crlObj, Constants::CERT_SIGNATURE_ALGORITHM));
-    $crlObj->loadCRL($crlPem);
-
-    // revoke certs
-    foreach ($revocations['certs'] as $certId) {
-      $crlObj->setRevokedCertificateExtension((int) $certId, 'id-ce-cRLReasons', 'privilegeWithdrawn');
-    }
-    $crlObj->setEndDate('+3 months');
-    return $crlObj->saveCRL($crlObj->signCRL($crlDistCertObj, $crlObj));
-  }
 }
