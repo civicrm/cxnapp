@@ -3,9 +3,7 @@
 namespace Civi\Cxn\CrlBundle\Controller;
 
 use Civi\Cxn\CrlBundle\CrlGenerator;
-use Civi\Cxn\Rpc\Constants;
 use Civi\Cxn\Rpc\KeyPair;
-use Civi\Cxn\Rpc\X509Util;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,8 +42,7 @@ class CrlController extends Controller {
     $crlGen = new CrlGenerator(
       file_get_contents("$dirName/crldist.crt"),
       KeyPair::load("$dirName/keys.json"),
-      file_get_contents("$dirName/ca.crt"),
-      '+7 days'
+      file_get_contents("$dirName/ca.crt")
     );
     $crl = $crlGen->generate(
       Yaml::parse(file_get_contents("$dirName/revocations.yml"))

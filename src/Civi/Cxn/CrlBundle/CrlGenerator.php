@@ -10,7 +10,9 @@ use Civi\Cxn\Rpc\X509Util;
  */
 class CrlGenerator {
 
-  protected $crlDistCertPem, $crlDistKeyPairPems, $caCertPem, $ttl;
+  const DEFAULT_TTL = '+1 day';
+
+  protected $crlDistCertPem, $crlDistKeyPairPems, $caCertPem;
 
   /**
    * @param string $crlDistCertPem
@@ -19,11 +21,10 @@ class CrlGenerator {
    * @param string $ttl
    *   Time specification (per strtotime()).
    */
-  public function __construct($crlDistCertPem, $crlDistKeyPairPems, $caCertPem, $ttl) {
+  public function __construct($crlDistCertPem, $crlDistKeyPairPems, $caCertPem) {
     $this->caCertPem = $caCertPem;
     $this->crlDistCertPem = $crlDistCertPem;
     $this->crlDistKeyPairPems = $crlDistKeyPairPems;
-    $this->ttl = $ttl;
   }
 
   /**
@@ -53,7 +54,7 @@ class CrlGenerator {
     foreach ($revocations['certs'] as $certId => $reason) {
       $crlObj->setRevokedCertificateExtension(self::asDecimal($certId), 'id-ce-cRLReasons', $reason);
     }
-    $crlObj->setEndDate($this->ttl);
+    $crlObj->setEndDate(isset($revocations['ttl']) ? $revocations['ttl'] : self::DEFAULT_TTL);
     return $crlObj->saveCRL($crlObj->signCRL($crlDistCertObj, $crlObj));
   }
 
