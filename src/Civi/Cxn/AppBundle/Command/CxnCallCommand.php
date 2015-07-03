@@ -4,6 +4,7 @@ namespace Civi\Cxn\AppBundle\Command;
 use Civi\Cxn\Rpc\ApiClient;
 use Civi\Cxn\Rpc\AppStore\AppStoreInterface;
 use Civi\Cxn\Rpc\CxnStore\CxnStoreInterface;
+use Civi\Cxn\Rpc\Exception\GarbledMessageException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -75,8 +76,14 @@ class CxnCallCommand extends Command {
 
     $apiClient = new ApiClient($this->appStore->getAppMeta($cxn['appId']), $this->cxnStore, $cxnId);
     $apiClient->setLog($this->log);
-    $result = $apiClient->call($entity, $action, $params);
-    $output->writeln("<info>Result</info>: " . print_r($result, TRUE));
+    try {
+      $result = $apiClient->call($entity, $action, $params);
+      $output->writeln("<info>Result</info>: " . print_r($result, TRUE));
+    }
+    catch (GarbledMessageException $e) {
+      $output->writeln("<error>Garbled response</error>");
+      $output->writeln($e->getGarbledMessage()->getData());
+    }
   }
 
 }
