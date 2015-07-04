@@ -44,13 +44,18 @@ class CrlController extends Controller {
       KeyPair::load("$dirName/keys.json"),
       file_get_contents("$dirName/ca.crt")
     );
-    $crl = $crlGen->generate(
-      Yaml::parse(file_get_contents("$dirName/revocations.yml"))
-    );
+    $revocations = $this->getRevocations($caName);
+    $crl = $crlGen->generate($revocations);
 
-    return new Response($crl, 200, array(
+    $response = new Response($crl, 200, array(
       'Content-type' => 'application/pkix-crl',
     ));
+
+    $ttl = isset($revocations['ttl']) ? $revocations['ttl'] : CrlGenerator::DEFAULT_TTL;
+    $response->setMaxAge(strtotime($ttl) - strtotime('now'));
+    $response->setPublic();
+
+    return $response;
   }
 
   /**
@@ -64,11 +69,18 @@ class CrlController extends Controller {
     if ($err = $this->validateCa($caName)) {
       return $err;
     }
+    $revocations = $this->getRevocations($caName);
 
     $file = implode('/', array($this->baseDir, $caName, 'crldist.crt'));
-    return new Response(file_get_contents($file), 200, array(
+    $response = new Response(file_get_contents($file), 200, array(
       'Content-type' => 'application/x-pem-file',
     ));
+
+    $ttl = isset($revocations['ttl']) ? $revocations['ttl'] : CrlGenerator::DEFAULT_TTL;
+    $response->setMaxAge(strtotime($ttl) - strtotime('now'));
+    $response->setPublic();
+
+    return $response;
   }
 
   /**
@@ -84,9 +96,15 @@ class CrlController extends Controller {
     }
 
     $file = implode('/', array($this->baseDir, $caName, 'ca.crt'));
-    return new Response(file_get_contents($file), 200, array(
+    $response = new Response(file_get_contents($file), 200, array(
       'Content-type' => 'application/x-pem-file',
     ));
+
+    $ttl = isset($revocations['ttl']) ? $revocations['ttl'] : CrlGenerator::DEFAULT_TTL;
+    $response->setMaxAge(strtotime($ttl) - strtotime('now'));
+    $response->setPublic();
+
+    return $response;
   }
 
   /**
@@ -111,6 +129,16 @@ class CrlController extends Controller {
       }
     }
     return NULL;
+  }
+
+  /**
+   * @param $caName
+   * @return array
+   */
+  protected function getRevocations($caName) {
+    $dirName = $this->baseDir . '/' . $caName;
+    $revocations = Yaml::parse(file_get_contents("$dirName/revocations.yml"));
+    return $revocations;
   }
 
 }
