@@ -25,12 +25,15 @@ class DirSvcController extends Controller {
 
   private $certFile;
 
-  public function __construct(ContainerInterface $container, AppStoreInterface $appStore, EventDispatcherInterface $eventDispatcher, $keyFile, $certFile) {
+  private $maxAge;
+
+  public function __construct(ContainerInterface $container, AppStoreInterface $appStore, EventDispatcherInterface $eventDispatcher, $keyFile, $certFile, $maxAge) {
     $this->setContainer($container);
     $this->appStore = $appStore;
     $this->eventDispatcher = $eventDispatcher;
     $this->keyFile = $keyFile;
     $this->certFile = $certFile;
+    $this->maxAge = $maxAge;
   }
 
   public function indexAction() {
@@ -59,7 +62,10 @@ class DirSvcController extends Controller {
       KeyPair::load($this->keyFile),
       $appMetas
     );
-    return $message->toSymfonyResponse();
+    $response = $message->toSymfonyResponse();
+    $response->setMaxAge($this->maxAge);
+    $response->setPublic();
+    return $response;
   }
 
   /**

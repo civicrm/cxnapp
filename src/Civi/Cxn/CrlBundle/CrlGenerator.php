@@ -51,8 +51,10 @@ class CrlGenerator {
     $crlPem = $crlObj->saveCRL($crlObj->signCRL($crlDistCertObj, $crlObj, Constants::CERT_SIGNATURE_ALGORITHM));
     $crlObj->loadCRL($crlPem);
 
-    foreach ($revocations['certs'] as $certId => $reason) {
-      $crlObj->setRevokedCertificateExtension(self::asDecimal($certId), 'id-ce-cRLReasons', $reason);
+    if (is_array($revocations['certs'])) {
+      foreach ($revocations['certs'] as $certId => $reason) {
+        $crlObj->setRevokedCertificateExtension(self::asDecimal($certId), 'id-ce-cRLReasons', $reason);
+      }
     }
     $crlObj->setEndDate(isset($revocations['ttl']) ? $revocations['ttl'] : self::DEFAULT_TTL);
     return $crlObj->saveCRL($crlObj->signCRL($crlDistCertObj, $crlObj));

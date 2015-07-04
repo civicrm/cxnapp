@@ -4,6 +4,7 @@ parameters:
   civi_cxn_dirsvc.keys: '%civi_cxn_dirsvc.path%/keys.json'
   civi_cxn_dirsvc.csr: '%civi_cxn_dirsvc.path%/cxndir.csr'
   civi_cxn_dirsvc.cert: '%civi_cxn_dirsvc.path%/cxndir.crt'
+  civi_cxn_dirsvc.maxAge: 600
 
 services:
 
@@ -23,7 +24,13 @@ services:
 
   civi_cxn_dirsvc.dirsvc_controller:
     class: Civi\Cxn\DirBundle\Controller\DirSvcController
-    arguments: ['@service_container', "@civi_cxn_dirsvc.agg_app_store", "@event_dispatcher", '%civi_cxn_dirsvc.keys%', '%civi_cxn_dirsvc.cert%']
+    arguments:
+      - '@service_container'
+      - '@civi_cxn_dirsvc.agg_app_store'
+      - '@event_dispatcher'
+      - '%civi_cxn_dirsvc.keys%'
+      - '%civi_cxn_dirsvc.cert%'
+      - '%civi_cxn_dirsvc.maxAge%'
 
   civi_cxn_dirsvc.command.get_command:
     class: Civi\Cxn\DirBundle\Command\GetCommand
