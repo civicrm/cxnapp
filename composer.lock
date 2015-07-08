@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f1491a3ee7304ac60bc87d5f803f2e62",
+    "hash": "6ef617967f3dd318fdaa94771ff01a05",
     "packages": [
         {
             "name": "civicrm/civicrm-cxn-rpc",
-            "version": "dev-master",
+            "version": "v0.15.07.07",
             "source": {
                 "type": "git",
-                "url": "https://github.com/totten/civicrm-cxn-rpc",
-                "reference": "859520dceff848fcb522d73732e2f34e785c9043"
+                "url": "https://github.com/civicrm/civicrm-cxn-rpc.git",
+                "reference": "e56f4a3e19cbb78b3df83425600f485361d12ca3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/civicrm/civicrm-cxn-rpc/zipball/e56f4a3e19cbb78b3df83425600f485361d12ca3",
+                "reference": "e56f4a3e19cbb78b3df83425600f485361d12ca3",
+                "shasum": ""
             },
             "require": {
                 "phpseclib/phpseclib": "0.3.*",
@@ -27,6 +33,7 @@
                     "Civi\\Cxn\\Rpc\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -36,8 +43,8 @@
                     "email": "totten@civicrm.org"
                 }
             ],
-            "description": "RPC library for CiviCRM QuickConnect",
-            "time": "2015-07-03 23:45:32"
+            "description": "RPC library for CiviConnect",
+            "time": "2015-07-08 00:58:37"
         },
         {
             "name": "doctrine/annotations",
@@ -1746,8 +1753,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "symfony/symfony": 10,
-        "civicrm/civicrm-cxn-rpc": 20
+        "symfony/symfony": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,

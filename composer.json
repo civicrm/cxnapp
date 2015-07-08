@@ -11,7 +11,7 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "~2.7@beta",
-        "civicrm/civicrm-cxn-rpc": "dev-master#859520dceff848fcb522d73732e2f34e785c9043",
+        "civicrm/civicrm-cxn-rpc": "~0.15.07",
         "doctrine/orm": "~2.2,>=2.2.3,<2.5",
         "doctrine/dbal": "<2.5",
         "doctrine/doctrine-bundle": "~1.4",
@@ -25,12 +25,6 @@
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
     },
-    "repositories": [
-      {
-        "type": "git",
-        "url": "https://github.com/totten/civicrm-cxn-rpc"
-      }
-    ],
     "scripts": {
         "post-root-package-install": [
             "SymfonyStandard\\Composer::hookRootPackageInstall"
