@@ -8,6 +8,8 @@ parameters:
   ## The default way to render a settings/doc/support link.
   ## Options: iframe, popup, redirect
   civi_cxn_app.link_mode: 'iframe'
+  civi_cxn_app.link_width: '50%'
+  civi_cxn_app.link_height: '50%'
 
 services:
 
@@ -68,7 +70,10 @@ services:
       - "@doctrine.orm.entity_manager"
       - "%secret%"
       - "%civi_cxn_app.link_ttl%"
-      - "%civi_cxn_app.link_mode%"
+      -
+        mode: "%civi_cxn_app.link_mode%"
+        width: "%civi_cxn_app.link_width%"
+        height: "%civi_cxn_app.link_height%"
     tags:
       - { name: monolog.logger, channel: 'settings' }
 
