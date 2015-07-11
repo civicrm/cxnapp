@@ -16,6 +16,11 @@ civi_cxn_cron:
     defaults:
       appId:  app:org.civicrm.cron
 
+## For the profile application, define some custom screens.
+civi_cxn_profile:
+    resource: "@CiviCxnProfileBundle/Resources/config/routing.yml"
+    prefix:   /
+
 civi_cxn_crl:
     resource: "@CiviCxnCrlBundle/Resources/config/routing.yml"
     prefix:   /ca
