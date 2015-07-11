@@ -2,6 +2,7 @@
 
 namespace Civi\Cxn\CronBundle\Controller;
 
+use Civi\Cxn\AppBundle\Entity\CxnEntity;
 use Civi\Cxn\CronBundle\Entity\CronSettings;
 use Civi\Cxn\CronBundle\Form\CronSettingsType;
 use Doctrine\ORM\EntityManager;
@@ -31,26 +32,26 @@ class DefaultController extends Controller {
 
   /**
    * @param Request $request
+   * @param CxnEntity $cxnEntity
    * @return Response
    */
-  public function settingsAction(Request $request) {
+  public function settingsAction(Request $request, CxnEntity $cxnEntity) {
     $t = $this->get('translator');
 
-    $cxn = $request->attributes->get('cxn');
-    if (empty($cxn) || empty($cxn['cxnId'])) {
+    if (empty($cxnEntity) || !$cxnEntity->getCxnId()) {
       throw new \RuntimeException('Error: cxn was not automatically loaded.');
     }
 
     // Find or create the settings for this connection.
-    $cronSettings = $this->settingsRepo->find($cxn['cxnId']);
-    if (!$cronSettings) {
-      $cronSettings = new CronSettings();
-      $cronSettings->setCxnId($cxn['cxnId']);
-      $this->em->persist($cronSettings);
+    $settings = $this->settingsRepo->find($cxnEntity->getCxnId());
+    if (!$settings) {
+      $settings = new CronSettings();
+      $settings->setCxn($cxnEntity);
+      $this->em->persist($settings);
     }
 
     // Prepare and process a form.
-    $form = $this->createForm(new CronSettingsType(), $cronSettings);
+    $form = $this->createForm(new CronSettingsType(), $settings);
     $form->handleRequest($request);
     if ($form->isValid()) {
       $this->get('session')->getFlashBag()->add(

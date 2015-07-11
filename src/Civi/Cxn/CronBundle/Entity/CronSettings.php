@@ -2,6 +2,7 @@
 
 namespace Civi\Cxn\CronBundle\Entity;
 
+use Civi\Cxn\AppBundle\Entity\CxnEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -14,12 +15,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CronSettings {
 
   /**
-   * @var string
+   * @var CxnEntity
    *
    * @ORM\Id
-   * @ORM\Column(name="cxnId", type="string", length=64)
+   * @ORM\OneToOne(targetEntity="Civi\Cxn\AppBundle\Entity\CxnEntity")
+   * @ORM\JoinColumn(name="cxnId", referencedColumnName="cxnId", onDelete="CASCADE")
    */
-  private $cxnId;
+  private $cxn;
 
   /**
    * @var string
@@ -30,17 +32,17 @@ class CronSettings {
   private $email;
 
   /**
-   * @return string
+   * @return CxnEntity
    */
-  public function getCxnId() {
-    return $this->cxnId;
+  public function getCxn() {
+    return $this->cxn;
   }
 
   /**
-   * @param string $cxnId
+   * @param CxnEntity $cxn
    */
-  public function setCxnId($cxnId) {
-    $this->cxnId = $cxnId;
+  public function setCxn($cxn) {
+    $this->cxn = $cxn;
   }
 
   /**

@@ -90,6 +90,7 @@ class CxnTokenListener {
     }
 
     $event->getRequest()->attributes->set('cxn', $cxns[0]->toArray());
+    $event->getRequest()->attributes->set('cxnEntity', $cxns[0]);
   }
 
 }

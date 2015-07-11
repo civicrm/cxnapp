@@ -108,7 +108,7 @@ application has a `settings` page. To trace through the example, look at these f
  * [src/Civi/Cxn/CronBundle/Resources/config/services.yml](../src/Civi/Cxn/CronBundle/Resources/config/services.yml)
    * Defines the service (`civi_cxn_cron.default_controller`).
  * [src/Civi/Cxn/CronBundle/Controller/DefaultController.php](../src/Civi/Cxn/CronBundle/Controller/DefaultController.php)
-   * Defines the function `settingsAction`. Note how it consumes `$request->attributes->get('cxn')` and ultimately saves `CronSettings`.
+   * Defines the function `settingsAction`. Note how it consumes `$cxnEntity` and ultimately saves `CronSettings`.
  * [src/Civi/Cxn/CronBundle/Entity/CronSettings.php](../src/Civi/Cxn/CronBundle/Entity/CronSettings.php)
    * Defines the data model. Any per-site settings are stored here.
    * Note that the the `cxnId` is flagged as the primary key (`@ORM\Id`). This is because there can be

@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
  * Cxn
  *
  * @ORM\Table("Cxn",
- *   uniqueConstraints={@ORM\UniqueConstraint(name="cxnId_idx", columns={"cxnId"})},
  *   indexes={@ORM\Index(name="appId_idx", columns={"appId"})}
  * )
  * @ORM\Entity(
@@ -30,17 +29,9 @@ class CxnEntity {
   }
 
   /**
-   * @var integer
-   *
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   */
-  private $id;
-
-  /**
    * @var string
    *
+   * @ORM\Id
    * @ORM\Column(name="cxnId", type="string", length=64)
    */
   private $cxnId;
@@ -80,21 +71,11 @@ class CxnEntity {
    */
   private $perm;
 
-
-  /**
-   * Get id
-   *
-   * @return integer
-   */
-  public function getId() {
-    return $this->id;
-  }
-
   /**
    * Set cxnId
    *
    * @param string $cxnId
-   * @return Cxn
+   * @return CxnEntity
    */
   public function setCxnId($cxnId) {
     $this->cxnId = $cxnId;
@@ -115,7 +96,7 @@ class CxnEntity {
    * Set secret
    *
    * @param string $secret
-   * @return Cxn
+   * @return CxnEntity
    */
   public function setSecret($secret) {
     $this->secret = $secret;
@@ -136,7 +117,7 @@ class CxnEntity {
    * Set appId
    *
    * @param string $appId
-   * @return Cxn
+   * @return CxnEntity
    */
   public function setAppId($appId) {
     $this->appId = $appId;
@@ -157,7 +138,7 @@ class CxnEntity {
    * Set appUrl
    *
    * @param string $appUrl
-   * @return Cxn
+   * @return CxnEntity
    */
   public function setAppUrl($appUrl) {
     $this->appUrl = $appUrl;
@@ -178,7 +159,7 @@ class CxnEntity {
    * Set siteUrl
    *
    * @param string $siteUrl
-   * @return Cxn
+   * @return CxnEntity
    */
   public function setSiteUrl($siteUrl) {
     $this->siteUrl = $siteUrl;
@@ -199,7 +180,7 @@ class CxnEntity {
    * Set perm
    *
    * @param array $perm
-   * @return Cxn
+   * @return CxnEntity
    */
   public function setPerm($perm) {
     $this->perm = $perm;
