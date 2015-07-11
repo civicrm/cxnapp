@@ -2,3 +2,9 @@ services:
 #    civi_cxn_profile.example:
 #        class: Civi\Cxn\ProfileBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+ civi_cxn_profile.admin_controller:
+    class: Civi\Cxn\ProfileBundle\Controller\AdminController
+    arguments:
+      - "@service_container"
+      - "@doctrine.orm.entity_manager"

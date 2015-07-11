@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile Settings{% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/civicxnprofile/profile.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="cxn-welcome">
+        {% trans %}If you seek support for CiviCRM in an online forum, it will help to publish up-to-date technical details about your system (such as the version of CiviCRM, type of CMS, and list of PHP extensions). Simply share this anonymized link:{% endtrans %}
+        <br><br>
+        TODO
+    </div>
+
+    {{ form_start(form) }}
+
+    <div class="prof-section">
+        <h3>{{ form_label(form.expires) }}</h3>
+
+        <p>{% trans %}You may automatically unpublish the site profile after the chosen date.{% endtrans %}</p>
+
+        {{ form_widget(form.expires) }}
+
+        <div class="errors">{{ form_errors(form.expires) }}</div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

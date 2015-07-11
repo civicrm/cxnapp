@@ -1,0 +1,12 @@
+.prof-section > h3 {
+  margin: 0;
+}
+
+.prof-section > p, .prof-section > div {
+  margin-left: 3em;
+  margin-right: 3em;
+}
+
+.errors {
+  color: red;
+}
