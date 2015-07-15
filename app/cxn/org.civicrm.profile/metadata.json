@@ -1,0 +1,28 @@
+{
+    "app:org.civicrm.profile": {
+        "title": "Site Profile",
+        "desc": "Publish an anonymized profile of your site which can be shared in support, forums, issues, etc",
+        "appId": "app:org.civicrm.profile",
+        "appCert": "*PLACEHOLDER*",
+        "appUrl": "*PLACEHOLDER*",
+        "links": {
+            "docs": false,
+            "logs": false,
+            "settings": true,
+            "support": false
+        },
+        "perm": {
+            "desc": "The site profile loads general technical information, such as the version of PHP and the list of CiviCRM extensions.",
+            "api": [
+                {
+                    "version": 3,
+                    "entity": "System",
+                    "actions": "get",
+                    "required": [],
+                    "fields": "*"
+                }
+            ],
+            "grant": "*"
+        }
+    }
+}
