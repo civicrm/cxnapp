@@ -50,7 +50,11 @@ class FileAppStore implements AppStoreInterface {
       if (file_exists($this->baseDir)) {
         $dh = opendir($this->baseDir);
         while (FALSE !== ($item = readdir($dh))) {
-          if ($item{0} !== '.' && is_dir($this->baseDir . DIRECTORY_SEPARATOR . $item)) {
+          if ($item{0} == '.') {
+            continue;
+          }
+          $appDir = $this->getAppDir($item);
+          if (is_dir($appDir) && file_exists("$appDir/metadata.json") && file_exists("$appDir/app.crt") && !file_exists("$appDir/disable")) {
             $this->appIds[] = "app:$item";
           }
         }
@@ -71,6 +75,11 @@ class FileAppStore implements AppStoreInterface {
     if (!isset($this->appMetas[$appId])) {
       $metadataFile = $this->getAppDir($appId) . '/metadata.json';
       $certFile = $this->getAppDir($appId) . '/app.crt';
+      $disableFile = $this->getAppDir($appId) . '/disable';
+
+      if (file_exists($disableFile)) {
+        throw new \RuntimeException("Application is disabled ($disableFile).");
+      }
 
       if (!file_exists($metadataFile)) {
         throw new \RuntimeException("Missing metadata file ($metadataFile).");
