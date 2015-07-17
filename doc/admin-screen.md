@@ -75,7 +75,7 @@ This formula is pretty dynamic, so let's break down the variables that influence
  * `{cxnId}` (eg `cxn:abcd1234abcd1234`) identifies the particular connection for which
    we want to manage settings.
  * `{pageName}` is the symbolic name of a page (eg `docs`, `logs`, `settings`, `support`).
- * `{cxnToken}` is a hashed authorization code granting access to the particular `cxnId`.
+ * `{cxnToken}` is an authorization code granting access to the particular `cxnId`.
 
 A few things to note:
 
@@ -87,11 +87,13 @@ A few things to note:
    get started.
  * The name of the route (`src/**Bundle/Resources/config/routing.yml`) must be changed to match
    the `appId` and `page` name (with non-alphanumeric characters munged to "_").
-     * Example: For `app:org.civicrm.cron`, the `settings` page is defined by route
+     * Example: For `app:org.civicrm.cron`, the `settings` page is defined by the route
        `org_civicrm_cron_settings`. (See `src/Civi/Cxn/CronBundle/Resources/config/routing.yml`)
  * The page should expect parameters `cxnId` and `cxnToken`. These parameters are automatically
-   parsed and authenticated. Once authenticated, the details of the `cxn` are available in
-   `$request->attributes->get('cxn')`.
+   parsed and authenticated. Once authenticated, the details of the `cxn` are available as
+   request attributes:
+     * `$request->attributes->get('cxn')` - The Cxn in array format (per civicrm-cxn-rpc API).
+     * `$request->attributes->get('cxnEntity')` - The Cxn as a Doctrine entity.
  * Authentication tokens are interchangeable for all pages (`settings`, `docs`, etc). However,
    they do expire after a couple hours.
 
@@ -111,8 +113,8 @@ application has a `settings` page. To trace through the example, look at these f
    * Defines the function `settingsAction`. Note how it consumes `$cxnEntity` and ultimately saves `CronSettings`.
  * [src/Civi/Cxn/CronBundle/Entity/CronSettings.php](../src/Civi/Cxn/CronBundle/Entity/CronSettings.php)
    * Defines the data model. Any per-site settings are stored here.
-   * Note that the the `cxnId` is flagged as the primary key (`@ORM\Id`). This is because there can be
-     at most one `CronSettings` for each connection.
+   * Note that the `cxn` is flagged as the primary key (`@ORM\Id`). There is a 1-1 relation between `CxnEntity`
+     and `CronSettings`. If the cxn is destroyed, then the cron settings will also be destroyed.
  * [src/Civi/Cxn/CronBundle/Resources/views/Default/settings.html.twig](../src/Civi/Cxn/CronBundle/Resources/views/Default/settings.html.twig)
    * Defines the markup.
 
