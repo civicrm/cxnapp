@@ -8,8 +8,9 @@ This is a reference-implementation of the CiviConnect backend. It includes:
  * **Any CiviConnect services operated by civicrm.org.** This includes the
    cron app, the directory service, and the CRL service.
 
-The app is built with Symfony 2 and the civicrm-cxn-rpc library. It may be
-used as a base for developing more substantial applications.
+The app is built with [Symfony 2](http://symfony.com/) and the
+[civicrm-cxn-rpc](https://github.com/civicrm/civicrm-cxn-rpc) library. It may
+be used as a base for developing more substantial applications.
 
 ## Documentation: General
 
