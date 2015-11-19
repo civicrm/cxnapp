@@ -20,6 +20,24 @@ To implement a new CiviConnect application (such as an "address cleanup" service
 generate a new bundle (eg `./app/console generate:bundle`) and add any required functionality to
 that bundle (eg new database tables, new console commands, new settings pages, new web services).
 
+# Events
+
+The `AppBundle` emits some events during registration and unregistration.
+These can be useful if you need to do some extra work or setup some extra
+records.
+
+For example, to perform some action after processing a registration request,
+you might add class `Civi\Cxn\MyBundle\MyRegistration` with function
+`onRespond(RegistrationServerEvent $e)` and update `services.yml`:
+
+```yaml
+services:
+ civi_cxn_mybundle.registrations:
+   class: Civi\Cxn\MyBundle\MyRegistration
+   tags:
+      - { name: kernel.event_listener, event: 'app:org.civicrm.myapp:cxn.register:respond', method: onRespond }
+```
+
 # Assets: CSS, Javascript
 
 These files are generally managed using Symfony's asset functionality. More specifically,

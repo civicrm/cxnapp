@@ -59,6 +59,7 @@ services:
       - "@civi_cxn_app.cxn_store"
       - "@logger"
       - "@civi_cxn_app.links"
+      - "@event_dispatcher"
     tags:
       - { name: monolog.logger, channel: 'register' }
 

@@ -9,6 +9,7 @@ use Civi\Cxn\Rpc\CxnStore\CxnStoreInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -36,16 +37,22 @@ class CxnAppController extends Controller {
   protected $log;
 
   /**
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  protected $dispatcher;
+
+  /**
    * @var CxnLinks
    */
   private $cxnLinks;
 
-  public function __construct(ContainerInterface $container, AppStoreInterface $appStore, CxnStoreInterface $cxnStore, LoggerInterface $log, CxnLinks $cxnLinks) {
+  public function __construct(ContainerInterface $container, AppStoreInterface $appStore, CxnStoreInterface $cxnStore, LoggerInterface $log, CxnLinks $cxnLinks, EventDispatcherInterface $dispatcher) {
     $this->setContainer($container);
     $this->appStore = $appStore;
     $this->cxnStore = $cxnStore;
     $this->log = $log;
     $this->cxnLinks = $cxnLinks;
+    $this->dispatcher = $dispatcher;
   }
 
   /**
@@ -90,6 +97,7 @@ class CxnAppController extends Controller {
     $server = new AppRegistrationServer($appMeta, $this->appStore->getKeyPair($appId), $this->cxnStore);
     $server->setLog($this->log);
     $server->setCxnLinks($this->cxnLinks);
+    $server->setDispatcher($this->dispatcher);
     return $server->handle(file_get_contents('php://input'))->toSymfonyResponse();
   }
 
