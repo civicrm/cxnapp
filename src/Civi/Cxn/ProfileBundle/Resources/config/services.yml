@@ -3,7 +3,15 @@ services:
 #        class: Civi\Cxn\ProfileBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
 
- civi_cxn_profile.admin_controller:
+  civi_cxn_profile.registrations:
+    class: Civi\Cxn\ProfileBundle\ProfileRegistration
+    arguments:
+       - "@doctrine.orm.entity_manager"
+    tags:
+       - { name: kernel.event_listener, event: 'app:org.civicrm.profile:cxn.register:respond', method: onRespond }
+
+
+  civi_cxn_profile.admin_controller:
     class: Civi\Cxn\ProfileBundle\Controller\AdminController
     arguments:
       - "@service_container"

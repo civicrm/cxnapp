@@ -26,7 +26,9 @@
  */
 
 namespace Civi\Cxn\AppBundle\Event;
+use Civi\Cxn\AppBundle\Entity\CxnEntity;
 use Civi\Cxn\Rpc\RegistrationServer;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Class RegistrationServerEvent
@@ -89,6 +91,31 @@ class RegistrationServerEvent extends \Symfony\Component\EventDispatcher\Event {
     $this->action = $action;
     $this->params = $params;
     $this->response = $response;
+  }
+
+  /**
+   * Find the CxnEntity which corresponds to the wireCxn
+   * (if it exists).
+   *
+   * @param \Doctrine\ORM\EntityManager $em
+   * @return NULL|CxnEntity
+   */
+  public function findCxnEntity(EntityManager $em) {
+    $cxns = $em->createQuery('
+        SELECT ce
+        FROM Civi\Cxn\AppBundle\Entity\CxnEntity ce
+        WHERE ce.cxnId = :cxnId
+      ')
+      ->setParameter('cxnId', $this->wireCxn['cxnId'])
+      ->getResult();
+    if (count($cxns) == 0) {
+      return NULL;
+    }
+    if (count($cxns) == 1 && ($cxns[0] instanceof CxnEntity)) {
+      return $cxns[0];
+    }
+
+    throw new \RuntimeException("Expected to find 0 or 1 CxnEntity objects.");
   }
 
   /**
