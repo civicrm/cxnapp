@@ -6,10 +6,11 @@
 {% endblock %}
 
 {% block body %}
+
     <div class="cxn-welcome">
         {% trans %}If you seek support for CiviCRM in an online forum, it will help to publish up-to-date technical details about your system (such as the version of CiviCRM, type of CMS, and list of PHP extensions). Simply share this anonymized link:{% endtrans %}
         <br><br>
-        TODO
+        <a target="_blank" href="{{ url('org_civicrm_profile_view', {'pubId': settings.pubId}) }}">{{ url('org_civicrm_profile_view', {'pubId': settings.pubId}) }}</a>
     </div>
 
     {{ form_start(form) }}

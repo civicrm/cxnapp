@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminController extends Controller {
+class PublicController extends Controller {
 
   /**
    * @var EntityManager
@@ -33,35 +33,15 @@ class AdminController extends Controller {
 
   /**
    * @param Request $request
-   * @param CxnEntity $cxnEntity
    * @return Response
    */
-  public function settingsAction(Request $request, CxnEntity $cxnEntity) {
-    $t = $this->get('translator');
-
-    if (empty($cxnEntity) || !$cxnEntity->getCxnId()) {
-      throw new \RuntimeException('Error: cxn was not automatically loaded.');
-    }
-
-    // Find or create the settings for this connection.
-    $settings = $this->settingsRepo->find($cxnEntity->getCxnId());
+  public function viewAction(Request $request, $pubId) {
+    $settings = $this->settingsRepo->findOneBy(array('pubId' => $pubId));
     if (!$settings) {
-      throw $this->createNotFoundException('Failed to find ProfileSettings record.');
+      throw $this->createNotFoundException('Invalid profile ID');
     }
 
-    // Prepare and process a form.
-    $form = $this->createForm(new ProfileSettingsType(), $settings);
-    $form->handleRequest($request);
-    if ($form->isValid()) {
-      $this->get('session')->getFlashBag()->add(
-        'notice',
-        $t->trans('Saved')
-      );
-      $this->em->flush();
-    }
-
-    return $this->render('CiviCxnProfileBundle:Admin:settings.html.twig', array(
-      'form' => $form->createView(),
+    return $this->render('CiviCxnProfileBundle:Public:profile.html.twig', array(
       'settings' => $settings,
     ));
   }

@@ -16,3 +16,9 @@ services:
     arguments:
       - "@service_container"
       - "@doctrine.orm.entity_manager"
+
+  civi_cxn_profile.public_controller:
+    class: Civi\Cxn\ProfileBundle\Controller\PublicController
+    arguments:
+      - "@service_container"
+      - "@doctrine.orm.entity_manager"

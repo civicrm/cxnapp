@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Site Profile{% endtrans %} ({{ settings.pubId }}){% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/civicxnprofile/profile.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    {{ settings.pubId }}
+{% endblock %}
