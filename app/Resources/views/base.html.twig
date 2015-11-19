@@ -3,6 +3,9 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">
+
         <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -10,12 +13,15 @@
     <body>
         {%  block flash %}
             {% for flashMessage in app.session.flashbag.get('notice') %}
-                <div class="alert alert-success">
+                <div class="alert alert-success cxn-jumbo">
                     {{ flashMessage }}
                 </div>
             {% endfor %}
         {%  endblock %}
         {% block body %}{% endblock %}
+
+        <script src="{{ asset('js/jquery.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

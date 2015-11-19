@@ -1,12 +1,12 @@
-.prof-section > h3 {
-  margin: 0;
+.label-civi {
+  background-color: #55B;
 }
-
-.prof-section > p, .prof-section > div {
-  margin-left: 3em;
-  margin-right: 3em;
+.label-mysql {
+  background-color: #A80;
 }
-
-.errors {
-  color: red;
+.label-php {
+  background-color: #0A8;
+}
+.label-cms {
+  background-color: #B99;
 }

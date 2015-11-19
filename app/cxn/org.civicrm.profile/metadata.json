@@ -1,7 +1,7 @@
 {
     "app:org.civicrm.profile": {
         "title": "Site Profile",
-        "desc": "Publish an anonymized profile of your site which can be shared in support, forums, issues, etc",
+        "desc": "Prepare a technical profile of your site which can be shared in support, forums, issues, etc.<br/>Details will be relayed through civicrm.org. Identifying information (such as URLs) will be confidential.",
         "appId": "app:org.civicrm.profile",
         "appCert": "*PLACEHOLDER*",
         "appUrl": "*PLACEHOLDER*",
@@ -20,6 +20,13 @@
                     "actions": "get",
                     "required": [],
                     "fields": "*"
+                },
+                {
+                    "version": 3,
+                    "entity": "Domain",
+                    "actions": "get",
+                    "required": [],
+                    "fields": ["name", "domain_email"]
                 }
             ],
             "grant": "*"

@@ -6,5 +6,15 @@
 {% endblock %}
 
 {% block body %}
-    {{ settings.pubId }}
+    <div class="page-header">
+        <h1>{% trans %}Site Profile{% endtrans %}
+            <small>({{ settings.pubId }})</small>
+
+        </h1>
+    </div>
+
+    <span class="label label-civi">CiviCRM v4.4.1</span>
+    <span class="label label-cms">Drupal 7</span>
+    <span class="label label-php">PHP v5.4.1</span>
+    <span class="label label-mysql">MySQL v5.5.1</span>
 {% endblock %}

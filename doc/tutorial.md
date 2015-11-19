@@ -1,5 +1,12 @@
 # cxnapp: Getting Started
 
+### Requirements
+
+ * php-cli 5.4+
+ * composer
+ * less
+   * (`npm install -g less`)
+
 ### Get the code
 
 ```
