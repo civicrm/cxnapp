@@ -88,13 +88,16 @@ and set:
 
 ```
 define('CIVICRM_CXN_CA', 'none');
-define('CIVICRM_CXN_APPS_URL', 'http://127.0.0.1:8000/cxn/apps');
+define('CIVICRM_CXN_APPS_URL', 'http://127.0.0.1:8000/app_dev.php/cxn/apps');
 ```
 
-(Note: The above configuration is vulnerable to man-in-the-middle attacks.
-It's acceptable for local development but should not be used in production
-sites.  Consequently, there is no API for reading or writing these
-settings.)
+Note: The above configuration is suitable for local development but should
+not be used for production sites. In particular:
+
+  * Disabling the CA makes registrations vulnerable to man-in-the-middle attacks.
+  * Including the `app_dev.php` option enables Symfony's debugger -- which rejects
+    all remote requests. For quasi-remote setups (e.g. docker/vagrant),
+    you may need to omit `app_dev.php`.
 
 You can now connect using the CiviCRM UI (`/civicrm/a/#/cxn`). Alternatively,
 you can register on the command-line:
@@ -108,6 +111,9 @@ $ drush cvapi cxn.register app_meta_url=http://127.0.0.1:8000/app:org.example.my
 $ cd /var/www/example.org
 $ drush cvapi cxn.register app_guid=app:org.example.myapp debug=1
 ```
+
+TIP: By default, CiviCRM caches data about available apps. If you enable CiviCRM debugging, the data will
+always be fresh.
 
 ### Ping the test instance of CiviCRM
 
