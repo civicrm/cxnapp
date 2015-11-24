@@ -2,6 +2,7 @@
 namespace Civi\Cxn\AppBundle;
 
 use Civi\Cxn\AppBundle\Entity\CxnEntity;
+use Civi\Cxn\Rpc\Cxn;
 use Civi\Cxn\Rpc\CxnStore\CxnStoreInterface;
 use Doctrine\ORM\EntityManager;
 
@@ -62,6 +63,7 @@ class DoctrineCxnStore implements CxnStoreInterface {
     else {
       $cxnEntity = new CxnEntity();
       $cxnEntity->mergeArray($cxn);
+      $cxnEntity->setBatchCode(rand(CxnEntity::BATCH_CODE_MIN, CxnEntity::BATCH_CODE_MAX));
       $this->em->persist($cxnEntity);
     }
 

@@ -8,7 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
  * Cxn
  *
  * @ORM\Table("Cxn",
- *   indexes={@ORM\Index(name="appId_idx", columns={"appId"})}
+ *   indexes={
+ *     @ORM\Index(name="appId_idx", columns={"appId"}),
+ *     @ORM\Index(name="batchCode_idx", columns={"batchCode"})
+ * }
  * )
  * @ORM\Entity(
  *   repositoryClass="Civi\Cxn\AppBundle\Entity\CxnEntityRepository"
@@ -16,17 +19,20 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CxnEntity {
 
-  /**
-   * Create a CxnEntity object using a Cxn array.
-   *
-   * @param array $cxn
-   * @return CxnEntity
-   */
-  public static function create($cxn) {
-    $thisl = new CxnEntity();
-    $thisl->mergeArray($cxn);
-    return $thisl;
-  }
+  const BATCH_CODE_MIN = 0;
+  const BATCH_CODE_MAX = 10000;
+
+//  /**
+//   * Create a CxnEntity object using a Cxn array.
+//   *
+//   * @param array $cxn
+//   * @return CxnEntity
+//   */
+//  public static function create($cxn) {
+//    $thisl = new CxnEntity();
+//    $thisl->mergeArray($cxn);
+//    return $thisl;
+//  }
 
   /**
    * @var string
@@ -70,6 +76,20 @@ class CxnEntity {
    * @ORM\Column(name="perm", type="json_array")
    */
   private $perm;
+
+  /**
+   * @var int
+   *
+   * The batchCode is a randomly generated integer which can be
+   * used to breakdown the list of cxn's into batches. For example, to
+   * fetch the first of three batches, one might select either:
+   *
+   *   WHERE batchCode BETWEEN 0 and 3333
+   *   WHERE MOD(batchCode, 3) = 0
+   *
+   * @ORM\Column(name="batchCode", type="integer", nullable=false, options={"unsigned":true, "default":0})
+   */
+  private $batchCode;
 
   /**
    * Set cxnId
@@ -156,6 +176,23 @@ class CxnEntity {
   }
 
   /**
+   * @return int
+   */
+  public function getBatchCode() {
+    return $this->batchCode;
+  }
+
+  /**
+   * @param int $batchCode
+   * @return CxnEntity
+   */
+  public function setBatchCode($batchCode) {
+    $this->batchCode = $batchCode;
+
+    return $this;
+  }
+
+  /**
    * Set siteUrl
    *
    * @param string $siteUrl
@@ -211,7 +248,7 @@ class CxnEntity {
       'perm' => $this->getPerm(),
       'secret' => $this->getSecret(),
       'siteUrl' => $this->getSiteUrl(),
-    );;
+    );
   }
 
   public function mergeArray($cxn) {
