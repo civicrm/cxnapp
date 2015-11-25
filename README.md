@@ -17,6 +17,7 @@ be used as a base for developing more substantial applications.
  * [Getting Started](doc/tutorial.md)
  * [Code Structure](doc/structure.md)
  * [Administration Screens](doc/admin-screen.md)
+ * [Polling Connections](doc/polling.md)
  * [Tips](doc/tips.md)
 
 ## Documentation: civicrm.org services

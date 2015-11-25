@@ -63,7 +63,7 @@ class DoctrineCxnStore implements CxnStoreInterface {
     else {
       $cxnEntity = new CxnEntity();
       $cxnEntity->mergeArray($cxn);
-      $cxnEntity->setBatchCode(rand(CxnEntity::BATCH_CODE_MIN, CxnEntity::BATCH_CODE_MAX));
+      $cxnEntity->setBatchCode(rand(BatchHelper::BATCH_CODE_MIN, BatchHelper::BATCH_CODE_MAX));
       $this->em->persist($cxnEntity);
     }
 

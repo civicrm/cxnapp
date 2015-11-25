@@ -38,6 +38,47 @@ services:
       - { name: kernel.event_listener, event: 'app:org.civicrm.myapp:cxn.register:respond', method: onRespond }
 ```
 
+<table>
+  <tbody>
+    <tr>
+        <td>
+          <tt>{appId}:{entity}.{action}:parse</tt><br/>
+          <tt>civi_cxn_registration_server.parse</tt>
+        </td>
+        <td>
+          Parse an incoming request to the registration server.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <tt>{appId}:{entity}.{action}:call</tt><br/>
+            <tt>civi_cxn_registration_server.call</tt>
+        </td>
+        <td>
+          Execute a request for the registration server.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <tt>{appId}:{entity}.{action}:respond</tt><br/>
+            <tt>civi_cxn_registration_server.respond</tt>
+        </td>
+        <td>
+          Format the response to a request for the registration server.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <tt>{appId}:job={jobName}:poll</tt><br/>
+            <tt>civi_cxn.poll</tt>
+        </td>
+        <td>
+          Execute a periodic job.
+        </td>
+    </tr>
+  </tbody>
+</table>
+
 # Assets: CSS, Javascript
 
 These files are generally managed using Symfony's asset functionality. More specifically,

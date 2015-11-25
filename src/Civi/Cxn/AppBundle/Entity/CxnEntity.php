@@ -2,37 +2,20 @@
 
 namespace Civi\Cxn\AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Cxn
  *
  * @ORM\Table("Cxn",
- *   indexes={
- *     @ORM\Index(name="appId_idx", columns={"appId"}),
- *     @ORM\Index(name="batchCode_idx", columns={"batchCode"})
- * }
+ *   indexes={@ORM\Index(name="appId_idx", columns={"appId","batchCode"})}
  * )
  * @ORM\Entity(
  *   repositoryClass="Civi\Cxn\AppBundle\Entity\CxnEntityRepository"
  * )
  */
 class CxnEntity {
-
-  const BATCH_CODE_MIN = 0;
-  const BATCH_CODE_MAX = 10000;
-
-//  /**
-//   * Create a CxnEntity object using a Cxn array.
-//   *
-//   * @param array $cxn
-//   * @return CxnEntity
-//   */
-//  public static function create($cxn) {
-//    $thisl = new CxnEntity();
-//    $thisl->mergeArray($cxn);
-//    return $thisl;
-//  }
 
   /**
    * @var string
@@ -90,6 +73,18 @@ class CxnEntity {
    * @ORM\Column(name="batchCode", type="integer", nullable=false, options={"unsigned":true, "default":0})
    */
   private $batchCode;
+
+  /**
+   * @ORM\OneToMany(targetEntity="Civi\Cxn\AppBundle\Entity\PollStatus", mappedBy="cxn")
+   */
+  private $pollStatuses;
+
+  /**
+   * CxnEntity constructor.
+   */
+  public function __construct() {
+    $this->pollStatuses = new ArrayCollection();
+  }
 
   /**
    * Set cxnId

@@ -33,6 +33,18 @@ services:
     tags:
       - { name: console.command }
 
+  civi_cxn_app.command.cxn_poll_command:
+    class: Civi\Cxn\AppBundle\Command\CxnPollCommand
+    arguments:
+      - "@doctrine.orm.entity_manager"
+      - "@event_dispatcher"
+      - "@logger"
+      - "%kernel.root_dir%/lock"
+      - "@civi_cxn_app.app_store"
+      - "@civi_cxn_app.cxn_store"
+    tags:
+      - { name: console.command }
+
   civi_cxn_app.command.cxn_get_command:
     class: Civi\Cxn\AppBundle\Command\CxnGetCommand
     arguments: ["@civi_cxn_app.cxn_store"]
