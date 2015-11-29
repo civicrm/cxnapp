@@ -25,6 +25,7 @@ monolog:
             level: debug
         console:
             type:  console
+            formatter: console_formatter
 
 twig:
     cache:  false
