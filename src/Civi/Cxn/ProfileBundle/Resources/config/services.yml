@@ -10,6 +10,24 @@ services:
     tags:
        - { name: kernel.event_listener, event: 'app:org.civicrm.profile:cxn.register:respond', method: onRespond }
 
+  civi_cxn_profile.poller:
+    class: Civi\Cxn\ProfileBundle\ProfilePoller
+    arguments:
+       - "@doctrine.orm.entity_manager"
+       - "@logger"
+    tags:
+       - { name: kernel.event_listener, event: 'app:org.civicrm.profile:job=default:poll', method: onPoll }
+
+  civi_cxn_profile.cleanup:
+    class: Civi\Cxn\ProfileBundle\ProfileCleanup
+    arguments:
+       - "@doctrine.orm.entity_manager"
+       - "@logger"
+       -
+         errors: 20
+         overall: 50
+    tags:
+       - { name: kernel.event_listener, event: 'app:org.civicrm.profile:job=default:poll', method: cleanup,  priority: -50 }
 
   civi_cxn_profile.admin_controller:
     class: Civi\Cxn\ProfileBundle\Controller\AdminController
