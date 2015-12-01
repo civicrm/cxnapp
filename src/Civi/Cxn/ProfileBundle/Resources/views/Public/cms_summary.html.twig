@@ -1,0 +1,24 @@
+{#
+  Display a formatted summary of CMS-specific data.
+
+  @param array systemInfo: the results from System.get API, e.g.
+    - cms: array
+      - type: string
+      - modules: array(string $name => string $status)
+#}
+{% macro cms_summary(systemInfo) %}
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <td class="col-md-1"><label>Modules</label></td>
+            <td class="col-md-8">
+                <ul>
+                    {% for ext, status in systemInfo.cms.modules %}
+                        <code>{{ ext }}</code>{% if status != 'installed' %}(<em>{{ status }}</em>){% endif %}{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{% endmacro %}

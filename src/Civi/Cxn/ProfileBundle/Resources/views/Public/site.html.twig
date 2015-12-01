@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Site History{% endtrans %} ({{ settings.pubId }}){% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/civicxnprofile/profile.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h1>{% trans %}Site History{% endtrans %}
+            <small>({{ settings.pubId }})</small>
+        </h1>
+    </div>
+
+    <table class="table table-striped">
+        <tbody>
+        {% for snapshot in snapshots %}
+            {% if snapshot.status == 'ok' %}
+                {% set systemInfo = snapshot.data.values.0 %}
+                <tr>
+                    <td>
+                        <a href="{{ url('org_civicrm_profile_snapshot_view', {'pubId': snapshot.pubId}) }}">{{ snapshot.timestamp|date }}</a>
+                    </td>
+                    <td>
+                        CiviCRM {% if systemInfo.civi.version is defined %}<span class="badge">
+                            v{{ systemInfo.civi.version }}</span>{% endif %}
+                    </td>
+                    <td>
+                        {% if systemInfo.cms.type is defined %}{{ systemInfo.cms.type }}{% endif %}
+                        {% if systemInfo.cms.version is defined %}<span class="badge">
+                            v{{ systemInfo.cms.version }}</span>{% endif %}
+                    </td>
+                    <td>
+                        PHP
+                        {% if systemInfo.php.version is defined %}<span class="badge">
+                            v{{ systemInfo.php.version }}</span>{% endif %}
+                    </td>
+                    <td>
+                        MySQL
+                        {% if systemInfo.mysql.version is defined %}<span class="badge">
+                            v{{ systemInfo.mysql.version }}</span>{% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="text-danger">{{ snapshot.timestamp|date }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+
+

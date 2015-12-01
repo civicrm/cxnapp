@@ -76,6 +76,7 @@ class ProfilePoller {
     }
 
     $status = ProfileSnapshot::parseStatus($result);
+    $pubId = ProfileSnapshot::generatePubId();
 
     $this->log->info("ProfilePoller[{cxnId}]: System.get: Returned {status}", array(
       'cxnId' => $poll->getCxnEntity()->getCxnId(),
@@ -83,7 +84,7 @@ class ProfilePoller {
     ));
 
     $snapshot = new ProfileSnapshot(
-      $poll->getCxnEntity(), $status, $result, Time::createDateTime());
+      $poll->getCxnEntity(), $status, $result, Time::createDateTime(), 0, $pubId);
     $this->em->persist($snapshot);
     $this->em->flush($snapshot);
 

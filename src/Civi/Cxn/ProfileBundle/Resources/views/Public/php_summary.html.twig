@@ -1,0 +1,36 @@
+{#
+  Display a formatted summary of PHP-specific data.
+
+  @param array systemInfo: the results from System.get API, e.g.
+    - php: array
+      - version: string
+      - extensions: array(string $name)
+ #}
+{% macro php_summary(systemInfo) %}
+
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <td class="col-md-1"><label>Extensions</label></td>
+            <td class="col-md-8">
+                {% for ext in systemInfo.php.extensions|sort %}
+                    <code>{{ ext }}</code>{% if not loop.last %},{% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-1"><label>Active Timezone</label></td>
+            <td class="col-md-8">
+                US/Pacific
+            </td>
+        </tr>
+        {% for iniKey, iniValue in systemInfo.php.ini %}
+            <tr>
+                <td class="col-md-1"><span class="badge">ini</span> <label>{{ iniKey }}</label></td>
+                <td class="col-md-8"><code>{{ iniValue }}</code></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endmacro %}

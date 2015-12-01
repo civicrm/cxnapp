@@ -15,8 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * A site's profile at a specific point in time.
  *
  * @ORM\Table(name="ProfileSnapshot",
+ *   uniqueConstraints={@ORM\UniqueConstraint(name="pubIdx",columns={"pubId"})},
  *   indexes={
- *     @ORM\Index(name="cleanupIdx", columns={"cxnId","flagged","timestamp"})
+ * @ORM\Index(name="cleanupIdx", columns={"cxnId","flagged","timestamp"}),
+ * @ORM\Index(name="timestampIdx", columns={"cxnId","timestamp"})
  *   }
  * )
  * @ORM\Entity
@@ -74,22 +76,32 @@ class ProfileSnapshot {
   private $flagged;
 
   /**
+   * @var string
+   *
+   * @ORM\Column(name="pubId", type="string", length=32, nullable=false)
+   */
+  private $pubId;
+
+  /**
    * ProfileSnapshot constructor.
+   * @param \Civi\Cxn\AppBundle\Entity\CxnEntity $cxn
    * @param string $status
    * @param array $data
    * @param \DateTime $timestamp
-   * @param \Civi\Cxn\AppBundle\Entity\CxnEntity $cxn
+   * @param bool $flagged
+   * @param string $pubId
    */
-  public function __construct(CxnEntity $cxn, $status, array $data, \DateTime $timestamp = NULL, $flagged = 0) {
+  public function __construct(CxnEntity $cxn, $status, array $data, \DateTime $timestamp = NULL, $flagged = 0, $pubId = NULL) {
     $this->status = $status;
     $this->data = $data;
     $this->timestamp = $timestamp;
     $this->cxn = $cxn;
     $this->flagged = $flagged;
+    $this->pubId = $pubId;
   }
 
   /**
-   * @return integer
+   * @return int
    */
   public function getId() {
     return $this->id;
@@ -136,9 +148,11 @@ class ProfileSnapshot {
 
   /**
    * @param array $data
+   * @return $this
    */
   public function setData($data) {
     $this->data = $data;
+    return $this;
   }
 
   /**
@@ -150,23 +164,43 @@ class ProfileSnapshot {
 
   /**
    * @param string $status
+   * @return $this
    */
   public function setStatus($status) {
     $this->status = $status;
+    return $this;
   }
 
   /**
-   * @return boolean
+   * @return bool
    */
   public function isFlagged() {
     return $this->flagged;
   }
 
   /**
-   * @param boolean $flagged
+   * @param bool $flagged
+   * @return $this
    */
   public function setFlagged($flagged) {
     $this->flagged = $flagged;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getPubId() {
+    return $this->pubId;
+  }
+
+  /**
+   * @param string $pubId
+   * @return $this
+   */
+  public function setPubId($pubId) {
+    $this->pubId = $pubId;
+    return $this;
   }
 
   /**
@@ -187,6 +221,36 @@ class ProfileSnapshot {
       $status = 'error';
     }
     return $status;
+  }
+
+  /**
+   * Helper functions for generating a unique pubId.
+   *
+   * A pubId looks like "Ab1C2-dE3f4-g5Hi6".
+   *
+   * @param int $bytes
+   *   Number of random bytes to gather from RNG.
+   * @param int $chars
+   *   Number of characters to generate.
+   * @param int $spacing
+   *   Format the pubId with a delimiter every X chars.
+   * @return mixed
+   */
+  public static function generatePubId($bytes = 20, $chars = 20, $spacing = 5) {
+    $raw = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(crypt_random_string($bytes)));
+    // This conversion from bytes to alphanumerics is a bit lossy. To ensure we
+    // end up with enough characters, we take a few extra bytes.
+
+    // Take {$chars} alphanumerics, and intersperse dashes (AbC1-dE2f-gHi3).
+    $pubId = '';
+    for ($i = 0; $i < $chars; $i++) {
+      if ($i > 0 && $i % $spacing == 0) {
+        $pubId .= '-';
+      }
+      $pubId .= $raw{$i};
+    }
+
+    return $pubId;
   }
 
 }

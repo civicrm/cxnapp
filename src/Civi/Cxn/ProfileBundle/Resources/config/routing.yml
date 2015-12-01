@@ -1,7 +1,11 @@
 org_civicrm_profile_settings:
-    path:     /app:org.civicrm.profile/{cxnId}/settings
-    defaults: { _controller: civi_cxn_profile.admin_controller:settingsAction }
+  path:     /app:org.civicrm.profile/{cxnId}/settings
+  defaults: { _controller: civi_cxn_profile.admin_controller:settingsAction }
 
-org_civicrm_profile_view:
-    path:   /profile/{pubId}
-    defaults: { _controller: civi_cxn_profile.public_controller:viewAction }
+org_civicrm_profile_site_view:
+  path:   /profile/history/{pubId}
+  defaults: { _controller: civi_cxn_profile.public_controller:viewSiteAction }
+
+org_civicrm_profile_snapshot_view:
+  path:   /profile/snapshot/{pubId}
+  defaults: { _controller: civi_cxn_profile.public_controller:viewSnapshotAction }
