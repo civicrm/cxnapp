@@ -23,6 +23,7 @@
         {{ form_label(form.expires) }}
         <p>{% trans %}You may automatically unpublish the site profile after the chosen date.{% endtrans %}</p>
         {{ form_widget(form.expires) }}
+        <div><em>(Timezone: {{ timezone }})</em></div>
         {{ form_errors(form.expires) }}
     </div>
 

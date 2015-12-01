@@ -63,6 +63,7 @@ class AdminController extends Controller {
     return $this->render('CiviCxnProfileBundle:Admin:settings.html.twig', array(
       'form' => $form->createView(),
       'settings' => $settings,
+      'timezone' => date_default_timezone_get(),
     ));
   }
 
