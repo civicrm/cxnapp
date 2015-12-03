@@ -6,3 +6,9 @@ div.cxn-jumbo {
   width: 80%;
   text-align: center;
 }
+div.cxn-jumbo .dropdown-menu {
+  left: 50%;
+  right: auto;
+  text-align: center;
+  transform: translate(-50%, 0);
+}

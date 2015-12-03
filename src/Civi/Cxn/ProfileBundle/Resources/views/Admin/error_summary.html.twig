@@ -1,0 +1,48 @@
+{% macro error_summary(snapshot) %}
+
+    <table class="table text-left">
+        <tbody>
+        <tr>
+            <td class="col-md-1"><label>Snapshot ID</label></td>
+            <td class="col-md-8">
+                {{ snapshot.pubId }}
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-1"><label>Timestamp</label></td>
+            <td class="col-md-8">
+                {{ snapshot.timestamp | date }}
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-1"><label>Status</label></td>
+            <td class="col-md-8">
+                {{ snapshot.status }}
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-1"><label>Site URL</label></td>
+            <td class="col-md-8">
+                {{ snapshot.cxn.siteUrl }}
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-1"><label>App URL</label></td>
+            <td class="col-md-8">
+                {{ snapshot.cxn.appUrl }}
+            </td>
+        </tr>
+        {#{% if dump is defined %}#}
+            <tr>
+                <td class="col-md-1"><label>Data</label></td>
+                <td class="col-md-8">
+                    {{ snapshot.data|json_encode }}
+                </td>
+            </tr>
+
+        {#{% endif %}#}
+        </tbody>
+    </table>
+
+{% endmacro %}
+

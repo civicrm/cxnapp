@@ -34,6 +34,7 @@ services:
     arguments:
       - "@service_container"
       - "@doctrine.orm.entity_manager"
+      - "@civi_cxn_app.poll_runner"
 
   civi_cxn_profile.public_controller:
     class: Civi\Cxn\ProfileBundle\Controller\PublicController

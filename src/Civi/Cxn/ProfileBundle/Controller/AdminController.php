@@ -3,6 +3,8 @@
 namespace Civi\Cxn\ProfileBundle\Controller;
 
 use Civi\Cxn\AppBundle\Entity\CxnEntity;
+use Civi\Cxn\AppBundle\PollRunner;
+use Civi\Cxn\AppBundle\RetryPolicy;
 use Civi\Cxn\ProfileBundle\Entity\ProfileSettings;
 use Civi\Cxn\ProfileBundle\Form\ProfileSettingsType;
 use Doctrine\ORM\EntityManager;
@@ -25,10 +27,24 @@ class AdminController extends Controller {
    */
   protected $settingsRepo;
 
-  public function __construct(ContainerInterface $container, EntityManager $em) {
+  /**
+   * @var EntityRepository
+   */
+  protected $snapshotRepo;
+
+  /**
+   * @var \Civi\Cxn\AppBundle\PollRunner
+   */
+  protected $pollRunner;
+
+  protected $snapshotLimit = 10;
+
+  public function __construct(ContainerInterface $container, EntityManager $em, PollRunner $pollRunner) {
     $this->setContainer($container);
     $this->em = $em;
     $this->settingsRepo = $em->getRepository('Civi\Cxn\ProfileBundle\Entity\ProfileSettings');
+    $this->snapshotRepo = $em->getRepository('Civi\Cxn\ProfileBundle\Entity\ProfileSnapshot');
+    $this->pollRunner = $pollRunner;
   }
 
   /**
@@ -40,14 +56,17 @@ class AdminController extends Controller {
     $t = $this->get('translator');
 
     if (empty($cxnEntity) || !$cxnEntity->getCxnId()) {
-      throw new \RuntimeException('Error: cxn was not automatically loaded.');
+      throw $this->createNotFoundException('Error: cxn was not automatically loaded.');
     }
 
     // Find or create the settings for this connection.
+    /** @var ProfileSettings $settings */
     $settings = $this->settingsRepo->find($cxnEntity->getCxnId());
     if (!$settings) {
       throw $this->createNotFoundException('Failed to find ProfileSettings record.');
     }
+
+    $snapshots = $this->findCreateSnapshots($settings);
 
     // Prepare and process a form.
     $form = $this->createForm(new ProfileSettingsType(), $settings);
@@ -63,8 +82,57 @@ class AdminController extends Controller {
     return $this->render('CiviCxnProfileBundle:Admin:settings.html.twig', array(
       'form' => $form->createView(),
       'settings' => $settings,
+      'snapshots' => $snapshots,
       'timezone' => date_default_timezone_get(),
     ));
+  }
+
+  /**
+   * @return array
+   */
+  protected function getRetryPolicies() {
+    $max = 10 * 365 * 24 * 60;
+    return RetryPolicy::parse("1min (x{$max})");
+  }
+
+  /**
+   * @param ProfileSettings $settings
+   * @return array
+   *   Array(array $snapshots, ProfileSnapshot $lastError)
+   * @throws \Doctrine\ORM\EntityNotFoundException
+   */
+  protected function findCreateSnapshots($settings) {
+    $t = $this->get('translator');
+
+    $snapshots = $this->snapshotRepo->findBy(
+      array('cxn' => $settings->getCxn()),
+      array('timestamp' => 'DESC'),
+      $this->snapshotLimit
+    );
+
+    if (!empty($snapshots)) {
+      return $snapshots;
+    }
+
+    $this->pollRunner->runCxn($settings->getCxn(), 'default', $this->getRetryPolicies());
+    $snapshots = $this->snapshotRepo->findBy(
+      array('cxn' => $settings->getCxn()),
+      array('timestamp' => 'DESC'),
+      $this->snapshotLimit
+    );
+
+    if (!empty($snapshots)) {
+      return $snapshots;
+    }
+
+    // Note: This should never -- even in cases where the PollRunner fails to
+    // get good data, it should create a ProfileSnapshot with the error data.
+    $this->get('session')->getFlashBag()->add(
+      'error',
+      $t->trans('Failed to find or initialize a snapshot.')
+    );
+    return array();
+
   }
 
 }

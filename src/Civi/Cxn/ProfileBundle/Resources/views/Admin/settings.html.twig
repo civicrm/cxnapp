@@ -6,26 +6,53 @@
 {% endblock %}
 
 {% block body %}
+    {% from "CiviCxnProfileBundle:Admin:snapshot_menu.html.twig" import snapshot_menu %}
+    {% from "CiviCxnProfileBundle:Admin:settings_form.html.twig" import settings_form %}
+    {% from "CiviCxnProfileBundle:Admin:error_summary.html.twig" import error_summary %}
 
-    <div class="alert alert-info cxn-jumbo" role="alert">
-        {% trans %}If you seek support for CiviCRM in an online forum, it will help to publish up-to-date technical
-        details about your system (such as the version of CiviCRM, type of CMS, and list of PHP extensions). Simply
-        share this anonymized link:{% endtrans %}
-        <br><br>
-        <a target="_blank"
-           href="{{ url('org_civicrm_profile_site_view', {'pubId': settings.pubId}) }}">{{ url('org_civicrm_profile_site_view', {'pubId': settings.pubId}) }}</a>
-    </div>
+    {% if snapshots.0 is defined %}
+        {% if snapshots.0.status == 'ok' %}
+            <div class="alert alert-info cxn-jumbo" role="alert">
 
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
+                <p>
+                    {% trans %}If you seek support for CiviCRM in an online forum, it will help to publish up-to-date
+                    technical
+                    details about your system (such as the version of CiviCRM, type of CMS, and list of PHP extensions).
+                    Simply
+                    share this anonymized link:{% endtrans %}
+                </p>
+                <br/>
 
-    <div class="form-group {% if form.expires.vars.errors|length > 0 %} has-error{% endif %}">
-        {{ form_label(form.expires) }}
-        <p>{% trans %}You may automatically unpublish the site profile after the chosen date.{% endtrans %}</p>
-        {{ form_widget(form.expires) }}
-        <div><em>(Timezone: {{ timezone }})</em></div>
-        {{ form_errors(form.expires) }}
-    </div>
+                <p>
+                    <code>
+                        <a target="_blank"
+                           href="{{ url('org_civicrm_profile_snapshot_view', {'pubId': snapshots.0.pubId}) }}">{{ url('org_civicrm_profile_snapshot_view', {'pubId': snapshots.0.pubId}) }}</a>
+                    </code>
+                    <br/>
+                    <span class="text-muted">(Updated: {{ snapshots.0.timestamp | date }})</span>
+                </p>
 
-    {{ form_end(form) }}
+                {{ snapshot_menu(settings, snapshots) }}
+            </div>
+
+            {{ settings_form(form, timezone) }}
+        {% else %}
+            <div class="alert alert-danger cxn-jumbo" role="alert">
+
+                <h3>
+                    <strong>
+                        {% trans %}There was an error in reading your site configuration.{% endtrans %}
+                    </strong>
+                </h3>
+
+                {{ error_summary(snapshots.0) }}
+                <br/>
+
+
+                {{ snapshot_menu(settings, snapshots) }}
+            </div>
+        {% endif %}
+
+    {% endif %}
+
 {% endblock %}

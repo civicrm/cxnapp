@@ -1,0 +1,14 @@
+{% macro settings_form(form, timezone) %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="form-group {% if form.expires.vars.errors|length > 0 %} has-error{% endif %}">
+        {{ form_label(form.expires) }}
+        <p>{% trans %}You may automatically unpublish all your profile data after the chosen date.{% endtrans %}</p>
+        {{ form_widget(form.expires) }}
+        <div><em>(Timezone: {{ timezone }})</em></div>
+        {{ form_errors(form.expires) }}
+    </div>
+
+    {{ form_end(form) }}
+{% endmacro %}
