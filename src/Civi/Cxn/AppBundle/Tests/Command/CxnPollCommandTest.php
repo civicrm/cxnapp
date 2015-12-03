@@ -5,6 +5,7 @@ namespace Civi\Cxn\AppBundle\Tests\Command;
 use Civi\Cxn\AppBundle\Command\CxnPollCommand;
 use Civi\Cxn\AppBundle\Entity\CxnEntity;
 use Civi\Cxn\AppBundle\Event\PollEvent;
+use Civi\Cxn\AppBundle\PollRunner;
 use Civi\Cxn\Rpc\ApiClient;
 use Civi\Cxn\Rpc\AppStore\SingletonAppStore;
 use Civi\Cxn\Rpc\Time;
@@ -290,14 +291,18 @@ class CxnPollCommandTest extends WebTestCase {
     );
 
     $application = new Application($kernel);
-    $application->add(new CxnPollCommand(
+    $pollRunner = new PollRunner(
       $container->get('doctrine.orm.entity_manager'),
       $container->get('event_dispatcher'),
       $container->get('logger'),
-      $container->getParameter('kernel.root_dir') . '/lock',
       // $container->get('civi_cxn_app.app_store'),
       new SingletonAppStore($appMeta['appId'], $appMeta, NULL, NULL),
       $container->get('civi_cxn_app.cxn_store')
+    );
+    $application->add(new CxnPollCommand(
+      $container->get('logger'),
+      $container->getParameter('kernel.root_dir') . '/lock',
+      $pollRunner
     ));
     return $application;
   }

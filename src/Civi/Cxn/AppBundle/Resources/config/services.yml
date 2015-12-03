@@ -21,6 +21,15 @@ services:
     class: Civi\Cxn\AppBundle\DoctrineCxnStore
     arguments: ['@doctrine.orm.entity_manager']
 
+  civi_cxn_app.poll_runner:
+    class: Civi\Cxn\AppBundle\PollRunner
+    arguments:
+      - "@doctrine.orm.entity_manager"
+      - "@event_dispatcher"
+      - "@logger"
+      - "@civi_cxn_app.app_store"
+      - "@civi_cxn_app.cxn_store"
+
   civi_cxn_app.command.app_get_command:
     class: Civi\Cxn\AppBundle\Command\AppGetCommand
     arguments: ["@civi_cxn_app.app_store"]
@@ -36,12 +45,9 @@ services:
   civi_cxn_app.command.cxn_poll_command:
     class: Civi\Cxn\AppBundle\Command\CxnPollCommand
     arguments:
-      - "@doctrine.orm.entity_manager"
-      - "@event_dispatcher"
       - "@logger"
       - "%kernel.root_dir%/lock"
-      - "@civi_cxn_app.app_store"
-      - "@civi_cxn_app.cxn_store"
+      - "@civi_cxn_app.poll_runner"
     tags:
       - { name: console.command }
 
