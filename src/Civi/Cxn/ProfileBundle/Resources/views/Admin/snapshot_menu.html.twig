@@ -1,11 +1,12 @@
 {% macro snapshot_menu(settings, snapshots) %}
     <div class="btn-group" role="group" aria-label="Profile Actions">
-        <button type="button" class="btn btn-default" onclick="alert('TODO');return false;">{% trans %}
-            Refresh{% endtrans %}</button>
+        <a class="btn btn-default action-post" href="#" data-url="{{ url('org_civicrm_profile_settings_refresh', {'cxnId': settings.cxn.cxnId}) }}">
+            {% trans %}Refresh{% endtrans %}
+        </a>
 
-        <a class="btn btn-default" target="_blank"
-           href="{{ url('org_civicrm_profile_site_view', {'pubId': settings.pubId}) }}">{% trans %}
-            History{% endtrans %}</a>
+        <a class="btn btn-default" target="_blank" href="{{ url('org_civicrm_profile_site_view', {'pubId': settings.pubId}) }}">
+            {% trans %}History{% endtrans %}
+        </a>
 
         <div class="btn-group" role="group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -31,6 +32,5 @@
             {% endif %}
         </div>
     </div>
-
 
 {% endmacro %}

@@ -5,6 +5,10 @@
     <link href="{{ asset('bundles/civicxnprofile/profile.css') }}" type="text/css" rel="stylesheet"/>
 {% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('bundles/civicxnprofile/settings.js') }}"></script>
+{% endblock %}
+
 {% block body %}
     {% from "CiviCxnProfileBundle:Admin:snapshot_menu.html.twig" import snapshot_menu %}
     {% from "CiviCxnProfileBundle:Admin:settings_form.html.twig" import settings_form %}
@@ -32,6 +36,7 @@
                     <span class="text-muted">(Updated: {{ snapshots.0.timestamp | date }})</span>
                 </p>
 
+                <br/>
                 {{ snapshot_menu(settings, snapshots) }}
             </div>
 
@@ -47,7 +52,6 @@
 
                 {{ error_summary(snapshots.0) }}
                 <br/>
-
 
                 {{ snapshot_menu(settings, snapshots) }}
             </div>

@@ -2,6 +2,10 @@ org_civicrm_profile_settings:
   path:     /app:org.civicrm.profile/{cxnId}/settings
   defaults: { _controller: civi_cxn_profile.admin_controller:settingsAction }
 
+org_civicrm_profile_settings_refresh:
+  path:     /app:org.civicrm.profile/{cxnId}/refresh
+  defaults: { _controller: civi_cxn_profile.admin_controller:refreshAction }
+
 org_civicrm_profile_site_view:
   path:   /profile/history/{pubId}
   defaults: { _controller: civi_cxn_profile.public_controller:viewSiteAction }

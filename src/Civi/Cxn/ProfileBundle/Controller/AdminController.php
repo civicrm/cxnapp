@@ -6,9 +6,10 @@ use Civi\Cxn\AppBundle\Entity\CxnEntity;
 use Civi\Cxn\AppBundle\PollRunner;
 use Civi\Cxn\AppBundle\RetryPolicy;
 use Civi\Cxn\ProfileBundle\Entity\ProfileSettings;
+use Civi\Cxn\ProfileBundle\Event\SnapshotEvent;
 use Civi\Cxn\ProfileBundle\Form\ProfileSettingsType;
+use Civi\Cxn\ProfileBundle\ProfileEvents;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -85,6 +86,47 @@ class AdminController extends Controller {
       'snapshots' => $snapshots,
       'timezone' => date_default_timezone_get(),
     ));
+  }
+
+  /**
+   * Fetch a new ProfileSnapshot and redirect.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   * @param \Civi\Cxn\AppBundle\Entity\CxnEntity $cxnEntity
+   * @return \Symfony\Component\HttpFoundation\RedirectResponse
+   */
+  public function refreshAction(Request $request, CxnEntity $cxnEntity) {
+    $t = $this->get('translator');
+
+    if (empty($cxnEntity) || !$cxnEntity->getCxnId()) {
+      throw $this->createNotFoundException('Error: cxn was not automatically loaded.');
+    }
+
+    // Find or create the settings for this connection.
+    /** @var ProfileSettings $settings */
+    $settings = $this->settingsRepo->find($cxnEntity->getCxnId());
+    if (!$settings) {
+      throw $this->createNotFoundException('Failed to find ProfileSettings record.');
+    }
+
+    if ($request->getMethod() !== 'POST') {
+      $this->createAccessDeniedException('This request must be submitted via POST');
+    }
+
+    $onSnapshot = function (SnapshotEvent $e) use ($t) {
+      $e->getSnapshot()->setFlagged(TRUE);
+      $this->get('session')->getFlashBag()->add(
+        'notice',
+        $t->trans('Refreshed')
+      );
+    };
+    $this->get('event_dispatcher')->addListener(ProfileEvents::SNAPSHOT, $onSnapshot);
+
+    $this->pollRunner->runCxn($settings->getCxn(), 'default', $this->getRetryPolicies());
+
+    return $this->redirect($this->generateUrl('org_civicrm_profile_settings', array(
+      'cxnId' => $cxnEntity->getCxnId(),
+    )));
   }
 
   /**
