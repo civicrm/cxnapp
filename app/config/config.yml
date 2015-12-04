@@ -36,6 +36,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    date:
+        format: Y-m-d H:i T
 
 # Assetic Configuration
 assetic:

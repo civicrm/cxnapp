@@ -84,7 +84,7 @@ class AdminController extends Controller {
       'form' => $form->createView(),
       'settings' => $settings,
       'snapshots' => $snapshots,
-      'timezone' => date_default_timezone_get(),
+      'timezone' => date('T'),
     ));
   }
 
