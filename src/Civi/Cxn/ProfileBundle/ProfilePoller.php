@@ -27,10 +27,12 @@
 namespace Civi\Cxn\ProfileBundle;
 
 use Civi\Cxn\AppBundle\Event\PollEvent;
+use Civi\Cxn\ProfileBundle\Event\SnapshotEvent;
 use Civi\Cxn\ProfileBundle\Entity\ProfileSnapshot;
 use Civi\Cxn\Rpc\Time;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class ProfilePoller
@@ -52,9 +54,15 @@ class ProfilePoller {
    */
   protected $log;
 
-  public function __construct(EntityManager $em, LoggerInterface $log) {
+  /**
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  protected $dispatcher;
+
+  public function __construct(EntityManager $em, LoggerInterface $log, EventDispatcherInterface $dispatcher) {
     $this->em = $em;
     $this->log = $log;
+    $this->dispatcher = $dispatcher;
   }
 
   public function onPoll(PollEvent $poll) {
@@ -85,6 +93,9 @@ class ProfilePoller {
 
     $snapshot = new ProfileSnapshot(
       $poll->getCxnEntity(), $status, $result, Time::createDateTime(), 0, $pubId);
+
+    $this->dispatcher->dispatch(ProfileEvents::SNAPSHOT, new SnapshotEvent($snapshot));
+
     $this->em->persist($snapshot);
     $this->em->flush($snapshot);
 

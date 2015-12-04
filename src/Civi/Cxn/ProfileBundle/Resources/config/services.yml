@@ -15,6 +15,7 @@ services:
     arguments:
        - "@doctrine.orm.entity_manager"
        - "@logger"
+       - "@event_dispatcher"
     tags:
        - { name: kernel.event_listener, event: 'app:org.civicrm.profile:job=default:poll', method: onPoll }
 
