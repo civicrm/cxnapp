@@ -61,6 +61,16 @@ class CxnEntity {
   private $perm;
 
   /**
+   * @var string
+   *   Ex: "123.123.123.123:456".
+   *   Ex: "proxy.example.com:789"
+   *   Ex: "dhcp123.isp.example.net:456"
+   *
+   * @ORM\Column(name="viaPort", type="string", length=127, nullable=true)
+   */
+  private $viaPort;
+
+  /**
    * @var int
    *
    * The batchCode is a randomly generated integer which can be
@@ -230,13 +240,27 @@ class CxnEntity {
   }
 
   /**
+   * @return string
+   */
+  public function getViaPort() {
+    return $this->viaPort;
+  }
+
+  /**
+   * @param string $viaPort
+   */
+  public function setViaPort($viaPort) {
+    $this->viaPort = $viaPort;
+  }
+
+  /**
    * Generate an array-formatted record as expected by, eg, Cxn::validate.
    *
    * @return array
    * @see Cxn::validate
    */
   public function toArray() {
-    return array(
+    $result = array(
       'appId' => $this->getAppId(),
       'appUrl' => $this->getAppUrl(),
       'cxnId' => $this->getCxnId(),
@@ -244,6 +268,10 @@ class CxnEntity {
       'secret' => $this->getSecret(),
       'siteUrl' => $this->getSiteUrl(),
     );
+    if ($this->getViaPort()) {
+      $result['viaPort'] = $this->getViaPort();
+    }
+    return $result;
   }
 
   public function mergeArray($cxn) {
@@ -265,6 +293,8 @@ class CxnEntity {
     if (isset($cxn['siteUrl'])) {
       $this->setSiteUrl($cxn['siteUrl']);
     }
+    // viaPort is optional, but if it's omitted, that's significant.
+    $this->setViaPort(isset($cxn['viaPort']) ? $cxn['viaPort'] : NULL);
   }
 
 }
