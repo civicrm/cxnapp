@@ -9,12 +9,13 @@
     - cms: array
       - type: string
  #}
-{% macro system_summary(systemInfo) %}
+{% macro system_summary(systemInfo, idPrefix='') %}
     {% from _self import panel_title %}
 
     {#{{ dump(systemInfo) }}#}
 
     {% if systemInfo.civi is defined %}
+        <a  class="anchor" id="{{ idPrefix }}civicrm"></a>
         <div class="panel panel-info">
             <div class="panel-heading">
                 {{ panel_title('CiviCRM', systemInfo.civi.version is defined ? systemInfo.civi.version : false) }}
@@ -27,6 +28,7 @@
     {% endif %}
 
     {% if systemInfo.cms is defined %}
+        <a  class="anchor" id="{{ idPrefix }}cms"></a>
         <div class="panel panel-info">
             <div class="panel-heading">
                 {{ panel_title(systemInfo.cms.type, systemInfo.cms.version is defined ? systemInfo.cms.version : false) }}
@@ -39,6 +41,7 @@
     {% endif %}
 
     {% if systemInfo.mysql is defined %}
+        <a  class="anchor" id="{{ idPrefix }}mysql"></a>
         <div class="panel panel-info">
             <div class="panel-heading">
                 {{ panel_title('MySQL', systemInfo.mysql.version is defined ? systemInfo.mysql.version : false) }}
@@ -51,6 +54,7 @@
     {% endif %}
 
     {% if systemInfo.php is defined %}
+        <a  class="anchor" id="{{ idPrefix }}php"></a>
         <div class="panel panel-info">
             <div class="panel-heading">
                 {{ panel_title('PHP', systemInfo.php.version is defined ? systemInfo.php.version : false) }}
