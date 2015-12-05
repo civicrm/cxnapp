@@ -5,6 +5,18 @@
  #}
 {% macro mysql_summary(systemInfo) %}
 
-    <em>(No additional data)</em>
-
+    {% if systemInfo.mysql.vars is defined %}
+        <table class="table table-striped">
+            <tbody>
+            {% for iniKey, iniValue in systemInfo.mysql.vars %}
+                <tr>
+                    <td class="col-md-1"><span class="badge">var</span> <label>{{ iniKey }}</label></td>
+                    <td class="col-md-8"><code>{{ iniValue }}</code></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <em>(No additional data)</em>
+    {% endif %}
 {% endmacro %}
