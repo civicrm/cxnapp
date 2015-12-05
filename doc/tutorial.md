@@ -4,8 +4,8 @@
 
  * php-cli 5.4+
  * composer
- * less
-   * (`npm install -g less`)
+ * sass
+   * (eg `sudo su -c "gem install sass"`)
 
 ### Get the code
 
@@ -13,6 +13,7 @@
 git clone https://github.com/civicrm/cxnapp
 cd cxnapp
 composer install
+php app/console assetic:dump
 ```
 
 ### Setup HTTPD, MySQL, Symfony
