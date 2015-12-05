@@ -7,9 +7,8 @@
 
 {% block body %}
     <div class="page-header">
-        <h1>{% trans %}Site History{% endtrans %}
-            <small>({{ settings.pubId }})</small>
-        </h1>
+        <h1>{% trans %}Site History{% endtrans %}</h1>
+        <small class="text-muted"><label>{% trans %}ID{% endtrans %}:</label> {{ settings.pubId }}</small>
     </div>
 
     <table class="table table-striped">

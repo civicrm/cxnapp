@@ -7,10 +7,9 @@
 
 {% block body %}
     <div class="page-header">
-        <h1>{% trans %}Site Snapshot{% endtrans %}
-            <small>({{ snapshot.pubId }})</small>
-        </h1>
-        <small>{{ snapshot.timestamp | date }}</small>
+        <h1>{% trans %}Site Snapshot{% endtrans %}</h1>
+        <small class="text-muted"><label>{% trans %}ID{% endtrans %}:</label> {{ snapshot.pubId }}</small>
+        <small class="text-muted"><label>{% trans %}Time{% endtrans %}:</label> {{ snapshot.timestamp | date }}</small>
     </div>
 
     {#
