@@ -6,11 +6,12 @@
 {% endblock %}
 
 {% block body %}
-    <div class="cxn-welcome">
+    <div class="alert alert-info cxn-jumbo" role="alert">
         {% trans %}The <em>Cron</em> service automatically executes scheduled jobs on your CiviCRM installation. If something goes wrong, it will send a notification to the <em>Administrative Email Address</em>.{% endtrans %}
     </div>
 
     {{ form_start(form) }}
+    {{ form_errors(form) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
 {% endblock %}

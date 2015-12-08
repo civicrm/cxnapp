@@ -18,3 +18,8 @@
 /composer.phar
 /vendor/
 /web/bundles/
+/web/css/bootstrap*
+/web/fonts/glyphicons*
+/web/js/bootstrap*
+/web/js/jquery.js
+/web/js/jquery_jquery*

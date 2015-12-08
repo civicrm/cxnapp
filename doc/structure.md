@@ -20,6 +20,65 @@ To implement a new CiviConnect application (such as an "address cleanup" service
 generate a new bundle (eg `./app/console generate:bundle`) and add any required functionality to
 that bundle (eg new database tables, new console commands, new settings pages, new web services).
 
+# Events
+
+The `AppBundle` emits some events during registration and unregistration.
+These can be useful if you need to do some extra work or setup some extra
+records.
+
+For example, to perform some action after processing a registration request,
+you might add class `Civi\Cxn\MyBundle\MyRegistration` with function
+`onRespond(RegistrationServerEvent $e)` and update `services.yml`:
+
+```yaml
+services:
+ civi_cxn_mybundle.registrations:
+   class: Civi\Cxn\MyBundle\MyRegistration
+   tags:
+      - { name: kernel.event_listener, event: 'app:org.civicrm.myapp:cxn.register:respond', method: onRespond }
+```
+
+<table>
+  <tbody>
+    <tr>
+        <td>
+          <tt>{appId}:{entity}.{action}:parse</tt><br/>
+          <tt>civi_cxn_registration_server.parse</tt>
+        </td>
+        <td>
+          Parse an incoming request to the registration server.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <tt>{appId}:{entity}.{action}:call</tt><br/>
+            <tt>civi_cxn_registration_server.call</tt>
+        </td>
+        <td>
+          Execute a request for the registration server.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <tt>{appId}:{entity}.{action}:respond</tt><br/>
+            <tt>civi_cxn_registration_server.respond</tt>
+        </td>
+        <td>
+          Format the response to a request for the registration server.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <tt>{appId}:job={jobName}:poll</tt><br/>
+            <tt>civi_cxn.poll</tt>
+        </td>
+        <td>
+          Execute a periodic job.
+        </td>
+    </tr>
+  </tbody>
+</table>
+
 # Assets: CSS, Javascript
 
 These files are generally managed using Symfony's asset functionality. More specifically,

@@ -1,16 +1,14 @@
-label {
-  padding-right: 1em;
-}
-div.alert, div.cxn-welcome {
+body {
   padding: 1em;
-  border: 1px solid black;
+}
+div.cxn-jumbo {
   margin: 0.5em auto;
   width: 80%;
   text-align: center;
 }
-div.alert-success {
-  background: #9d9;
-}
-div.cxn-welcome {
-  background: #8bf;
+div.cxn-jumbo .dropdown-menu {
+  left: 50%;
+  right: auto;
+  text-align: center;
+  transform: translate(-50%, 0);
 }

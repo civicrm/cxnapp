@@ -2,14 +2,14 @@
 
 namespace Civi\Cxn\AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Cxn
  *
  * @ORM\Table("Cxn",
- *   uniqueConstraints={@ORM\UniqueConstraint(name="cxnId_idx", columns={"cxnId"})},
- *   indexes={@ORM\Index(name="appId_idx", columns={"appId"})}
+ *   indexes={@ORM\Index(name="appId_idx", columns={"appId","batchCode"})}
  * )
  * @ORM\Entity(
  *   repositoryClass="Civi\Cxn\AppBundle\Entity\CxnEntityRepository"
@@ -18,29 +18,9 @@ use Doctrine\ORM\Mapping as ORM;
 class CxnEntity {
 
   /**
-   * Create a CxnEntity object using a Cxn array.
-   *
-   * @param array $cxn
-   * @return CxnEntity
-   */
-  public static function create($cxn) {
-    $thisl = new CxnEntity();
-    $thisl->mergeArray($cxn);
-    return $thisl;
-  }
-
-  /**
-   * @var integer
-   *
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   */
-  private $id;
-
-  /**
    * @var string
    *
+   * @ORM\Id
    * @ORM\Column(name="cxnId", type="string", length=64)
    */
   private $cxnId;
@@ -80,21 +60,47 @@ class CxnEntity {
    */
   private $perm;
 
+  /**
+   * @var string
+   *   Ex: "123.123.123.123:456".
+   *   Ex: "proxy.example.com:789"
+   *   Ex: "dhcp123.isp.example.net:456"
+   *
+   * @ORM\Column(name="viaPort", type="string", length=127, nullable=true)
+   */
+  private $viaPort;
 
   /**
-   * Get id
+   * @var int
    *
-   * @return integer
+   * The batchCode is a randomly generated integer which can be
+   * used to breakdown the list of cxn's into batches. For example, to
+   * fetch the first of three batches, one might select either:
+   *
+   *   WHERE batchCode BETWEEN 0 and 3333
+   *   WHERE MOD(batchCode, 3) = 0
+   *
+   * @ORM\Column(name="batchCode", type="integer", nullable=false, options={"unsigned":true, "default":0})
    */
-  public function getId() {
-    return $this->id;
+  private $batchCode;
+
+  /**
+   * @ORM\OneToMany(targetEntity="Civi\Cxn\AppBundle\Entity\PollStatus", mappedBy="cxn")
+   */
+  private $pollStatuses;
+
+  /**
+   * CxnEntity constructor.
+   */
+  public function __construct() {
+    $this->pollStatuses = new ArrayCollection();
   }
 
   /**
    * Set cxnId
    *
    * @param string $cxnId
-   * @return Cxn
+   * @return CxnEntity
    */
   public function setCxnId($cxnId) {
     $this->cxnId = $cxnId;
@@ -115,7 +121,7 @@ class CxnEntity {
    * Set secret
    *
    * @param string $secret
-   * @return Cxn
+   * @return CxnEntity
    */
   public function setSecret($secret) {
     $this->secret = $secret;
@@ -136,7 +142,7 @@ class CxnEntity {
    * Set appId
    *
    * @param string $appId
-   * @return Cxn
+   * @return CxnEntity
    */
   public function setAppId($appId) {
     $this->appId = $appId;
@@ -157,7 +163,7 @@ class CxnEntity {
    * Set appUrl
    *
    * @param string $appUrl
-   * @return Cxn
+   * @return CxnEntity
    */
   public function setAppUrl($appUrl) {
     $this->appUrl = $appUrl;
@@ -175,10 +181,27 @@ class CxnEntity {
   }
 
   /**
+   * @return int
+   */
+  public function getBatchCode() {
+    return $this->batchCode;
+  }
+
+  /**
+   * @param int $batchCode
+   * @return CxnEntity
+   */
+  public function setBatchCode($batchCode) {
+    $this->batchCode = $batchCode;
+
+    return $this;
+  }
+
+  /**
    * Set siteUrl
    *
    * @param string $siteUrl
-   * @return Cxn
+   * @return CxnEntity
    */
   public function setSiteUrl($siteUrl) {
     $this->siteUrl = $siteUrl;
@@ -199,7 +222,7 @@ class CxnEntity {
    * Set perm
    *
    * @param array $perm
-   * @return Cxn
+   * @return CxnEntity
    */
   public function setPerm($perm) {
     $this->perm = $perm;
@@ -217,20 +240,38 @@ class CxnEntity {
   }
 
   /**
+   * @return string
+   */
+  public function getViaPort() {
+    return $this->viaPort;
+  }
+
+  /**
+   * @param string $viaPort
+   */
+  public function setViaPort($viaPort) {
+    $this->viaPort = $viaPort;
+  }
+
+  /**
    * Generate an array-formatted record as expected by, eg, Cxn::validate.
    *
    * @return array
    * @see Cxn::validate
    */
   public function toArray() {
-    return array(
+    $result = array(
       'appId' => $this->getAppId(),
       'appUrl' => $this->getAppUrl(),
       'cxnId' => $this->getCxnId(),
       'perm' => $this->getPerm(),
       'secret' => $this->getSecret(),
       'siteUrl' => $this->getSiteUrl(),
-    );;
+    );
+    if ($this->getViaPort()) {
+      $result['viaPort'] = $this->getViaPort();
+    }
+    return $result;
   }
 
   public function mergeArray($cxn) {
@@ -252,6 +293,8 @@ class CxnEntity {
     if (isset($cxn['siteUrl'])) {
       $this->setSiteUrl($cxn['siteUrl']);
     }
+    // viaPort is optional, but if it's omitted, that's significant.
+    $this->setViaPort(isset($cxn['viaPort']) ? $cxn['viaPort'] : NULL);
   }
 
 }

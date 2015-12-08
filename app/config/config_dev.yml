@@ -19,6 +19,7 @@ monolog:
             level:  debug
         console:
             type:   console
+            formatter: console_formatter
             bubble: false
             verbosity_levels:
                 VERBOSITY_VERBOSE: INFO
@@ -26,6 +27,7 @@ monolog:
             channels: ["!doctrine"]
         console_very_verbose:
             type:   console
+            formatter: console_formatter
             bubble: false
             verbosity_levels:
                 VERBOSITY_VERBOSE: NOTICE
@@ -46,3 +48,6 @@ assetic:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+twig:
+    cache:  false

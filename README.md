@@ -17,8 +17,11 @@ be used as a base for developing more substantial applications.
  * [Getting Started](doc/tutorial.md)
  * [Code Structure](doc/structure.md)
  * [Administration Screens](doc/admin-screen.md)
+ * [Polling Connections](doc/polling.md)
  * [Tips](doc/tips.md)
 
 ## Documentation: civicrm.org services
 
- * [Certificate Revocation Lists](doc/crl.md)
+ * [Certificate Revocation List (crl)](src/Civi/Cxn/CrlBundle/README.md)
+ * [Site Profiles (org.civicrm.profile)](src/Civi/Cxn/ProfileBundle/README.md)
+ * [Cron (org.civicrm.cron)](src/Civi/Cxn/CronBundle/README.md)

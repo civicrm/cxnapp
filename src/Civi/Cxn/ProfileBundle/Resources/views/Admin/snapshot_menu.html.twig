@@ -1,0 +1,36 @@
+{% macro snapshot_menu(settings, snapshots) %}
+    <div class="btn-group" role="group" aria-label="Profile Actions">
+        <a class="btn btn-default action-post" href="#" data-url="{{ url('org_civicrm_profile_settings_refresh', {'cxnId': settings.cxn.cxnId}) }}">
+            {% trans %}Refresh{% endtrans %}
+        </a>
+
+        <a class="btn btn-default" target="_blank" href="{{ url('org_civicrm_profile_site_view', {'pubId': settings.pubId}) }}">
+            {% trans %}History{% endtrans %}
+        </a>
+
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                {% trans %}Recent{% endtrans %}
+                <span class="caret"></span>
+            </button>
+
+            {% if snapshots.0 %}
+                <ul class="dropdown-menu">
+                    {% for snapshot in snapshots %}
+                        {% if snapshot.status == 'ok' %}
+                            <li><a target="_blank"
+                                   href="{{ url('org_civicrm_profile_snapshot_view', {'pubId': snapshot.pubId}) }}">{{ snapshot.timestamp|date }}</a>
+                            </li>
+                        {% else %}
+                            {# FIXME: When the menu *only* contains errors, layout looks weird b/c they aren't links. #}
+                            <li class="text-danger">{{ snapshot.timestamp|date }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+{% endmacro %}

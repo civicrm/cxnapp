@@ -1,0 +1,27 @@
+{#
+  Display a formatted summary of MySQL-specific data.
+
+  @param array systemInfo: the results from System.get API
+ #}
+{% macro mysql_summary(systemInfo) %}
+
+    <table class="table table-striped">
+        <tbody>
+        {% if systemInfo.mysql.time is defined %}
+            <tr>
+                <td class="col-md-1"><label>Time</label></td>
+                <td class="col-md-8"><code>{{ systemInfo.mysql.time }}</code></td>
+            </tr>
+        {% endif %}
+        {% if systemInfo.mysql.vars is defined %}
+            {% for iniKey, iniValue in systemInfo.mysql.vars %}
+                <tr>
+                    <td class="col-md-1"><span class="badge">var</span> <label>{{ iniKey }}</label></td>
+                    <td class="col-md-8"><code>{{ iniValue }}</code></td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+
+{% endmacro %}

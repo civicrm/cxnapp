@@ -1,0 +1,44 @@
+services:
+#    civi_cxn_profile.example:
+#        class: Civi\Cxn\ProfileBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+  civi_cxn_profile.registrations:
+    class: Civi\Cxn\ProfileBundle\ProfileRegistration
+    arguments:
+       - "@doctrine.orm.entity_manager"
+    tags:
+       - { name: kernel.event_listener, event: 'app:org.civicrm.profile:cxn.register:respond', method: onRespond }
+
+  civi_cxn_profile.poller:
+    class: Civi\Cxn\ProfileBundle\ProfilePoller
+    arguments:
+       - "@doctrine.orm.entity_manager"
+       - "@logger"
+       - "@event_dispatcher"
+    tags:
+       - { name: kernel.event_listener, event: 'app:org.civicrm.profile:job=default:poll', method: onPoll }
+
+  civi_cxn_profile.cleanup:
+    class: Civi\Cxn\ProfileBundle\ProfileCleanup
+    arguments:
+       - "@doctrine.orm.entity_manager"
+       - "@logger"
+       -
+         errors: 20
+         overall: 50
+    tags:
+       - { name: kernel.event_listener, event: 'app:org.civicrm.profile:job=default:poll', method: cleanup,  priority: -50 }
+
+  civi_cxn_profile.admin_controller:
+    class: Civi\Cxn\ProfileBundle\Controller\AdminController
+    arguments:
+      - "@service_container"
+      - "@doctrine.orm.entity_manager"
+      - "@civi_cxn_app.poll_runner"
+
+  civi_cxn_profile.public_controller:
+    class: Civi\Cxn\ProfileBundle\Controller\PublicController
+    arguments:
+      - "@service_container"
+      - "@doctrine.orm.entity_manager"

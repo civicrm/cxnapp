@@ -10,10 +10,11 @@ use Symfony\Component\Routing\Router;
 class CxnLinks {
 
   /**
-   * @var string
-   *   Ex: 'iframe', 'popup', 'redirect'
+   * @var array
+   *
+   * Default options for each link -- e.g. 'mode', 'width', 'height'
    */
-  protected $defaultMode;
+  protected $defaults;
 
   /**
    * @var Router
@@ -37,13 +38,13 @@ class CxnLinks {
 
   protected $ttl;
 
-  public function __construct(Router $router, LoggerInterface $logger, EntityManager $em, $secret, $ttl, $defaultMode) {
+  public function __construct(Router $router, LoggerInterface $logger, EntityManager $em, $secret, $ttl, $defaults) {
     $this->router = $router;
     $this->log = $logger;
     $this->em = $em;
     $this->secret = $secret;
     $this->ttl = $ttl;
-    $this->defaultMode = $defaultMode;
+    $this->defaults = $defaults;
   }
 
   /**
@@ -91,12 +92,9 @@ class CxnLinks {
 
     // TODO: Dispatch an event so that other bundles can manage links.
 
-    return array(
+    return $this->defaults + array(
       'cxn_id' => $cxn['cxnId'],
       'url' => $url,
-      'mode' => $this->defaultMode,
-      // 'width' => '40%',
-      // 'height' => 'auto',
     );
   }
 

@@ -1,0 +1,74 @@
+{#
+  Display a formatted summary of CiviCRM-specific data.
+
+  @param array systemInfo: the results from System.get API, e.g.
+    - civi: array
+      - dev: bool
+      - components: array(string $componentName)
+      - extensions: array(string $extension => string $status)
+    - cms: array
+      - type: string
+ #}
+{% macro system_summary(systemInfo, idPrefix='') %}
+    {% from _self import panel_title %}
+
+    {#{{ dump(systemInfo) }}#}
+
+    {% if systemInfo.civi is defined %}
+        <a  class="anchor" id="{{ idPrefix }}civicrm"></a>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                {{ panel_title('CiviCRM', systemInfo.civi.version is defined ? systemInfo.civi.version : false) }}
+            </div>
+            <div class="panel-body">
+                {% from "CiviCxnProfileBundle:Public:civi_summary.html.twig" import civi_summary %}
+                {{ civi_summary(systemInfo) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if systemInfo.cms is defined %}
+        <a  class="anchor" id="{{ idPrefix }}cms"></a>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                {{ panel_title(systemInfo.cms.type, systemInfo.cms.version is defined ? systemInfo.cms.version : false) }}
+            </div>
+            <div class="panel-body">
+                {% from "CiviCxnProfileBundle:Public:cms_summary.html.twig" import cms_summary %}
+                {{ cms_summary(systemInfo) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if systemInfo.mysql is defined %}
+        <a  class="anchor" id="{{ idPrefix }}mysql"></a>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                {{ panel_title('MySQL', systemInfo.mysql.version is defined ? systemInfo.mysql.version : false) }}
+            </div>
+            <div class="panel-body">
+                {% from "CiviCxnProfileBundle:Public:mysql_summary.html.twig" import mysql_summary %}
+                {{ mysql_summary(systemInfo) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if systemInfo.php is defined %}
+        <a  class="anchor" id="{{ idPrefix }}php"></a>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                {{ panel_title('PHP', systemInfo.php.version is defined ? systemInfo.php.version : false) }}
+            </div>
+            <div class="panel-body">
+                {% from "CiviCxnProfileBundle:Public:php_summary.html.twig" import php_summary %}
+                {{ php_summary(systemInfo) }}
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro panel_title(title, version) %}
+    <h3 class="panel-title">{{ title }}
+        {% if version %}<span class="badge">v{{ version }}</span>{% endif %}
+    </h3>
+{% endmacro %}

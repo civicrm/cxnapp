@@ -1,0 +1,35 @@
+{
+    "app:org.civicrm.profile": {
+        "title": "Site Profile",
+        "desc": "Prepare a technical profile of your site which can be shared in support, forums, issues, etc.<br/>Details will be relayed through civicrm.org. Identifying information (such as URLs) will be confidential.",
+        "appId": "app:org.civicrm.profile",
+        "appCert": "*PLACEHOLDER*",
+        "appUrl": "*PLACEHOLDER*",
+        "links": {
+            "docs": false,
+            "logs": false,
+            "settings": true,
+            "support": false
+        },
+        "perm": {
+            "desc": "The site profile loads general technical information, such as the version of PHP and the list of CiviCRM extensions.",
+            "api": [
+                {
+                    "version": 3,
+                    "entity": "System",
+                    "actions": "get",
+                    "required": [],
+                    "fields": "*"
+                },
+                {
+                    "version": 3,
+                    "entity": "Domain",
+                    "actions": "get",
+                    "required": [],
+                    "fields": ["name", "domain_email"]
+                }
+            ],
+            "grant": "*"
+        }
+    }
+}

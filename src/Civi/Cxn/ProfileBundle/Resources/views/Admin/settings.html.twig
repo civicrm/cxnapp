@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile Settings{% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/civicxnprofile/profile.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/civicxnprofile/settings.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    {% from "CiviCxnProfileBundle:Admin:snapshot_menu.html.twig" import snapshot_menu %}
+    {% from "CiviCxnProfileBundle:Admin:settings_form.html.twig" import settings_form %}
+    {% from "CiviCxnProfileBundle:Admin:error_summary.html.twig" import error_summary %}
+
+    {% if snapshots.0 is defined %}
+        {% if snapshots.0.status == 'ok' %}
+            <div class="alert alert-info cxn-jumbo" role="alert">
+
+                <p>
+                    {% trans %}If you seek support for CiviCRM in an online forum, it will help to publish up-to-date
+                    technical
+                    details about your system (such as the version of CiviCRM, type of CMS, and list of PHP extensions).
+                    Simply
+                    share this anonymized link:{% endtrans %}
+                </p>
+                <br/>
+
+                <p>
+                    <code>
+                        <a target="_blank"
+                           href="{{ url('org_civicrm_profile_snapshot_view', {'pubId': snapshots.0.pubId}) }}">{{ url('org_civicrm_profile_snapshot_view', {'pubId': snapshots.0.pubId}) }}</a>
+                    </code>
+                    <br/>
+                    <span class="text-muted">(Updated: {{ snapshots.0.timestamp | date }})</span>
+                </p>
+
+                <br/>
+                {{ snapshot_menu(settings, snapshots) }}
+            </div>
+
+            {{ settings_form(form, timezone) }}
+        {% else %}
+            <div class="alert alert-danger cxn-jumbo" role="alert">
+
+                <h3>
+                    <strong>
+                        {% trans %}There was an error in reading your site configuration.{% endtrans %}
+                    </strong>
+                </h3>
+
+                {{ error_summary(snapshots.0) }}
+                <br/>
+
+                {{ snapshot_menu(settings, snapshots) }}
+            </div>
+        {% endif %}
+
+    {% endif %}
+
+{% endblock %}

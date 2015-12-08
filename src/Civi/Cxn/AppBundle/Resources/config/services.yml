@@ -8,6 +8,8 @@ parameters:
   ## The default way to render a settings/doc/support link.
   ## Options: iframe, popup, redirect
   civi_cxn_app.link_mode: 'iframe'
+  civi_cxn_app.link_width: '50%'
+  civi_cxn_app.link_height: '50%'
 
 services:
 
@@ -19,6 +21,15 @@ services:
     class: Civi\Cxn\AppBundle\DoctrineCxnStore
     arguments: ['@doctrine.orm.entity_manager']
 
+  civi_cxn_app.poll_runner:
+    class: Civi\Cxn\AppBundle\PollRunner
+    arguments:
+      - "@doctrine.orm.entity_manager"
+      - "@event_dispatcher"
+      - "@logger"
+      - "@civi_cxn_app.app_store"
+      - "@civi_cxn_app.cxn_store"
+
   civi_cxn_app.command.app_get_command:
     class: Civi\Cxn\AppBundle\Command\AppGetCommand
     arguments: ["@civi_cxn_app.app_store"]
@@ -28,6 +39,15 @@ services:
   civi_cxn_app.command.app_init_command:
     class: Civi\Cxn\AppBundle\Command\AppInitCommand
     arguments: ["@civi_cxn_app.app_store"]
+    tags:
+      - { name: console.command }
+
+  civi_cxn_app.command.cxn_poll_command:
+    class: Civi\Cxn\AppBundle\Command\CxnPollCommand
+    arguments:
+      - "@logger"
+      - "%kernel.root_dir%/lock"
+      - "@civi_cxn_app.poll_runner"
     tags:
       - { name: console.command }
 
@@ -57,6 +77,7 @@ services:
       - "@civi_cxn_app.cxn_store"
       - "@logger"
       - "@civi_cxn_app.links"
+      - "@event_dispatcher"
     tags:
       - { name: monolog.logger, channel: 'register' }
 
@@ -68,7 +89,10 @@ services:
       - "@doctrine.orm.entity_manager"
       - "%secret%"
       - "%civi_cxn_app.link_ttl%"
-      - "%civi_cxn_app.link_mode%"
+      -
+        mode: "%civi_cxn_app.link_mode%"
+        width: "%civi_cxn_app.link_width%"
+        height: "%civi_cxn_app.link_height%"
     tags:
       - { name: monolog.logger, channel: 'settings' }
 
