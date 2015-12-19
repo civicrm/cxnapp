@@ -19,6 +19,14 @@ services:
     tags:
        - { name: kernel.event_listener, event: 'app:org.civicrm.profile:job=default:poll', method: onPoll }
 
+  civi_cxn_profile.site_id_poller:
+    class: Civi\Cxn\ProfileBundle\ProfileSiteIdPoller
+    arguments:
+       - "@doctrine.orm.entity_manager"
+       - "@logger"
+    tags:
+       - { name: kernel.event_listener, event: 'app:org.civicrm.profile:job=default:poll', method: onPoll, priority: -25 }
+
   civi_cxn_profile.cleanup:
     class: Civi\Cxn\ProfileBundle\ProfileCleanup
     arguments:
