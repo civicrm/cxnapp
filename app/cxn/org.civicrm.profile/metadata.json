@@ -1,7 +1,7 @@
 {
     "app:org.civicrm.profile": {
         "title": "Site Profile",
-        "desc": "Prepare a technical profile of your site which can be shared in support, forums, issues, etc.<br/>Details will be relayed through civicrm.org. Identifying information (such as URLs) will be confidential.",
+        "desc": "Prepare a technical profile of your site which can be shared in support, forums, issues, etc.<br/>Details will be relayed through civicrm.org. Identifying information (such as file-paths) remain confidential.",
         "appId": "app:org.civicrm.profile",
         "appCert": "*PLACEHOLDER*",
         "appUrl": "*PLACEHOLDER*",
@@ -12,7 +12,7 @@
             "support": false
         },
         "perm": {
-            "desc": "The site profile loads general technical information, such as the version of PHP and the list of CiviCRM extensions.",
+            "desc": "<ul><li>The site profile loads general technical information, such as the list of extensions and performance settings in PHP/MySQL.</li><li>Sensitive settings (such as file-paths) are redacted before submission.</li><li>Some unique identifiers are shared for internal purposes.</li></ul>",
             "api": [
                 {
                     "version": 3,
@@ -23,10 +23,10 @@
                 },
                 {
                     "version": 3,
-                    "entity": "Domain",
+                    "entity": "Setting",
                     "actions": "get",
                     "required": [],
-                    "fields": ["name", "domain_email"]
+                    "fields": ["site_id"]
                 }
             ],
             "grant": "*"
