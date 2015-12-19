@@ -109,6 +109,7 @@ class ProfileSiteIdPoller {
         'old' => $profileSiteId->getSiteId(),
         'new' => $rxSiteId,
       ));
+      $profileSiteId->setTimestamp(Time::createDateTime());
       $profileSiteId->setSiteId($rxSiteId);
       $this->em->flush($profileSiteId);
     }
