@@ -1,0 +1,3 @@
+civi_cxn_address_checker_homepage:
+    path:     /check-addr
+    defaults: { _controller: CiviCxnAddressCheckerBundle:AddressChecker:index }

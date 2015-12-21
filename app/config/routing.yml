@@ -1,3 +1,7 @@
+civi_cxn_db_cache:
+    resource: "@CiviCxnDbCacheBundle/Resources/config/routing.yml"
+    prefix:   /
+
 
 ## The directory provides some cross-app pages, like the main listing ("/")
 civi_cxn_dir:
@@ -24,3 +28,8 @@ civi_cxn_profile:
 civi_cxn_crl:
     resource: "@CiviCxnCrlBundle/Resources/config/routing.yml"
     prefix:   /ca
+
+## A service for checking the accessibility of addresses
+civi_cxn_address_checker:
+    resource: "@CiviCxnAddressCheckerBundle/Resources/config/routing.yml"
+    prefix:   /

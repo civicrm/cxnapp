@@ -1,0 +1,12 @@
+services:
+  civi_cxn_address_checker.cache:
+    class: Civi\Cxn\DbCacheBundle\DbCache
+    arguments:
+      - "@doctrine.orm.entity_manager"
+    calls:
+      - [setNamespace, ['addrchk']]
+
+  civi_cxn_address_checker.address_checker:
+    class: Civi\Cxn\AddressCheckerBundle\AddressChecker
+    arguments:
+      - "@civi_cxn_address_checker.cache"
