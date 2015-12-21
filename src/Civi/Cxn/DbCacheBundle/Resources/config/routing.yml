@@ -1,0 +1,3 @@
+#civi_cxn_db_cache_homepage:
+#    path:     /hello/{name}
+#    defaults: { _controller: CiviCxnDbCacheBundle:Default:index }

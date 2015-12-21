@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new Civi\Cxn\CrlBundle\CiviCxnCrlBundle(),
             new Civi\Cxn\ProfileBundle\CiviCxnProfileBundle(),
             new Civi\Cxn\AddressCheckerBundle\CiviCxnAddressCheckerBundle(),
+            new Civi\Cxn\DbCacheBundle\CiviCxnDbCacheBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

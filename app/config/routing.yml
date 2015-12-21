@@ -1,3 +1,7 @@
+civi_cxn_db_cache:
+    resource: "@CiviCxnDbCacheBundle/Resources/config/routing.yml"
+    prefix:   /
+
 
 ## The directory provides some cross-app pages, like the main listing ("/")
 civi_cxn_dir:
