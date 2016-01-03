@@ -65,6 +65,33 @@
             </div>
         </div>
     {% endif %}
+
+    {% if systemInfo.http is defined %}
+        <a  class="anchor" id="{{ idPrefix }}http"></a>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                {{ panel_title('HTTP', false) }}
+            </div>
+            <div class="panel-body">
+                {% from "CiviCxnProfileBundle:Public:http_summary.html.twig" import http_summary %}
+                {{ http_summary(systemInfo) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if systemInfo.os is defined %}
+        <a  class="anchor" id="{{ idPrefix }}os"></a>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                {{ panel_title('OS', false) }}
+            </div>
+            <div class="panel-body">
+                {% from "CiviCxnProfileBundle:Public:os_summary.html.twig" import os_summary %}
+                {{ os_summary(systemInfo) }}
+            </div>
+        </div>
+    {% endif %}
+
 {% endmacro %}
 
 {% macro panel_title(title, version) %}

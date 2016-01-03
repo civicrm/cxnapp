@@ -1,0 +1,34 @@
+{#
+  Display a formatted summary of HTTP-server data.
+
+  @param array systemInfo: the results from System.get API, e.g.
+    - php: array
+      - version: string
+      - extensions: array(string $name)
+ #}
+{% macro http_summary(systemInfo) %}
+
+    <table class="table table-striped">
+        <tbody>
+        {% if systemInfo.http.forwarded is defined %}
+            <tr>
+                <td class="col-md-1"><label>Forwarded</label></td>
+                <td class="col-md-8">{{ systemInfo.http.forwarded ? 'Yes' : 'No' }}</td>
+            </tr>
+        {% endif %}
+        {% if systemInfo.http.port is defined %}
+            <tr>
+                <td class="col-md-1"><label>Port</label></td>
+                <td class="col-md-8">{{ systemInfo.http.port }}</td>
+            </tr>
+        {% endif %}
+        {% if systemInfo.http.software is defined %}
+            <tr>
+                <td class="col-md-1"><label>Software</label></td>
+                <td class="col-md-8"><code>{{ systemInfo.http.software }}</code></td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+{% endmacro %}
