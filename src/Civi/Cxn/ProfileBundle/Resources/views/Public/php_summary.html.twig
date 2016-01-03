@@ -18,6 +18,12 @@
                 {% endfor %}
             </td>
         </tr>
+        {% if systemInfo.php.sapi is defined %}
+            <tr>
+                <td class="col-md-1"><label>SAPI</label></td>
+                <td class="col-md-8"><code>{{ systemInfo.php.sapi }}</code></td>
+            </tr>
+        {% endif %}
         {% if systemInfo.php.time is defined %}
             <tr>
                 <td class="col-md-1"><label>Time</label></td>

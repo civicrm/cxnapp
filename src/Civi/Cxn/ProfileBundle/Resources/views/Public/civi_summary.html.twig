@@ -16,6 +16,16 @@
             <td class="col-md-8">{{ systemInfo.civi.components | join(', ') }}</td>
         </tr>
         <tr>
+            <td class="col-md-1"><label>Developmental</label> (git/svn)</td>
+            <td class="col-md-8">{{ systemInfo.civi.dev ? 'Yes' : 'No' }}</td>
+        </tr>
+        {% if systemInfo.civi.domains is defined %}
+            <tr>
+                <td class="col-md-1"><label>Domains</label> (qty)</td>
+                <td class="col-md-8">{{ systemInfo.civi.domains }}</td>
+            </tr>
+        {% endif %}
+        <tr>
             <td class="col-md-1"><label>Extensions</label></td>
             <td class="col-md-8">
                 {% for ext, status in systemInfo.civi.extensions|sort %}
@@ -23,10 +33,20 @@
                 {% endfor %}
             </td>
         </tr>
-        <tr>
-            <td class="col-md-1"><label>Developmental</label> (git/svn)</td>
-            <td class="col-md-8">{{ systemInfo.civi.dev ? 'Yes' : 'No' }}</td>
-        </tr>
+        {% if systemInfo.civi.lcMessages is defined %}
+            <tr>
+                <td class="col-md-1"><label>Language</label></td>
+                <td class="col-md-8">
+                    <code>{{ systemInfo.civi.lcMessages }}</code>
+                    {% if systemInfo.civi.languageLimit %}
+                        <br/>(Multilingual:
+                        {% for lang, status in systemInfo.civi.languageLimit %}
+                            <code>{{ lang }}</code>{% if not status %}(<em>off</em>){% endif %}{% if not loop.last %},{% endif %}
+                        {% endfor %})
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
         </tbody>
     </table>
 {% endmacro %}

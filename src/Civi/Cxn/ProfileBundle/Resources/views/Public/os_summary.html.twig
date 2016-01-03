@@ -1,0 +1,42 @@
+{#
+  Display a formatted summary of OS-specific data.
+
+  @param array systemInfo: the results from System.get API, e.g.
+    - os: array
+      - type: string
+      - version: string
+      - release: string
+      - machine: string
+ #}
+{% macro os_summary(systemInfo) %}
+
+    <table class="table table-striped">
+        <tbody>
+        {% if systemInfo.os.type is defined %}
+            <tr>
+                <td class="col-md-1"><label>Type</label></td>
+                <td class="col-md-8"><code>{{ systemInfo.os.type }}</code></td>
+            </tr>
+        {% endif %}
+        {% if systemInfo.os.release is defined %}
+            <tr>
+                <td class="col-md-1"><label>Release</label></td>
+                <td class="col-md-8"><code>{{ systemInfo.os.release }}</code></td>
+            </tr>
+        {% endif %}
+        {% if systemInfo.os.version is defined %}
+            <tr>
+                <td class="col-md-1"><label>Version</label></td>
+                <td class="col-md-8"><code>{{ systemInfo.os.version }}</code></td>
+            </tr>
+        {% endif %}
+        {% if systemInfo.os.machine is defined %}
+            <tr>
+                <td class="col-md-1"><label>Machine</label></td>
+                <td class="col-md-8"><code>{{ systemInfo.os.machine }}</code></td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+{% endmacro %}
