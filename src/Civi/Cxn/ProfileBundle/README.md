@@ -4,6 +4,9 @@ The site profile service (aka `org.civicrm.profile` or
 `Civi/Cxn/ProfileBundle`) tracks metadata about registered sites, such as
 the list of active PHP extensions and the MySQL version.
 
+It does this by polling registered sites, calling the `System.get` API,
+and recording the response as `ProfileSnapshot`.
+
 ## Setup
 
 Generate an identity for the app `org.civicrm.profile` using the `cxnapp:init` as discussed in [tutorial.md](../../../../doc/tutorial.md), e.g.
