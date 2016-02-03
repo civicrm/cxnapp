@@ -1,6 +1,6 @@
 {
     "name": "totten/cxnapp.symfony",
-    "license": "proprietary",
+    "license": "AGPL-3.0",
     "type": "project",
     "autoload": {
         "psr-4": {
