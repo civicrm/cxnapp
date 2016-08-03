@@ -9,7 +9,8 @@
           "docs": false,
           "logs": false,
           "settings": true,
-          "support": false
+          "support": false,
+          "welcome": true
         },
         "perm": {
             "desc": "The cron service needs permission to:<ul><li>Execute and manage cron jobs</li><li>Read cron logs</li><li>Read basic system info -- such as domain name, URL, language, and current CiviCRM version</li></ul>The cron service does not have access to contacts' personal information.",
