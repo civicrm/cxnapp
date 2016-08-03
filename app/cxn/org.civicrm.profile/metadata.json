@@ -9,7 +9,8 @@
             "docs": false,
             "logs": false,
             "settings": true,
-            "support": false
+            "support": false,
+            "welcome": true
         },
         "perm": {
             "desc": "<ul><li>The site profile loads general technical information, such as the list of extensions and performance settings in PHP/MySQL.</li><li>Sensitive settings (such as file-paths) are redacted before submission.</li><li>Some unique identifiers are shared for internal purposes.</li></ul>",
