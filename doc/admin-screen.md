@@ -14,7 +14,8 @@ the administrative links, e.g.
      "docs": false,
      "logs": false,
      "settings": true,
-     "support": false
+     "support": false,
+     "welcome": true
   }
 ```
 
@@ -54,6 +55,12 @@ The `mode` field specifies how CiviCRM should display the link. Options are:
  * When using `mode=iframe`, the URL should point to a page with negligble decorations.
  * Include an authentication token in any URL which points to private information
    (such as `settings` or `logs`).
+ * The keys within `links` should have these interpretations:
+    * `docs`: Displays documentation about how to use the app.
+    * `logs`: Displays records about interactions between the site and the app. Facilitate debugging.
+    * `settings`: Display a configuration form.
+    * `support`: Display an issue tracker, knowledge-base, or contact infor for addressing help requests.
+    * `welcome`: Display a welcome dialog. (It may be useful for this page to be an alias for `docs` or `settings`.)
 
 ## Implementation: Built-in
 
