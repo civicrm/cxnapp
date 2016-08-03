@@ -1,3 +1,7 @@
 org_civicrm_cron_settings:
     path:     /{cxnId}/settings
     defaults: { _controller: civi_cxn_cron.default_controller:settingsAction }
+
+org_civicrm_cron_welcome:
+    path:     /{cxnId}/welcome
+    defaults: { _controller: civi_cxn_cron.default_controller:welcomeAction }

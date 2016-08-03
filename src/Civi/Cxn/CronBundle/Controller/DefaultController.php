@@ -31,6 +31,17 @@ class DefaultController extends Controller {
   }
 
   /**
+   * Display a welcome page when first connecting.
+   *
+   * @param Request $request
+   * @param CxnEntity $cxnEntity
+   * @return Response
+   */
+  public function welcomeAction(Request $request, CxnEntity $cxnEntity) {
+    return $this->settingsAction($request, $cxnEntity);
+  }
+
+  /**
    * @param Request $request
    * @param CxnEntity $cxnEntity
    * @return Response

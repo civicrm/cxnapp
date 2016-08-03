@@ -83,6 +83,7 @@ class AppInitCommand extends AbstractInitCommand {
             'logs' => FALSE,
             'settings' => FALSE,
             'support' => FALSE,
+            'welcome' => FALSE,
           ),
           'perm' => array(
             'desc' => 'Description/rationale for permissions',
