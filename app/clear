@@ -1,0 +1,6 @@
+#!/usr/bin/env php
+<?php
+$results = array();
+passthru(__DIR__ . "/console cache:clear -e dev", $result['dev']);
+passthru(__DIR__ . "/console cache:clear -e prod", $result['prod']);
+exit($result['dev'] + $result['prod']);
