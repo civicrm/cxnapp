@@ -26,7 +26,7 @@ significant options for each link.  Why not?
    or `label` option would be more complex.
  * The links typically include authentication tokens so that an admin does not need
    to perform additional authentication. These tokens must be generated dynamically.
- * The URLs may change as the application evolves. If they URLs were included literally in
+ * The URLs may change as the application evolves. If the URLs were included literally in
    `metadata.json`, any evolution would require publication and review/approval of a new
    `metadata.json`.
 
@@ -47,7 +47,7 @@ The `mode` field specifies how CiviCRM should display the link. Options are:
 
  * `iframe`: Display a Javascript dialog and load the link in an `<IFRAME>`.
  * `popup`: Display a new browser window (`window.open()`).
- * `redirect`: Redirect away from the CiviCRM installation and to the URL.
+ * `redirect`: Redirect away from the CiviCRM site and to the URL.
 
 ## Protocol: Recommendations
 
