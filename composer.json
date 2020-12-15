@@ -12,7 +12,8 @@
     "minimum-stability": "dev",
     "require": {
         "php": "~7.1",
-        "symfony/symfony": "~2.7.0",
+        "symfony/symfony": "~2.8.52",
+        "twig/twig": "~1.34",
         "braincrafted/bootstrap-bundle": "~2.2.0",
         "twbs/bootstrap": "3.3.*",
         "twbs/bootstrap-sass": "3.3.*",
