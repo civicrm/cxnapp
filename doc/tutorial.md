@@ -106,11 +106,11 @@ you can register on the command-line:
 ```
 ## Register via URL
 $ cd /var/www/example.org
-$ drush cvapi cxn.register app_meta_url=http://127.0.0.1:8000/app:org.example.myapp/cxn/metadata.json debug=1
+$ cv api cxn.register app_meta_url=http://127.0.0.1:8000/app:org.example.myapp/cxn/metadata.json debug=1
 
 ## Or register via app ID
 $ cd /var/www/example.org
-$ drush cvapi cxn.register app_guid=app:org.example.myapp debug=1
+$ cv api cxn.register app_guid=app:org.example.myapp debug=1
 ```
 
 TIP: By default, CiviCRM caches data about available apps. If you enable CiviCRM debugging, the data will

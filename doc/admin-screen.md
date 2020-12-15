@@ -174,7 +174,7 @@ To use CiviCRM and its APIv3:
 ```
 $ cd /var/www/drupal
 
-$ drush cvapi Cxn.getlink app_guid=app:org.civicrm.cron page=settings
+$ cv api Cxn.getlink app_guid=app:org.civicrm.cron page=settings
 Array
 (
     [cxn_id] => cxn:abcd1234abcd1234
