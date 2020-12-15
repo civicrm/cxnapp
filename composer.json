@@ -10,7 +10,7 @@
         }
     },
     "require": {
-        "php": ">=5.3.3",
+        "php": "~7.1",
         "symfony/symfony": "~2.7.0",
         "braincrafted/bootstrap-bundle": "~2.2.0",
         "twbs/bootstrap": "3.3.*",

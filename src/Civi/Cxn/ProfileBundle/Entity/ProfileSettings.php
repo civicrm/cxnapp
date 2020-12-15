@@ -109,7 +109,7 @@ class ProfileSettings {
     do {
       $tries--;
 
-      $raw = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(crypt_random_string($bytes)));
+      $raw = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(random_bytes($bytes)));
       // This conversion from bytes to alphanumerics is a bit lossy. To ensure we
       // end up with enough characters, we take a few extra bytes.
 
