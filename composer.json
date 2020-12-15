@@ -3,6 +3,7 @@
     "license": "AGPL-3.0",
     "type": "project",
     "autoload": {
+        "files": ["app/class_alias.php"],
         "psr-4": {
             "": "src/",
             "SymfonyStandard\\": "app/"
@@ -11,7 +12,7 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "~2.7.0",
-        "braincrafted/bootstrap-bundle": "~2.1",
+        "braincrafted/bootstrap-bundle": "~2.2.0",
         "twbs/bootstrap": "3.3.*",
         "twbs/bootstrap-sass": "3.3.*",
         "jquery/jquery":  "1.11.*",
@@ -24,7 +25,8 @@
         "symfony/monolog-bundle": "~2.4",
         "sensio/distribution-bundle": "~3.0,>=3.0.12",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "incenteev/composer-parameter-handler": "~2.0",
+        "scssphp/scssphp": "~1.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
