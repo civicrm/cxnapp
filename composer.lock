@@ -73,12 +73,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/totten/civicrm-cxn-rpc.git",
-                "reference": "a78a3f7e4afbe2b53237d5ed4c2a5a1e1a5de0f1"
+                "reference": "ffba071919600133d99905a59226087284ddd2a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/totten/civicrm-cxn-rpc/zipball/a78a3f7e4afbe2b53237d5ed4c2a5a1e1a5de0f1",
-                "reference": "a78a3f7e4afbe2b53237d5ed4c2a5a1e1a5de0f1",
+                "url": "https://api.github.com/repos/totten/civicrm-cxn-rpc/zipball/ffba071919600133d99905a59226087284ddd2a0",
+                "reference": "ffba071919600133d99905a59226087284ddd2a0",
                 "shasum": ""
             },
             "require": {
@@ -104,7 +104,7 @@
             "support": {
                 "source": "https://github.com/totten/civicrm-cxn-rpc/tree/master-ca"
             },
-            "time": "2020-12-15T19:17:19+00:00"
+            "time": "2020-12-15T23:40:56+00:00"
         },
         {
             "name": "doctrine/annotations",
