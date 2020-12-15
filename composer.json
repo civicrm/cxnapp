@@ -9,6 +9,7 @@
             "SymfonyStandard\\": "app/"
         }
     },
+    "minimum-stability": "dev",
     "require": {
         "php": "~7.1",
         "symfony/symfony": "~2.7.0",
@@ -16,7 +17,7 @@
         "twbs/bootstrap": "3.3.*",
         "twbs/bootstrap-sass": "3.3.*",
         "jquery/jquery":  "1.11.*",
-        "civicrm/civicrm-cxn-rpc": "0.19.*",
+        "civicrm/civicrm-cxn-rpc": "dev-master-ca",
         "doctrine/orm": "~2.2,>=2.2.3,<2.5",
         "doctrine/dbal": "<2.5",
         "doctrine/doctrine-bundle": "~1.4",
@@ -60,6 +61,10 @@
         "bin-dir": "bin"
     },
     "repositories": [
+      {
+        "type": "vcs",
+        "url": "https://github.com/totten/civicrm-cxn-rpc"
+      },
         {
             "type": "package",
             "package": {
