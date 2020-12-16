@@ -36,7 +36,7 @@ class CrlGenerator {
   public function generate($revocations) {
     $crlDistCertObj = X509Util::loadCert($this->crlDistCertPem, $this->crlDistKeyPairPems, $this->caCertPem);
 
-    $crlObj = new \File_X509();
+    $crlObj = new \phpseclib\File\X509();
     if (isset($revocations['serialNumber'])) {
       $crlObj->setSerialNumber(self::asDecimal($revocations['serialNumber']), 10);
     }
