@@ -15,7 +15,7 @@
         "twbs/bootstrap": "3.3.*",
         "twbs/bootstrap-sass": "3.3.*",
         "jquery/jquery":  "1.11.*",
-        "civicrm/civicrm-cxn-rpc": "~0.15.12",
+        "civicrm/civicrm-cxn-rpc": "~0.19.01.10",
         "doctrine/orm": "~2.2,>=2.2.3,<2.5",
         "doctrine/dbal": "<2.5",
         "doctrine/doctrine-bundle": "~1.4",
@@ -55,7 +55,10 @@
         ]
     },
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "platform": {
+            "php": "5.5.9"
+        }
     },
     "repositories": [
         {
