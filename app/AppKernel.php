@@ -5,6 +5,14 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
+
+    public function __construct($environment, $debug)
+    {
+        $tz = file_exists('/etc/timezone') ? trim(file_get_contents('/etc/timezone')) : 'Etc/UTC';
+        date_default_timezone_set($tz);
+        parent::__construct($environment, $debug);
+    }
+
     public function registerBundles()
     {
         $bundles = array(
