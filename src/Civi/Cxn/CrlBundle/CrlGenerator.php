@@ -72,7 +72,7 @@ class CrlGenerator {
   protected static function asDecimal($value) {
     if (strpos($value, ':') !== FALSE) {
       // Convert long hex to long dec.
-      $bigInt = new \Math_BigInteger(str_replace(':', '', $value), 16);
+      $bigInt = new \phpseclib\Math\BigInteger(str_replace(':', '', $value), 16);
       $value = $bigInt->toString();
       return $value;
     }
