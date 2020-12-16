@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "130e759fff9e7b57a650c3454219d692",
+    "content-hash": "8ded1338c780a6c42c099e1001fd16b5",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -69,16 +69,16 @@
         },
         {
             "name": "civicrm/civicrm-cxn-rpc",
-            "version": "dev-master-ca",
+            "version": "v0.20.12.01",
             "source": {
                 "type": "git",
-                "url": "https://github.com/totten/civicrm-cxn-rpc.git",
-                "reference": "ffba071919600133d99905a59226087284ddd2a0"
+                "url": "https://github.com/civicrm/civicrm-cxn-rpc.git",
+                "reference": "b097258a642dc3e0dd9c264cb75b72d5274cac2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/totten/civicrm-cxn-rpc/zipball/ffba071919600133d99905a59226087284ddd2a0",
-                "reference": "ffba071919600133d99905a59226087284ddd2a0",
+                "url": "https://api.github.com/repos/civicrm/civicrm-cxn-rpc/zipball/b097258a642dc3e0dd9c264cb75b72d5274cac2f",
+                "reference": "b097258a642dc3e0dd9c264cb75b72d5274cac2f",
                 "shasum": ""
             },
             "require": {
@@ -91,6 +91,7 @@
                     "Civi\\Cxn\\Rpc\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -101,10 +102,7 @@
                 }
             ],
             "description": "RPC library for CiviConnect",
-            "support": {
-                "source": "https://github.com/totten/civicrm-cxn-rpc/tree/master-ca"
-            },
-            "time": "2020-12-15T23:40:56+00:00"
+            "time": "2020-12-16T02:35:45+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -2756,9 +2754,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "civicrm/civicrm-cxn-rpc": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
